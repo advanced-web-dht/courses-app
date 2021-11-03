@@ -2,7 +2,6 @@ import React from 'react';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
-import PlusIcon from '@mui/icons-material/Add';
 import Avatar from '@mui/icons-material/AccountCircleRounded';
 
 import { Container, Section, Separator } from './style';

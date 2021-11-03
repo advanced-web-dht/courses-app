@@ -1,6 +1,10 @@
 export interface IClass {
 	id: number;
-	identity: string;
+	code: string;
+	cover: string;
 	name: string;
-	thematic: string;
+}
+
+export interface ICreateClassDTO {
+	name: string;
 }

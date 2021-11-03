@@ -7,6 +7,21 @@ const theme = createTheme({
 			main: '#0073e6',
 			dark: '#0258c7'
 		}
+	},
+	typography: {
+		fontFamily: [
+			'Be Vietnam Pro',
+			'-apple-system',
+			'BlinkMacSystemFont',
+			'"Segoe UI"',
+			'Roboto',
+			'"Helvetica Neue"',
+			'Arial',
+			'sans-serif',
+			'"Apple Color Emoji"',
+			'"Segoe UI Emoji"',
+			'"Segoe UI Symbol"'
+		].join(',')
 	}
 });
 

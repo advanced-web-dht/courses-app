@@ -38,14 +38,20 @@ export const FormAction = styled(Box)`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	padding: 2rem;
-	& > div {
-		margin: 10px 0;
+	padding: 0.8rem 2rem 2rem 2rem;
+
+	& .classname-input {
+		height: 80px;
 	}
-	& * {
-		font-size: 16px;
+
+	& input {
+		font-size: 17px;
+		font-weight: 500;
+		color: #3e4b4b;
 	}
+
 	& button {
+		margin-top: 10px;
 		width: 50%;
 		align-self: center;
 	}

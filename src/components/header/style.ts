@@ -8,8 +8,12 @@ export const Container = styled(AppBar)`
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	background: inherit;
+	background: #f4f6f6;
 	color: #3e4b4b;
+
+	@media only screen and (max-width: 900px) {
+		padding: 0;
+	}
 `;
 
 export const Section = styled(Box)`

@@ -9,11 +9,7 @@ export default class MyDocument extends Document {
 				<Head>
 					<link
 						rel='stylesheet'
-						href='https://fonts.googleapis.com/css?family=Lato:300,400,500,700&display=swap'
-					/>
-					<link
-						rel='stylesheet'
-						href='https://fonts.googleapis.com/css?family=Istok+Web:300,400,500,700&display=swap'
+						href='https://fonts.googleapis.com/css?family=Be+Vietnam+Pro:300,400,500,600,700&display=swap'
 					/>
 				</Head>
 				<body>
