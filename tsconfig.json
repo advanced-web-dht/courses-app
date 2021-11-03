@@ -21,11 +21,7 @@
     "strictNullChecks": true,
     "jsx": "preserve",
     "jsxImportSource": "react",
-    "incremental": true,
-    "baseUrl": ".",
-    "paths": {
-      "@mui/styled-engine": ["./node_modules/@mui/styled-engine-sc"] // this mapping is relative to "baseUrl"
-    }
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",
