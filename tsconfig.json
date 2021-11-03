@@ -20,6 +20,7 @@
     "noImplicitThis": true,
     "strictNullChecks": true,
     "jsx": "preserve",
+    "jsxImportSource": "react",
     "incremental": true
   },
   "include": [

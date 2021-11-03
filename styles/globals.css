@@ -1,16 +1,19 @@
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+	padding: 0;
+	margin: 0;
+	font-family: Be Vietnam Pro, Roboto, Fira Sans, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu,
+		Cantarell, Droid Sans, Helvetica Neue, sans-serif;
+	background-color: #f4f6f6;
+	color: #3e4b4b;
+	font-size: 14px;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+	color: inherit;
+	text-decoration: none;
 }
 
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
