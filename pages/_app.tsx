@@ -6,7 +6,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 
 import theme from '../src/theme';
-import '../styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {

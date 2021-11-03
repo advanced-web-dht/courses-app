@@ -17,7 +17,7 @@ const Class: React.FC<ClassProps> = ({ classData }) => {
 		<StyledCard>
 			<CardHeader>
 				<div>
-					<Image src='/class.svg' height={60} width={60} />
+					<Image src='/class.png' height={60} width={60} />
 				</div>
 				<div className='class-title'>
 					<Typography variant='h5' className='class-name'>
