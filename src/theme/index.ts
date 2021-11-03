@@ -22,6 +22,28 @@ const theme = createTheme({
 			'"Segoe UI Emoji"',
 			'"Segoe UI Symbol"'
 		].join(',')
+	},
+	components: {
+		MuiCssBaseline: {
+			styleOverrides: {
+				body: {
+					padding: 0,
+					margin: 0,
+					fontFamily:
+						'Be Vietnam Pro, Roboto, Fira Sans, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Droid Sans, Helvetica Neue, sans-serif',
+					backgroundColor: '#f4f6f6',
+					color: '#3e4b4b',
+					fontSize: '14px'
+				},
+				a: {
+					color: 'inherit',
+					textDecoration: 'none'
+				},
+				'*': {
+					boxSizing: 'border-box'
+				}
+			}
+		}
 	}
 });
 
