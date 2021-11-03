@@ -3,7 +3,6 @@ import Head from 'next/head';
 import { AppProps } from 'next/app';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
 
 import theme from '../src/theme';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,9 +16,7 @@ export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 			</Head>
 			<ThemeProvider theme={theme}>
 				<CssBaseline />
-				<Box>
-					<Component {...pageProps} />
-				</Box>
+				<Component {...pageProps} />
 			</ThemeProvider>
 		</React.Fragment>
 	);
