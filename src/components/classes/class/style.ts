@@ -1,9 +1,9 @@
-import { styled } from '@mui/material/styles';
-import Card from '@mui/material/Card';
+import styled from 'styled-components';
 
-export const StyledCard = styled(Card)`
+export const StyledCard = styled.li`
 	background-color: #fff;
 	border-radius: 6px;
+	box-shadow: rgb(0 0 0 / 20%) 0 2px 1px -1px, rgb(0 0 0 / 14%) 0 1px 1px 0, rgb(0 0 0 / 12%) 0 1px 3px 0;
 	position: relative;
 	outline: 0;
 	width: 350px;
@@ -46,7 +46,7 @@ export const StyledCard = styled(Card)`
 	}
 `;
 
-export const CardHeader = styled('div')`
+export const CardHeader = styled.div`
 	display: flex;
 	align-items: center;
 	& > div {
@@ -69,7 +69,7 @@ export const CardHeader = styled('div')`
 	}
 `;
 
-export const CardFooter = styled('div')`
+export const CardFooter = styled.div`
 	display: flex;
 	justify-content: flex-end;
 `;

@@ -1,4 +1,4 @@
-import { styled } from '@mui/material/styles';
+import styled from 'styled-components';
 import Container from '@mui/material/Container';
 
 export const StyledContainer = styled(Container)`
@@ -7,7 +7,7 @@ export const StyledContainer = styled(Container)`
 	flex-direction: column;
 `;
 
-export const ClassesHeader = styled('div')`
+export const ClassesHeader = styled.div`
 	font-size: 18px;
 	font-weight: 600;
 	display: flex;
@@ -16,10 +16,15 @@ export const ClassesHeader = styled('div')`
 	margin-left: 1rem;
 `;
 
-export const ClassesList = styled('ol')`
+export const ClassesListContainer = styled.div`
+	display: flex;
+	justify-content: center;
+`;
+
+export const ClassesList = styled.ol`
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: flex-start;
+	justify-content: center;
 	align-self: center;
 	padding: 0;
 `;

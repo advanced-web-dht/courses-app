@@ -33,7 +33,7 @@ const Header: React.FC<HeaderProps> = (props) => {
 			<Separator />
 			<Section>
 				{rightAction}
-				<IconButton size='large' aria-label='Add Classes'>
+				<IconButton size='large' aria-label='user-actions'>
 					<Avatar />
 				</IconButton>
 			</Section>
