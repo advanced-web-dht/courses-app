@@ -1,4 +1,4 @@
-import { styled } from '@mui/material/styles';
+import styled from 'styled-components';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 
@@ -36,7 +36,7 @@ export const FormAction = styled(Box)`
 	}
 `;
 
-export const FormHeader = styled('header')`
+export const FormHeader = styled.header`
 	display: flex;
 	align-items: center;
 	padding: 10px 24px;

@@ -6,7 +6,7 @@ import DDDIcon from '@mui/icons-material/MoreVert';
 import PlusIcon from '@mui/icons-material/AddCircleOutlined';
 
 import { ClassContext } from '../../store/class';
-import { StyledContainer, ClassesHeader, ClassesList } from './style';
+import { StyledContainer, ClassesHeader, ClassesListContainer, ClassesList } from './style';
 import { StyledCard } from './class/style';
 import Class from './class';
 import AddClassModal from '../addClassModal';
@@ -20,21 +20,23 @@ const Classes: React.FC = () => {
 		<StyledContainer fixed>
 			<ClassesHeader>
 				<div>Các lớp đang tham gia</div>
-				<IconButton>
+				<IconButton aria-label='classes-options'>
 					<DDDIcon />
 				</IconButton>
 			</ClassesHeader>
-			<ClassesList>
-				{classes.map((cls) => (
-					<Class classData={cls} key={cls.id} />
-				))}
-				<StyledCard className='fake-card' onClick={() => handleOpen()}>
-					<div>
-						<PlusIcon fontSize='large' />
-						<div>Thêm lớp mới</div>
-					</div>
-				</StyledCard>
-			</ClassesList>
+			<ClassesListContainer>
+				<ClassesList>
+					{classes.map((cls) => (
+						<Class classData={cls} key={cls.id} />
+					))}
+					<StyledCard className='fake-card' onClick={() => handleOpen()}>
+						<div>
+							<PlusIcon fontSize='large' />
+							<div>Thêm lớp mới</div>
+						</div>
+					</StyledCard>
+				</ClassesList>
+			</ClassesListContainer>
 			<AddClassModal open={isOpen} handleClose={handleClose} />
 			<ToastContainer
 				position='bottom-right'

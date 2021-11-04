@@ -17,7 +17,7 @@ const Class: React.FC<ClassProps> = ({ classData }) => {
 		<StyledCard>
 			<CardHeader>
 				<div>
-					<Image src='/class.png' height={60} width={60} />
+					<Image src='/class.png' height={60} width={60} alt='class-icon' />
 				</div>
 				<div className='class-title'>
 					<Typography variant='h5' className='class-name'>
@@ -27,7 +27,7 @@ const Class: React.FC<ClassProps> = ({ classData }) => {
 				</div>
 			</CardHeader>
 			<CardFooter>
-				<IconButton>
+				<IconButton aria-label='class-options'>
 					<DDDIcon />
 				</IconButton>
 			</CardFooter>

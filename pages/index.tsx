@@ -25,7 +25,7 @@ const addClassModalWithButton = () => {
 
 	return (
 		<React.Fragment>
-			<Button onClick={handleOpen}>
+			<Button onClick={handleOpen} aria-label='Add Class'>
 				<PlusIcon />
 			</Button>
 			<AddClassModal open={isOpen} handleClose={handleClose} />
