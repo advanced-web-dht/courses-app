@@ -8,13 +8,11 @@ export const StyledCard = styled.li`
 	outline: 0;
 	width: 350px;
 	min-width: 300px;
-	max-width: 384px;
-	min-height: 195px;
+	min-height: 220px;
 	margin: 10px;
-	display: flex;
 	padding: 24px;
+	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
 
 	&.fake-card {
 		font-size: 18px;
@@ -37,7 +35,6 @@ export const StyledCard = styled.li`
 	@media only screen and (max-width: 900px) {
 		width: 100%;
 		min-width: initial;
-		max-width: 100%;
 	}
 
 	:hover {
@@ -70,6 +67,7 @@ export const CardHeader = styled.div`
 `;
 
 export const CardFooter = styled.div`
+	margin-top: auto;
 	display: flex;
 	justify-content: flex-end;
 `;
