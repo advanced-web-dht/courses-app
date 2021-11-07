@@ -39,6 +39,9 @@ const theme = createTheme({
 					color: 'inherit',
 					textDecoration: 'none'
 				},
+				ol: {
+					paddingLeft: 0
+				},
 				'*': {
 					boxSizing: 'border-box'
 				}

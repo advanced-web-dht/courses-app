@@ -24,7 +24,9 @@ export const ClassesListContainer = styled.div`
 export const ClassesList = styled.ol`
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: center;
 	align-self: center;
-	padding: 0;
+	justify-content: flex-start;
+	@media only screen and (max-width: 1200px) {
+		justify-content: center;
+	}
 `;
