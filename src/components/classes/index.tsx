@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import IconButton from '@mui/material/IconButton';
 import { ToastContainer } from 'react-toastify';
+import Grid from '@mui/material/Grid';
 
 import DDDIcon from '@mui/icons-material/MoreVert';
 import PlusIcon from '@mui/icons-material/AddCircleOutlined';
@@ -27,14 +28,18 @@ const Classes: React.FC = () => {
 			<ClassesListContainer>
 				<ClassesList>
 					{classes.map((cls) => (
-						<Class classData={cls} key={cls.id} />
+						<Grid key={cls.id} item xs={12} md={6} lg={4} component='li'>
+							<Class classData={cls} />
+						</Grid>
 					))}
-					<StyledCard className='fake-card' onClick={() => handleOpen()}>
-						<div>
-							<PlusIcon fontSize='large' />
-							<div>Thêm lớp mới</div>
-						</div>
-					</StyledCard>
+					<Grid item xs={12} md={6} lg={4} component='li'>
+						<StyledCard className='fake-card' onClick={() => handleOpen()}>
+							<div>
+								<PlusIcon fontSize='large' />
+								<div>Thêm lớp mới</div>
+							</div>
+						</StyledCard>
+					</Grid>
 				</ClassesList>
 			</ClassesListContainer>
 			<AddClassModal open={isOpen} handleClose={handleClose} />

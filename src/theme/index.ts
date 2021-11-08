@@ -42,6 +42,9 @@ const theme = createTheme({
 				ol: {
 					paddingLeft: 0
 				},
+				li: {
+					listStyle: 'none'
+				},
 				'*': {
 					boxSizing: 'border-box'
 				}

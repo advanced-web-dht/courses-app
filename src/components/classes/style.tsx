@@ -1,5 +1,7 @@
+import React from 'react';
 import styled from 'styled-components';
 import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
 
 export const StyledContainer = styled(Container)`
 	margin-top: 80px;
@@ -21,12 +23,13 @@ export const ClassesListContainer = styled.div`
 	justify-content: center;
 `;
 
-export const ClassesList = styled.ol`
+export const ClassesList = styled(({ children }) => (
+	<Grid component='ol' container spacing={2}>
+		{children}
+	</Grid>
+))`
 	display: flex;
 	flex-wrap: wrap;
 	align-self: center;
 	justify-content: flex-start;
-	@media only screen and (max-width: 1200px) {
-		justify-content: center;
-	}
 `;
