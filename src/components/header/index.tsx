@@ -1,4 +1,6 @@
 import React from 'react';
+import Link from 'next/link';
+import { useSession } from 'next-auth/client';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
@@ -22,6 +24,8 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = (props) => {
 	const { title, icon, middleAction, rightAction } = props;
+	const [session] = useSession();
+	console.log(session);
 	return (
 		<Container>
 			<Section>
@@ -33,9 +37,11 @@ const Header: React.FC<HeaderProps> = (props) => {
 			<Separator />
 			<Section>
 				{rightAction}
-				<IconButton size='large' aria-label='user-actions'>
-					<Avatar />
-				</IconButton>
+				<Link href='/signin' passHref>
+					<IconButton size='large' aria-label='user-actions'>
+						<Avatar />
+					</IconButton>
+				</Link>
 			</Section>
 		</Container>
 	);

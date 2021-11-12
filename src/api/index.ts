@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { IClass, ICreateClassDTO } from '../type';
 
-const provider = axios.create({ baseURL: process.env.NEXT_PUBLIC_SERVER_URL });
+export const provider = axios.create({ baseURL: process.env.NEXT_PUBLIC_SERVER_URL });
 
 export const AddNewClass = async ({ name }: ICreateClassDTO): Promise<IClass> => {
 	try {

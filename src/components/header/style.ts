@@ -7,7 +7,7 @@ export const Container = styled(AppBar)`
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	background: #f4f6f6;
+	background: inherit;
 	color: #3e4b4b;
 	@media only screen and (max-width: 900px) {
 		padding: 0;
