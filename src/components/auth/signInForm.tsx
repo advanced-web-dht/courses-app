@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { signIn } from 'next-auth/client';
+import { signIn, useSession } from 'next-auth/client';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import NewWindow from 'react-new-window';
@@ -13,16 +13,20 @@ const SignInForm = () => {
 	const [username, setUsername] = useState('');
 	const [popup, setPopup] = useState(false);
 	const [password, error, setPassword, setError] = useInput();
-
+	const [session] = useSession();
 	const router = useRouter();
+
+	useEffect(() => {
+		if (session) {
+			router.push('/class');
+		}
+	}, [session]);
 
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
 		const response = await signIn('credentials', { redirect: false, password, username });
 		if (response?.error) {
 			setError('Tên đăng nhập hoặc mật khẩu không chính xác');
-		} else {
-			router.push('/');
 		}
 	};
 
@@ -60,8 +64,6 @@ const SignInForm = () => {
 						error={error.status}
 						helperText={error.message}
 					/>
-				</FormContent>
-				<FormFooter>
 					<div id='signin-buttons'>
 						<Button variant='contained' type='submit' onClick={handleSubmit} aria-label='Sign in'>
 							Đăng Nhập
@@ -80,18 +82,20 @@ const SignInForm = () => {
 							Google
 						</Button>
 					</div>
-					<RouteAction>
-						<span>Chưa có tài khoản? </span>
-						<Link href='/signup' passHref>
-							<Button variant='text'>Đăng Ký</Button>
-						</Link>
-					</RouteAction>
+				</FormContent>
+				<FormFooter>
+					<span>Chưa có tài khoản? </span>
+					<Link href='/signup' passHref>
+						<Button variant='text'>Đăng Ký</Button>
+					</Link>
 				</FormFooter>
 			</div>
 			{popup ? (
 				<NewWindow
 					url='/signin/google'
-					onUnload={() => setPopup(false)}
+					onUnload={async () => {
+						setPopup(false);
+					}}
 					features={{
 						height: 700,
 						width: 500,

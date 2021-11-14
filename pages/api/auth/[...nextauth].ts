@@ -1,13 +1,20 @@
 /* eslint-disable no-param-reassign */
 import NextAuth, { User } from 'next-auth';
+import { Awaitable } from 'next-auth/internals/utils';
 import Providers from 'next-auth/providers';
 
-import { submitSignIn } from '../../../src/api/auth';
+import { submitGoogleSignIn, submitSignIn } from '../../../src/api/auth';
 
 declare module 'next-auth/jwt' {
 	interface DefaultJWT {
 		accessToken?: string | null;
 		user?: User | null;
+	}
+}
+
+declare module 'next-auth' {
+	interface DefaultSession {
+		accessToken?: string | null;
 	}
 }
 
@@ -27,7 +34,15 @@ export default NextAuth({
 		}),
 		Providers.Google({
 			clientId: process.env.GOOGLE_CLIENT_ID,
-			clientSecret: process.env.GOOGLE_CLIENT_SECRET
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+			profile: async (profile, tokens) => {
+				const response = await submitGoogleSignIn(
+					profile.email as string,
+					profile.name as string,
+					tokens.accessToken
+				);
+				return { ...response, id: profile.id } as Awaitable<User & { id: string }>;
+			}
 		})
 	],
 	callbacks: {
@@ -46,7 +61,7 @@ export default NextAuth({
 			session.user = {
 				...(user as User)
 			};
-			session.accessToken = token.accessToken;
+			session.accessToken = token.accessToken as string;
 			return session;
 		}
 	}

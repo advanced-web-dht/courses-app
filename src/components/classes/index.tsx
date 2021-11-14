@@ -11,11 +11,11 @@ import Container from '../UI/Container';
 import { StyledCard } from './class/style';
 import Class from './class';
 import AddClassModal from '../addClassModal';
-import useToggleModal from '../addClassModal/hook';
+import useToggle from '../../hooks/useToggle';
 
 const Classes: React.FC = () => {
 	const { classes } = useContext(ClassContext);
-	const { isOpen, handleOpen, handleClose } = useToggleModal();
+	const { isOpen, handleOpen, handleClose } = useToggle();
 
 	return (
 		<Container fixed>

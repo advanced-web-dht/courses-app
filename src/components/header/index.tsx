@@ -1,12 +1,13 @@
 import React from 'react';
 import Link from 'next/link';
-import { useSession } from 'next-auth/client';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-
 import Avatar from '@mui/icons-material/AccountCircleRounded';
+import { useSession } from 'next-auth/client';
 
+import useToggle from '../../hooks/useToggle';
 import { Container, Section, Separator } from './style';
+import UserOptions from '../userOptions';
 
 interface HeaderProps {
 	title: string;
@@ -24,8 +25,15 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = (props) => {
 	const { title, icon, middleAction, rightAction } = props;
+	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const [session] = useSession();
-	console.log(session);
+
+	const { isOpen, handleClose, handleOpen } = useToggle();
+
+	const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+		setAnchorEl(event.currentTarget);
+		handleOpen();
+	};
 	return (
 		<Container>
 			<Section>
@@ -36,12 +44,19 @@ const Header: React.FC<HeaderProps> = (props) => {
 			<Section>{middleAction}</Section>
 			<Separator />
 			<Section>
-				{rightAction}
-				<Link href='/signin' passHref>
-					<IconButton size='large' aria-label='user-actions'>
-						<Avatar />
-					</IconButton>
-				</Link>
+				{session ? (
+					<React.Fragment>
+						{rightAction}
+						<IconButton size='large' aria-label='user-actions' onClick={handleOpenMenu}>
+							<Avatar />
+						</IconButton>
+						<UserOptions isOpen={isOpen} handleClose={handleClose} anchorEl={anchorEl} />
+					</React.Fragment>
+				) : (
+					<Link href='/signin' passHref>
+						<a>Đăng nhập</a>
+					</Link>
+				)}
 			</Section>
 		</Container>
 	);
