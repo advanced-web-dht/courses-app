@@ -3,7 +3,7 @@ import NextAuth, { User } from 'next-auth';
 import { Awaitable } from 'next-auth/internals/utils';
 import Providers from 'next-auth/providers';
 
-import { submitGoogleSignIn, submitSignIn } from '../../../src/api/auth';
+import { submitGoogleSignIn, submitSignIn } from '../../../src/api/server/auth';
 
 declare module 'next-auth/jwt' {
 	interface DefaultJWT {

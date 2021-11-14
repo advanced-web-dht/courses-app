@@ -8,7 +8,7 @@ import NewWindow from 'react-new-window';
 
 import { StyledContainer, FormHeader, FormContent, FormFooter } from './style';
 import useInput from '../../hooks/useInput';
-import { checkEmailExisted, checkUsernameExisted, submitSignUp } from '../../api/auth';
+import { checkEmailExisted, checkUsernameExisted, submitSignUp } from '../../api/client/auth';
 
 const SignUpForm = () => {
 	const router = useRouter();

@@ -13,7 +13,7 @@ import Header from '../../src/components/header';
 import AddClassModal from '../../src/components/addClassModal';
 import useToggle from '../../src/hooks/useToggle';
 import ClassProvider from '../../src/store/class';
-import { GetAllClasses } from '../../src/api';
+import { GetAllClasses } from '../../src/api/server';
 
 import { IClass } from '../../src/type';
 

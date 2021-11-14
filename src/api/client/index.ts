@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { getSession } from 'next-auth/client';
 
-import { IClass, ICreateClassDTO } from '../type';
+import { IClass, ICreateClassDTO } from '../../type';
 
 export const provider = axios.create({ baseURL: process.env.NEXT_PUBLIC_SERVER_URL });
 
@@ -22,13 +22,7 @@ export const AddNewClass = async ({ name }: ICreateClassDTO): Promise<IClass> =>
 	}
 };
 
-export const GetAllClasses = async (accessToken: string): Promise<IClass[]> => {
-	provider.interceptors.request.use(async (req: AxiosRequestConfig) => {
-		if (req?.headers) {
-			req.headers.Authorization = `Bearer ${accessToken}`;
-		}
-		return req;
-	});
+export const GetAllClasses = async (): Promise<IClass[]> => {
 	try {
 		const response = await provider.get('/classes');
 		return response.data as IClass[];
