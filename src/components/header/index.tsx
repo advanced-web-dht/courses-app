@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
 import Avatar from '@mui/icons-material/AccountCircleRounded';
 import { useSession } from 'next-auth/client';
 
@@ -54,7 +55,7 @@ const Header: React.FC<HeaderProps> = (props) => {
 					</React.Fragment>
 				) : (
 					<Link href='/signin' passHref>
-						<a>Đăng nhập</a>
+						<Button variant='text'>Đăng nhập</Button>
 					</Link>
 				)}
 			</Section>

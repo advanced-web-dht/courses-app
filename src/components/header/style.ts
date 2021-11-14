@@ -12,17 +12,18 @@ export const Container = styled(AppBar)`
 	@media only screen and (max-width: 900px) {
 		padding: 0;
 	}
+	min-height: 65px;
 `;
 
 export const Section = styled(Box)`
 	display: flex;
 	align-items: center;
 	margin: 0 0.5rem;
-	& > * {
+	* {
 		margin: 0 0.5rem;
 	}
 
-	& h5 {
+	h5 {
 		font-weight: bold;
 		font-size: 1.4rem;
 	}
