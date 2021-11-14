@@ -5,16 +5,18 @@ import { useSession } from 'next-auth/client';
 import Head from 'next/head';
 
 const Index: NextPage = () => {
-	const [session] = useSession();
+	const [session, isLoading] = useSession();
 	const router = useRouter();
 
 	useEffect(() => {
-		if (session) {
-			router.push('/class');
-		} else {
-			router.push('/signin');
+		if (!isLoading) {
+			if (session) {
+				router.push('/class');
+			} else {
+				router.push('/signin');
+			}
 		}
-	}, []);
+	}, [isLoading]);
 
 	return (
 		<React.Fragment>
