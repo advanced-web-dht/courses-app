@@ -1,24 +1,24 @@
 import React, { useContext } from 'react';
 import IconButton from '@mui/material/IconButton';
-import { ToastContainer } from 'react-toastify';
 import Grid from '@mui/material/Grid';
 
 import DDDIcon from '@mui/icons-material/MoreVert';
 import PlusIcon from '@mui/icons-material/AddCircleOutlined';
 
 import { ClassContext } from '../../store/class';
-import { StyledContainer, ClassesHeader, ClassesListContainer, ClassesList } from './style';
+import { ClassesHeader, ClassesListContainer, ClassesList } from './style';
+import Container from '../UI/Container';
 import { StyledCard } from './class/style';
 import Class from './class';
 import AddClassModal from '../addClassModal';
-import useToggleModal from '../addClassModal/hook';
+import useToggle from '../../hooks/useToggle';
 
 const Classes: React.FC = () => {
 	const { classes } = useContext(ClassContext);
-	const { isOpen, handleOpen, handleClose } = useToggleModal();
+	const { isOpen, handleOpen, handleClose } = useToggle();
 
 	return (
-		<StyledContainer fixed>
+		<Container fixed>
 			<ClassesHeader>
 				<div>Các lớp đang tham gia</div>
 				<IconButton aria-label='classes-options'>
@@ -43,15 +43,7 @@ const Classes: React.FC = () => {
 				</ClassesList>
 			</ClassesListContainer>
 			<AddClassModal open={isOpen} handleClose={handleClose} />
-			<ToastContainer
-				position='bottom-right'
-				autoClose={4000}
-				newestOnTop={false}
-				draggable={false}
-				closeOnClick
-				pauseOnHover
-			/>
-		</StyledContainer>
+		</Container>
 	);
 };
 

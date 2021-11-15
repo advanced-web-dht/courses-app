@@ -9,7 +9,7 @@ import XIcon from '@mui/icons-material/Close';
 
 import { ClassContext } from '../../store/class';
 import { StyledModal, Form, FormHeader, FormAction } from './style';
-import { AddNewClass } from '../../api';
+import { AddNewClass } from '../../api/client';
 
 interface ModalProps {
 	open: boolean;
