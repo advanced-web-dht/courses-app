@@ -47,6 +47,10 @@ const theme = createTheme({
 				},
 				'*': {
 					boxSizing: 'border-box'
+				},
+				'h1, h2 , h3, h4': {
+					margin: 0,
+					padding: 0
 				}
 			}
 		}
