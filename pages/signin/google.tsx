@@ -10,7 +10,6 @@ const GoogleSignIn: NextPage = () => {
 		if (!loading && session) window.close();
 	}, [session, loading]);
 
-	return null;
 	return <React.Fragment />;
 };
 

@@ -4,9 +4,9 @@ import { useRouter } from 'next/router';
 import { signIn, useSession } from 'next-auth/client';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import NewWindow from 'react-new-window';
 
 import { StyledContainer, FormHeader, FormContent, FormFooter } from './style';
+import GoogleSignIn from './google';
 import useInput from '../../hooks/useInput';
 
 const SignInForm = () => {
@@ -90,20 +90,7 @@ const SignInForm = () => {
 					</Link>
 				</FormFooter>
 			</div>
-			{popup ? (
-				<NewWindow
-					url='/signin/google'
-					onUnload={async () => {
-						setPopup(false);
-					}}
-					features={{
-						height: 700,
-						width: 500,
-						top: (window.outerHeight - 700) / 2,
-						left: (window.outerWidth - 600) / 2
-					}}
-				/>
-			) : null}
+			{popup && <GoogleSignIn onSuccess={() => setPopup(false)} />}
 		</StyledContainer>
 	);
 };
