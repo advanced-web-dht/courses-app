@@ -6,6 +6,9 @@ const NavTab = styled(Box)`
 	a {
 		text-transform: capitalize;
 	}
+	span {
+		height: 5px;
+	}
 `;
 
 export default NavTab;
