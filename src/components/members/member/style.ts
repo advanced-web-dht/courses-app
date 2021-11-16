@@ -1,13 +1,16 @@
 import styled from 'styled-components';
 
 export const StyledCard = styled.div`
-	background-color: #fff;
+	visibility: hidden;
 	border-radius: 6px;
 	box-shadow: rgb(0 0 0 / 20%) 0 2px 1px -1px, rgb(0 0 0 / 14%) 0 1px 1px 0, rgb(0 0 0 / 12%) 0 1px 3px 0;
 	min-height: 220px;
-	padding: 24px;
+	padding: 10px;
 	display: flex;
 	flex-direction: column;
+	:hover {
+		visibility: visible;
+	}
 
 	&.fake-card {
 		font-size: 18px;
@@ -65,4 +68,25 @@ export const CardFooter = styled.div`
 	margin-top: auto;
 	display: flex;
 	justify-content: flex-end;
+`;
+
+export const CardContent = styled.div`
+	visibility: visible;
+	background-color: #edf2f1;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	border-radius: 8px;
+	padding: 30px;
+`;
+
+export const CardLabel = styled.div`
+	visibility: visible;
+	width: 100%;
+	padding-top: 8px;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `;

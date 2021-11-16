@@ -1,11 +1,6 @@
+import React from 'react';
 import styled from 'styled-components';
-import Container from '@mui/material/Container';
-
-export const StyledContainer = styled(Container)`
-	margin-top: 80px;
-	display: flex;
-	flex-direction: column;
-`;
+import Grid from '@mui/material/Grid';
 
 export const ClassesHeader = styled.div`
 	font-size: 18px;
@@ -14,6 +9,7 @@ export const ClassesHeader = styled.div`
 	justify-content: space-between;
 	align-items: center;
 	margin-left: 1rem;
+	margin-bottom: 1rem;
 `;
 
 export const ClassesListContainer = styled.div`
@@ -21,12 +17,13 @@ export const ClassesListContainer = styled.div`
 	justify-content: center;
 `;
 
-export const ClassesList = styled.ol`
+export const ClassesList = styled(({ children }) => (
+	<Grid component='ol' container spacing={2}>
+		{children}
+	</Grid>
+))`
 	display: flex;
 	flex-wrap: wrap;
 	align-self: center;
 	justify-content: flex-start;
-	@media only screen and (max-width: 1200px) {
-		justify-content: center;
-	}
 `;
