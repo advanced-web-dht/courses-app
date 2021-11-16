@@ -14,7 +14,7 @@ interface ClassProps {
 
 const Class: React.FC<ClassProps> = ({ classData }) => {
 	return (
-		<Link href={`/class/${classData.id}`} passHref>
+		<Link href={`/class/${classData.code}`} passHref>
 			<StyledCard>
 				<CardHeader>
 					<div>

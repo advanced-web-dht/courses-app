@@ -38,9 +38,6 @@ export const FormContent = styled.form`
 				fill: white;
 			}
 		}
-		#google-signin {
-			background-color: rgb(221, 43, 44);
-		}
 		@media (max-width: 600px) {
 			flex-direction: column;
 		}
@@ -59,5 +56,3 @@ export const FormFooter = styled.div`
 		justify-content: center;
 	}
 `;
-
-export const RouteAction = styled.div``;

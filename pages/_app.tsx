@@ -13,7 +13,7 @@ export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 	return (
 		<Provider session={pageProps.session}>
 			<Head>
-				<title>My page</title>
+				<title>FIT Class</title>
 				<meta name='viewport' content='initial-scale=1, width=device-width' />
 			</Head>
 			<ThemeProvider theme={theme}>
@@ -22,7 +22,7 @@ export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 			</ThemeProvider>
 			<ToastContainer
 				position='bottom-right'
-				autoClose={4000}
+				autoClose={3000}
 				newestOnTop={false}
 				draggable={false}
 				closeOnClick

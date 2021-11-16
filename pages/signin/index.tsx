@@ -1,13 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
+import { useSession } from 'next-auth/client';
+import { useRouter } from 'next/router';
+import LinearProgress from '@mui/material/LinearProgress';
 import LockOpenRounded from '@mui/icons-material/LockOpenRounded';
 
 import Header from '../../src/components/header';
 import SignInForm from '../../src/components/auth/signInForm';
 
 const SignIn: NextPage = () => {
-	return (
+	const [session, loading] = useSession();
+	const router = useRouter();
+
+	useEffect(() => {
+		if (!loading && session) {
+			router.push('/class');
+		}
+	}, [session, loading]);
+
+	return loading ? (
+		<LinearProgress color='secondary' />
+	) : (
 		<React.Fragment>
 			<Head>
 				<title>Đăng Nhập</title>

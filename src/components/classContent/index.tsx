@@ -3,11 +3,16 @@ import React, { useContext } from 'react';
 import { NavContext } from '../../store/detailNav';
 import Members from '../members';
 import Banner from '../banner';
+import { IClass } from '../../type';
 
-const ClassContent = () => {
+interface ClassContentProps {
+	classData: IClass;
+}
+
+const ClassContent: React.FC<ClassContentProps> = ({ classData }) => {
 	const { currentTab } = useContext(NavContext);
 
-	const Content = currentTab === 0 ? <Banner /> : <Members />;
+	const Content = currentTab === 0 ? <Banner title={classData.name} code={classData.code} /> : <Members />;
 
 	return Content;
 };

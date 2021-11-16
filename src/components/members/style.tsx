@@ -1,13 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-
-export const StyledContainer = styled(Container)`
-	margin-top: 80px;
-	display: flex;
-	flex-direction: column;
-`;
 
 export const ClassesHeader = styled.div`
 	font-size: 18px;

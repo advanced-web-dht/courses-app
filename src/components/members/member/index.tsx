@@ -16,7 +16,7 @@ const Member: React.FC<ClassProps> = ({ classData }) => {
 				<Image src='/avatar.svg' width={98} height={98} />
 			</CardContent>
 			<CardLabel>
-				<Typography>Tan Pham (you)</Typography>
+				<Typography>{classData.name}</Typography>
 			</CardLabel>
 		</StyledCard>
 	);

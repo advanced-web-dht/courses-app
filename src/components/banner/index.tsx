@@ -3,14 +3,19 @@ import { Typography } from '@mui/material';
 import { FullBanner, CustomBanner, TitleBanner } from './style';
 import StyledContainer from '../UI/Container';
 
-const Banner = () => {
+interface BannerProps {
+	title: string;
+	code: string;
+}
+
+const Banner: React.FC<BannerProps> = ({ title, code }) => {
 	return (
 		<StyledContainer>
 			<FullBanner>
 				<CustomBanner>
 					<TitleBanner>
-						<h1>[CQ] PTUDWNC - 18_3</h1>
-						<Typography>PTUDWNC</Typography>
+						<h1>{title}</h1>
+						<Typography>{code}</Typography>
 					</TitleBanner>
 				</CustomBanner>
 			</FullBanner>
