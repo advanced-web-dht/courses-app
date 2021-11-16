@@ -1,24 +1,27 @@
 import React, { useEffect } from 'react';
 import { NextPage } from 'next';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
-import Head from 'next/head';
+import LinearProgress from '@mui/material/LinearProgress';
 
 const Index: NextPage = () => {
-	const [session, isLoading] = useSession();
+	const [session, loading] = useSession();
 	const router = useRouter();
 
 	useEffect(() => {
-		if (!isLoading) {
+		if (!loading) {
 			if (session) {
 				router.push('/class');
 			} else {
 				router.push('/signin');
 			}
 		}
-	}, [isLoading]);
+	}, [loading, session]);
 
-	return (
+	return loading ? (
+		<LinearProgress color='secondary' />
+	) : (
 		<React.Fragment>
 			<Head>
 				<title>Fit Class</title>

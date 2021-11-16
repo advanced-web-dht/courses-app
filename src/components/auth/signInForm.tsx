@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { signIn, useSession } from 'next-auth/client';
+import { signIn } from 'next-auth/client';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
@@ -13,14 +12,6 @@ const SignInForm = () => {
 	const [username, setUsername] = useState('');
 	const [popup, setPopup] = useState(false);
 	const [password, error, setPassword, setError] = useInput();
-	const [session] = useSession();
-	const router = useRouter();
-
-	useEffect(() => {
-		if (session) {
-			router.push('/class');
-		}
-	}, [session]);
 
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
@@ -71,7 +62,7 @@ const SignInForm = () => {
 						<div>hoặc</div>
 						<Button
 							variant='contained'
-							id='google-signin'
+							color='error'
 							type='button'
 							onClick={handleGoogleSignIn}
 							aria-label='Google Sign in'

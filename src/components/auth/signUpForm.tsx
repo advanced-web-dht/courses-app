@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import TextField from '@mui/material/TextField';
@@ -9,6 +9,7 @@ import { StyledContainer, FormHeader, FormContent, FormFooter } from './style';
 import useInput from '../../hooks/useInput';
 import { checkEmailExisted, checkUsernameExisted, submitSignUp } from '../../api/client/auth';
 import GoogleSignIn from './google';
+import { EMAIL_CHECK, PASSWORD_CHECK } from '../../constants';
 
 const SignUpForm = () => {
 	const router = useRouter();
@@ -17,60 +18,87 @@ const SignUpForm = () => {
 	const [username, usernameError, onUsernameChange, onUsernameError] = useInput();
 	const [password, passwordError, onPasswordChange, onPassWordError] = useInput();
 	const [rePassword, rePasswordError, onRePasswordChange, onRePassWordError] = useInput();
-	const [name, nameError, onNameChange, onNameError] = useInput();
+	const [name, nameError, onNameChange] = useInput();
 
 	const [popup, setPopup] = useState(false);
 
+	// Check email existed
+	useEffect(() => {
+		const timeout = setTimeout(() => {
+			(async () => {
+				if (email) {
+					if (EMAIL_CHECK.test(email)) {
+						const isExisted = await checkEmailExisted(email);
+
+						if (isExisted) {
+							onEmailError('Email đã tồn tại!');
+						}
+					} else {
+						onEmailError('Email không hợp lệ!');
+					}
+				}
+			})();
+		}, 1500);
+		return () => {
+			clearTimeout(timeout);
+		};
+	}, [email]);
+
+	// Check username existed
+	useEffect(() => {
+		const timeout = setTimeout(() => {
+			(async () => {
+				if (username) {
+					const isExisted = await checkUsernameExisted(username);
+					if (isExisted) {
+						onUsernameError('Tên đăng nhập đã tồn tại!');
+					}
+				}
+			})();
+		}, 1500);
+		return () => {
+			clearTimeout(timeout);
+		};
+	}, [username]);
+
+	// Check password valid
+	useEffect(() => {
+		const timeout = setTimeout(() => {
+			if (password) {
+				if (!PASSWORD_CHECK.test(password)) {
+					onPassWordError(
+						'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt!'
+					);
+				}
+			}
+		}, 500);
+		return () => {
+			clearTimeout(timeout);
+		};
+	}, [password]);
+
 	// Check Password is matched
 	useEffect(() => {
-		const id = setTimeout(() => {
+		const timeout = setTimeout(() => {
 			if (password !== rePassword) {
 				onRePassWordError('Mật khẩu không khớp');
 			}
 		}, 500);
 		return () => {
-			clearTimeout(id);
+			clearTimeout(timeout);
 		};
 	}, [rePassword]);
 
-	const checkEmailAvailable = useCallback(async () => {
-		if (email) {
-			const re =
-				/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-			if (re.test(email)) {
-				const isExisted = await checkEmailExisted(email);
-				if (isExisted) {
-					onEmailError('Email đã tồn tại!');
-				}
-			} else {
-				onEmailError('Email không hợp lệ!');
-			}
-		}
-	}, [email]);
+	const handleSubmit = async (event: React.FormEvent) => {
+		event.preventDefault();
 
-	const checkUsernameAvailable = useCallback(async () => {
-		if (username) {
-			const isExisted = await checkUsernameExisted(username);
-			if (isExisted) {
-				onUsernameError('Tên đăng nhập đã tồn tại!');
-			}
-		}
-	}, [username]);
-
-	const handleSubmit = async (e: React.MouseEvent) => {
-		e.preventDefault();
-		// need improve
-		if (password.length === 0) {
-			onPassWordError('Mật khẩu không hợp lệ');
+		if (!email || !username || !password || !rePassword || !name) {
+			toast.warn('Vui lòng điền đầy đủ thông tin!!');
 			return;
 		}
 
-		if (name.length === 0) {
-			onNameError('Họ và tên không được để trống');
-			return;
-		}
-
-		if (emailError.status || usernameError.status || rePasswordError.status) {
+		if (emailError.status || usernameError.status || rePasswordError.status || passwordError.status) {
+			toast.warn('Vui lòng kiểm tra lại thông tin!!');
 			return;
 		}
 		const res = await submitSignUp({ email, username, password, name });
@@ -103,7 +131,6 @@ const SignUpForm = () => {
 						error={emailError.status}
 						helperText={emailError.message}
 						onChange={onEmailChange}
-						onBlur={checkEmailAvailable}
 					/>
 					<TextField
 						id='username'
@@ -117,7 +144,6 @@ const SignUpForm = () => {
 						error={usernameError.status}
 						helperText={usernameError.message}
 						onChange={onUsernameChange}
-						onBlur={checkUsernameAvailable}
 					/>
 					<TextField
 						id='password'
@@ -167,7 +193,7 @@ const SignUpForm = () => {
 						<div>hoặc</div>
 						<Button
 							variant='contained'
-							id='google-signin'
+							color='error'
 							type='button'
 							onClick={handleGoogleSignIn}
 							aria-label='Google Sign in'

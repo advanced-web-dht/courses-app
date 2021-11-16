@@ -6,7 +6,8 @@ import Grid from '@mui/material/Grid';
 import DDDIcon from '@mui/icons-material/MoreVert';
 import PlusIcon from '@mui/icons-material/AddCircleOutlined';
 
-import { StyledContainer, ClassesHeader, ClassesListContainer, ClassesList } from './style';
+import { ClassesHeader, ClassesListContainer, ClassesList } from './style';
+import StyledContainer from '../UI/Container';
 import { StyledCard } from './member/style';
 import Member from './member';
 import AddClassModal from '../addClassModal';
