@@ -3,7 +3,7 @@ import { Typography } from '@mui/material';
 import { FullBanner, CustomBanner, TitleBanner } from './style';
 import StyledContainer from '../UI/Container';
 
-const Banner = () => {
+const Banner: React.FC = () => {
 	return (
 		<StyledContainer>
 			<FullBanner>
