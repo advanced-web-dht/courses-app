@@ -15,7 +15,12 @@ const SignIn: NextPage = () => {
 
 	useEffect(() => {
 		if (!loading && session) {
-			router.push('/class');
+			const redirectUrl = router.query.redirect as string;
+			if (redirectUrl) {
+				router.push(redirectUrl);
+			} else {
+				router.push('/class');
+			}
 		}
 	}, [session, loading]);
 

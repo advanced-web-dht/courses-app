@@ -12,9 +12,16 @@ import SignUpForm from '../src/components/auth/signUpForm';
 const SignUp: NextPage = () => {
 	const [session, loading] = useSession();
 	const router = useRouter();
+
+	/* Handle for google sign in and already sign in */
 	useEffect(() => {
 		if (!loading && session) {
-			router.push('/class');
+			const redirectUrl = router.query.redirect as string;
+			if (redirectUrl) {
+				router.push(redirectUrl);
+			} else {
+				router.push('/class');
+			}
 		}
 	}, [session, loading]);
 

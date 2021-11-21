@@ -8,33 +8,24 @@ export const StyledCard = styled.div`
 	padding: 24px;
 	display: flex;
 	flex-direction: column;
-
-	&.fake-card {
-		font-size: 18px;
-		font-weight: 600;
-		justify-content: center;
-		align-items: center;
-		color: #3e4b4b;
-		:hover {
-			color: #38b4fc;
-		}
-		& > div {
-			display: flex;
-			align-items: center;
-			& div {
-				margin-left: 10px;
-			}
-		}
-	}
-
-	//@media only screen and (max-width: 900px) {
-	//	width: 100%;
-	//	min-width: initial;
-	//}
-
 	:hover {
 		box-shadow: 0 1px 2px 1px rgb(62 75 75 / 40%);
 		cursor: pointer;
+	}
+`;
+
+export const FakeCard = styled(StyledCard)`
+	font-size: 18px;
+	font-weight: 600;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	color: #3e4b4b;
+	:hover {
+		color: #38b4fc;
+	}
+	& div {
+		margin-left: 10px;
 	}
 `;
 
@@ -45,8 +36,11 @@ export const CardHeader = styled.div`
 		min-height: 60px;
 		min-width: 60px;
 	}
-	& > .class-title {
-		margin-left: 10px;
+`;
+
+export const ClassTitle = styled.div`
+	margin-left: 10px;
+	.MuiTypography-h5 {
 		color: #3e4b4b;
 		font-weight: bold;
 		text-rendering: optimizeLegibility;
@@ -55,7 +49,7 @@ export const CardHeader = styled.div`
 		flex-direction: column;
 		justify-content: center;
 	}
-	& .class-name {
+	.MuiTypography-subtitle2 {
 		color: #3e4b4b;
 		font-weight: bold;
 	}
