@@ -1,40 +1,32 @@
 import styled from 'styled-components';
 import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
 
 export const Container = styled(AppBar)`
 	position: sticky;
-	padding: 0.5rem;
+	background: initial;
+	color: #3e4b4b;
+	min-height: 65px;
+`;
+
+export const ToolBar = styled(Toolbar)`
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	background: inherit;
-	color: #3e4b4b;
-	@media only screen and (max-width: 900px) {
-		padding: 0;
+	align-items: center;
+`;
+
+export const HeaderLink = styled.a`
+	display: flex;
+	align-items: center;
+	.MuiTypography-h5 {
+		font-weight: bold;
+		margin-left: 5px;
 	}
-	min-height: 65px;
 `;
 
 export const Section = styled(Box)`
 	display: flex;
 	align-items: center;
-	margin: 0 0.5rem;
-	> * {
-		margin: 0 0.5rem;
-	}
-	a {
-		display: flex;
-		align-items: center;
-		h5 {
-			margin-left: 5px;
-			font-weight: bold;
-			font-size: 1.4rem;
-		}
-	}
-
-	&.middle-action {
-		align-self: flex-end;
-		margin: 0;
-	}
 `;

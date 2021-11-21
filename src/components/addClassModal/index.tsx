@@ -10,43 +10,31 @@ import XIcon from '@mui/icons-material/Close';
 import { ClassContext } from '../../store/class';
 import { StyledModal, Form, FormHeader, FormAction } from './style';
 import { AddNewClass } from '../../api/client';
+import useInput from '../../hooks/useInput';
 
 interface ModalProps {
 	open: boolean;
 	handleClose: () => void;
 }
 
-const errorInit = {
-	isError: false,
-	errorMsg: ''
-};
-
 const AddClassModal: React.FC<ModalProps> = ({ open, handleClose }) => {
 	const inputRef = useRef<HTMLInputElement>(null);
-	const [name, setName] = useState('');
-	const [error, setError] = useState(errorInit);
+
+	// const [name, setName] = useState('');
+	// const [error, setError] = useState(errorInit);
+	const [name, error, setName, setError, resetVal] = useInput();
 	const [disabledSubmit, setDisabledSubmit] = useState(false);
 	const { AddClass } = useContext(ClassContext);
 
 	const HandleCloseModal = () => {
-		setName('');
+		resetVal();
 		handleClose();
-	};
-
-	const HandleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-		setName(target.value);
-		if (error.isError) {
-			setError(errorInit);
-		}
 	};
 
 	const HandleSubmit = async () => {
 		setDisabledSubmit(true);
 		if (name.length < 6) {
-			setError({
-				isError: true,
-				errorMsg: 'Tên lớp ít nhất 6 ký tự!'
-			});
+			setError('Tên lớp ít nhất 6 ký tự!');
 			inputRef.current?.focus();
 			setDisabledSubmit(false);
 			return;
@@ -70,45 +58,37 @@ const AddClassModal: React.FC<ModalProps> = ({ open, handleClose }) => {
 	};
 
 	return (
-		<React.Fragment>
-			<StyledModal open={open} onClose={HandleCloseModal}>
-				<Zoom in={open}>
-					<Form>
-						<FormHeader>
-							<div>Tạo lớp học</div>
-							<IconButton onClick={HandleCloseModal}>
-								<XIcon />
-							</IconButton>
-						</FormHeader>
-						<FormAction component='form'>
-							<TextField
-								required
-								variant='outlined'
-								label='Tên lớp học'
-								placeholder='Tên lớp học'
-								color='primary'
-								className='classname-input'
-								value={name}
-								onChange={HandleChange}
-								error={error.isError}
-								helperText={error.errorMsg}
-								inputRef={inputRef}
-								onKeyDown={HandleKeyPress}
-								autoFocus
-							/>
-							<Button
-								variant='contained'
-								color='primary'
-								onClick={HandleSubmit}
-								disabled={disabledSubmit}
-							>
-								Tạo
-							</Button>
-						</FormAction>
-					</Form>
-				</Zoom>
-			</StyledModal>
-		</React.Fragment>
+		<StyledModal open={open} onClose={HandleCloseModal}>
+			<Zoom in={open}>
+				<Form>
+					<FormHeader>
+						<div>Tạo lớp học</div>
+						<IconButton onClick={HandleCloseModal}>
+							<XIcon />
+						</IconButton>
+					</FormHeader>
+					<FormAction component='form'>
+						<TextField
+							required
+							variant='outlined'
+							label='Tên lớp học'
+							placeholder='Tên lớp học'
+							color='primary'
+							value={name}
+							onChange={setName}
+							error={error.status}
+							helperText={error.message}
+							inputRef={inputRef}
+							onKeyDown={HandleKeyPress}
+							autoFocus
+						/>
+						<Button variant='contained' color='primary' onClick={HandleSubmit} disabled={disabledSubmit}>
+							Tạo
+						</Button>
+					</FormAction>
+				</Form>
+			</Zoom>
+		</StyledModal>
 	);
 };
 

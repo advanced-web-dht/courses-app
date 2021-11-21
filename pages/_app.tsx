@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { AppProps } from 'next/app';
 import { ThemeProvider } from '@mui/material/styles';
@@ -10,19 +10,25 @@ import theme from '../src/theme';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
+	const [loaded, setLoaded] = useState(false);
+
+	//
+	useEffect(() => {
+		setLoaded(true);
+	}, []);
+
 	return (
 		<Provider session={pageProps.session}>
 			<Head>
-				<title>FIT Class</title>
 				<meta name='viewport' content='initial-scale=1, width=device-width' />
 			</Head>
 			<ThemeProvider theme={theme}>
 				<CssBaseline />
-				<Component {...pageProps} />
+				{loaded && <Component {...pageProps} />}
 			</ThemeProvider>
 			<ToastContainer
 				position='bottom-right'
-				autoClose={3000}
+				autoClose={2000}
 				newestOnTop={false}
 				draggable={false}
 				closeOnClick
