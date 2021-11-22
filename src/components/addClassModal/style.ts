@@ -19,17 +19,13 @@ export const FormAction = styled(Box)`
 	justify-content: center;
 	padding: 0.8rem 2rem 2rem 2rem;
 
-	& .classname-input {
-		height: 80px;
-	}
-
-	& input {
+	.MuiInputBase-input {
 		font-size: 17px;
 		font-weight: 500;
 		color: #3e4b4b;
 	}
 
-	& button {
+	.MuiButton-contained {
 		margin-top: 10px;
 		width: 50%;
 		align-self: center;
@@ -41,7 +37,7 @@ export const FormHeader = styled.header`
 	align-items: center;
 	padding: 10px 24px;
 	border-bottom: 1px solid #edf2f1;
-	& div {
+	div {
 		flex: 1;
 		font-weight: bold;
 		text-rendering: optimizeLegibility;

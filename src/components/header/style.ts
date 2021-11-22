@@ -1,40 +1,57 @@
 import styled from 'styled-components';
 import AppBar from '@mui/material/AppBar';
+import Toolbar, { ToolbarProps } from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
+
+interface ToolBarProps extends ToolbarProps {
+	position?: string;
+}
+
+interface SectionProps {
+	middle?: boolean;
+}
 
 export const Container = styled(AppBar)`
 	position: sticky;
-	padding: 0.5rem;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	background: inherit;
+	background: initial;
 	color: #3e4b4b;
-	@media only screen and (max-width: 900px) {
-		padding: 0;
-	}
 	min-height: 65px;
 `;
 
-export const Section = styled(Box)`
+export const BottomAppBar = styled(Container)`
+	display: none;
+	position: fixed;
+	top: auto;
+	bottom: 0;
+	min-height: 50px;
+	height: 50px;
+	@media screen and (max-width: 650px) {
+		display: block;
+	}
+	border: none;
+	box-shadow: none;
+`;
+
+export const ToolBar = styled(Toolbar)<ToolBarProps>`
+	display: flex;
+	flex-direction: row;
+	justify-content: ${(props) => (props.position === 'bottom' ? 'center' : 'space-between')};
+	align-items: ${(props) => (props.position === 'bottom' ? 'flex-start' : 'center')};
+`;
+
+export const HeaderLink = styled.a`
 	display: flex;
 	align-items: center;
-	margin: 0 0.5rem;
-	> * {
-		margin: 0 0.5rem;
+	.MuiTypography-h5 {
+		font-weight: bold;
+		margin-left: 5px;
 	}
-	a {
-		display: flex;
-		align-items: center;
-		h5 {
-			margin-left: 5px;
-			font-weight: bold;
-			font-size: 1.4rem;
-		}
-	}
+`;
 
-	&.middle-action {
-		align-self: flex-end;
-		margin: 0;
+export const Section = styled(Box)<SectionProps>`
+	display: flex;
+	align-items: center;
+	@media screen and (max-width: 650px) {
+		display: ${(props) => props.middle && 'none'};
 	}
 `;
