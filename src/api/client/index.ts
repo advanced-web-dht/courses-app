@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { getSession } from 'next-auth/client';
 
 import { IClass, ICreateClassDTO } from '../../type';

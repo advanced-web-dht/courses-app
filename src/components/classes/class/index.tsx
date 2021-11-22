@@ -27,11 +27,7 @@ const Class: React.FC<ClassProps> = ({ classData }) => {
 						<Typography variant='subtitle2'>{classData.code}</Typography>
 					</ClassTitle>
 				</CardHeader>
-				<CardFooter>
-					<IconButton aria-label='class-options'>
-						<DDDIcon />
-					</IconButton>
-				</CardFooter>
+				<CardFooter />
 			</StyledCard>
 		</Link>
 	);

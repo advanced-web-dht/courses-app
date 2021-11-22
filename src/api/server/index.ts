@@ -23,3 +23,12 @@ export const GetClass = async (code: string, accessToken: string): Promise<IClas
 		// do nothing
 	}
 };
+
+export const GetClassByCodeToEnroll = async (classCode: string): Promise<IClass> => {
+	try {
+		const response = await provider.get(`/classes/${classCode}/enroll`);
+		return response.data as IClass;
+	} finally {
+		// do nothing
+	}
+};

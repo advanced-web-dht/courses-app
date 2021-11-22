@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import Avatar from '@mui/icons-material/AccountCircleRounded';
 
 import useToggle from '../../hooks/useToggle';
-import { Container, Section, ToolBar, HeaderLink } from './style';
+import { Container, Section, ToolBar, HeaderLink, BottomAppBar } from './style';
 import UserOptions from '../userOptions';
 
 interface HeaderProps {
@@ -32,48 +32,53 @@ const Header: React.FC<HeaderProps> = (props) => {
 	const { isOpen, handleClose, handleOpen } = useToggle();
 
 	return (
-		<Container>
-			<ToolBar>
-				<Section>
-					<Link href='/class' passHref>
-						<HeaderLink>
-							{icon}
-							<Typography variant='h5' component='h1'>
-								{title}
-							</Typography>
-						</HeaderLink>
-					</Link>
-				</Section>
-				<Section>{middleAction}</Section>
-				<Section>
-					{isAuth ? (
-						<React.Fragment>
-							{rightAction}
-							<IconButton
-								size='large'
-								aria-label='user-actions'
-								onClick={() => handleOpen()}
-								ref={userRef}
-							>
-								<Avatar />
-							</IconButton>
-						</React.Fragment>
-					) : (
-						<React.Fragment>
-							<Link href='/signin' passHref>
-								<Button variant='text'>Đăng nhập</Button>
-							</Link>
-							<Link href='/signup' passHref>
-								<Button variant='contained' color='error'>
-									Đăng ký
-								</Button>
-							</Link>
-						</React.Fragment>
-					)}
-				</Section>
-				{isOpen && <UserOptions isOpen={isOpen} handleClose={handleClose} anchorEl={userRef.current} />}
-			</ToolBar>
-		</Container>
+		<React.Fragment>
+			<Container>
+				<ToolBar>
+					<Section>
+						<Link href='/class' passHref>
+							<HeaderLink>
+								{icon}
+								<Typography variant='h5' component='h1'>
+									{title}
+								</Typography>
+							</HeaderLink>
+						</Link>
+					</Section>
+					<Section middle>{middleAction}</Section>
+					<Section>
+						{isAuth ? (
+							<React.Fragment>
+								{rightAction}
+								<IconButton
+									size='large'
+									aria-label='user-actions'
+									onClick={() => handleOpen()}
+									ref={userRef}
+								>
+									<Avatar />
+								</IconButton>
+							</React.Fragment>
+						) : (
+							<React.Fragment>
+								<Link href='/signin' passHref>
+									<Button variant='text'>Đăng nhập</Button>
+								</Link>
+								<Link href='/signup' passHref>
+									<Button variant='contained' color='error'>
+										Đăng ký
+									</Button>
+								</Link>
+							</React.Fragment>
+						)}
+					</Section>
+					{isOpen && <UserOptions isOpen={isOpen} handleClose={handleClose} anchorEl={userRef.current} />}
+				</ToolBar>
+			</Container>
+			<BottomAppBar>
+				<ToolBar position='bottom'>{middleAction}</ToolBar>
+			</BottomAppBar>
+		</React.Fragment>
 	);
 };
 

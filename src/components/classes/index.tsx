@@ -21,9 +21,6 @@ const Classes: React.FC = () => {
 		<Container>
 			<ClassesHeader>
 				<div>Các lớp đang tham gia</div>
-				<IconButton aria-label='classes-options'>
-					<DDDIcon />
-				</IconButton>
 			</ClassesHeader>
 			<ClassesListContainer>
 				<Grid component='ol' container spacing={2}>
