@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Popover from '@mui/material/Popover';
 import GroupAddRounded from '@mui/icons-material/GroupAddRounded';
@@ -18,6 +18,7 @@ interface Props {
 
 const InviteStudentPopup: React.FC<Props> = ({ classCode }) => {
 	const { isOpen, handleClose, handleOpen } = useToggle();
+	const [canSubmit, setCanSubmit] = useState(true);
 	const anchorRef = useRef<HTMLButtonElement>(null);
 
 	const [email, error, handleChangeEmail, handleError, resetValue] = useInput();
@@ -36,7 +37,9 @@ const InviteStudentPopup: React.FC<Props> = ({ classCode }) => {
 	}, [email]);
 
 	const handleSubmit = async () => {
-		if (email) {
+		if (!canSubmit) return;
+		setCanSubmit(false);
+		if (email && !error.status) {
 			const result = await InviteStudent(classCode, email);
 			if (result) {
 				toast.success('Đã mời thành công');
@@ -45,6 +48,14 @@ const InviteStudentPopup: React.FC<Props> = ({ classCode }) => {
 			} else {
 				toast.error('Đã có lỗi xảy ra!');
 			}
+		}
+		setCanSubmit(true);
+	};
+
+	const HandleKeyPress = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+		if (event.key === 'Enter') {
+			event.preventDefault();
+			await handleSubmit();
 		}
 	};
 
@@ -69,6 +80,7 @@ const InviteStudentPopup: React.FC<Props> = ({ classCode }) => {
 						error={error.status}
 						helperText={error.message}
 						label='Email'
+						onKeyDown={HandleKeyPress}
 					/>
 					<RoundedButton onClick={handleSubmit} variant='contained'>
 						Mời

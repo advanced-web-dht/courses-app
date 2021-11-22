@@ -28,7 +28,7 @@ export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 			</ThemeProvider>
 			<ToastContainer
 				position='bottom-right'
-				autoClose={2000}
+				autoClose={1500}
 				newestOnTop={false}
 				draggable={false}
 				closeOnClick

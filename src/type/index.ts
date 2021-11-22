@@ -1,8 +1,16 @@
+export interface IClassMember {
+	id?: number;
+	name: string;
+	details?: {
+		role: string;
+	};
+}
+
 export interface IClass {
 	id: number;
 	code: string;
-	cover: string;
 	name: string;
+	members: IClassMember[];
 }
 
 export interface ICreateClassDTO {

@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { toast } from 'react-toastify';
@@ -8,37 +7,35 @@ import { toast } from 'react-toastify';
 import { StyledContainer, FormWrapper, FormHeader, FormContent, FormFooter, GoogleButton, FormActions } from './style';
 import RoundedButton from '../UI/RoundedButton';
 import useInput from '../../hooks/useInput';
+import useRedirect from '../../hooks/useRedirect';
 import { checkEmailExisted, checkUsernameExisted, submitSignUp } from '../../api/client/auth';
 import GoogleSignIn from './google';
 import { EMAIL_CHECK, PASSWORD_CHECK } from '../../constants';
 
 const SignUpForm = () => {
-	const router = useRouter();
-
 	const [email, emailError, onEmailChange, onEmailError] = useInput();
 	const [username, usernameError, onUsernameChange, onUsernameError] = useInput();
 	const [password, passwordError, onPasswordChange, onPassWordError] = useInput();
 	const [rePassword, rePasswordError, onRePasswordChange, onRePassWordError] = useInput();
 	const [name, nameError, onNameChange] = useInput();
+	const redirect = useRedirect('/signin');
 
 	const [popup, setPopup] = useState(false);
 
 	// Check email existed
 	useEffect(() => {
-		const timeout = setTimeout(() => {
-			(async () => {
-				if (email) {
-					if (EMAIL_CHECK.test(email)) {
-						const isExisted = await checkEmailExisted(email);
+		const timeout = setTimeout(async () => {
+			if (email) {
+				if (EMAIL_CHECK.test(email)) {
+					const isExisted = await checkEmailExisted(email);
 
-						if (isExisted) {
-							onEmailError('Email đã tồn tại!');
-						}
-					} else {
-						onEmailError('Email không hợp lệ!');
+					if (isExisted) {
+						onEmailError('Email đã tồn tại!');
 					}
+				} else {
+					onEmailError('Email không hợp lệ!');
 				}
-			})();
+			}
 		}, 1000);
 		return () => {
 			clearTimeout(timeout);
@@ -47,15 +44,13 @@ const SignUpForm = () => {
 
 	// Check username existed
 	useEffect(() => {
-		const timeout = setTimeout(() => {
-			(async () => {
-				if (username) {
-					const isExisted = await checkUsernameExisted(username);
-					if (isExisted) {
-						onUsernameError('Tên đăng nhập đã tồn tại!');
-					}
+		const timeout = setTimeout(async () => {
+			if (username) {
+				const isExisted = await checkUsernameExisted(username);
+				if (isExisted) {
+					onUsernameError('Tên đăng nhập đã tồn tại!');
 				}
-			})();
+			}
 		}, 1000);
 		return () => {
 			clearTimeout(timeout);
@@ -91,12 +86,9 @@ const SignUpForm = () => {
 	}, [rePassword]);
 
 	const handleSignUpSuccess = useCallback(() => {
-		const redirectUrl = router.query.redirect as string;
-		if (redirectUrl) {
-			router.push(`/signin?redirect=${redirectUrl}`);
-		} else {
-			router.push('/signin');
-		}
+		(async () => {
+			await redirect.doRedirect('/signin');
+		})();
 	}, []);
 
 	const handleSubmit = async (event: React.FormEvent) => {

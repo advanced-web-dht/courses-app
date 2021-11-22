@@ -23,7 +23,7 @@ const AddClassModal: React.FC<ModalProps> = ({ open, handleClose }) => {
 	// const [name, setName] = useState('');
 	// const [error, setError] = useState(errorInit);
 	const [name, error, setName, setError, resetVal] = useInput();
-	const [disabledSubmit, setDisabledSubmit] = useState(false);
+	const [canSubmit, setCanSubmit] = useState(false);
 	const { AddClass } = useContext(ClassContext);
 
 	const HandleCloseModal = () => {
@@ -32,11 +32,11 @@ const AddClassModal: React.FC<ModalProps> = ({ open, handleClose }) => {
 	};
 
 	const HandleSubmit = async () => {
-		setDisabledSubmit(true);
+		setCanSubmit(true);
 		if (name.length < 6) {
 			setError('Tên lớp ít nhất 6 ký tự!');
 			inputRef.current?.focus();
-			setDisabledSubmit(false);
+			setCanSubmit(false);
 			return;
 		}
 		try {
@@ -47,7 +47,7 @@ const AddClassModal: React.FC<ModalProps> = ({ open, handleClose }) => {
 		} catch (e) {
 			toast.error('Thêm lớp học không thành công!');
 		}
-		setTimeout(() => setDisabledSubmit(false), 3000);
+		setCanSubmit(true);
 	};
 
 	const HandleKeyPress = async (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -82,7 +82,7 @@ const AddClassModal: React.FC<ModalProps> = ({ open, handleClose }) => {
 							onKeyDown={HandleKeyPress}
 							autoFocus
 						/>
-						<Button variant='contained' color='primary' onClick={HandleSubmit} disabled={disabledSubmit}>
+						<Button variant='contained' color='primary' onClick={HandleSubmit} disabled={canSubmit}>
 							Tạo
 						</Button>
 					</FormAction>
