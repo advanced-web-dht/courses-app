@@ -1,9 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import Link from 'next/link';
-import DDDIcon from '@mui/icons-material/MoreVert';
 
 import { StyledCard, CardHeader, CardFooter, ClassTitle } from './style';
 import { IClass } from '../../../type';

@@ -1,8 +1,5 @@
 import React, { useContext } from 'react';
-import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
-
-import DDDIcon from '@mui/icons-material/MoreVert';
 import PlusIcon from '@mui/icons-material/AddCircleOutlined';
 
 import { ClassContext } from '../../store/class';
