@@ -10,19 +10,25 @@ import theme from '../src/theme';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
+	const [loaded, setLoaded] = useState(false);
+
+	//
+	useEffect(() => {
+		setLoaded(true);
+	}, []);
+
 	return (
 		<Provider session={pageProps.session}>
 			<Head>
-				<title>My page</title>
 				<meta name='viewport' content='initial-scale=1, width=device-width' />
 			</Head>
 			<ThemeProvider theme={theme}>
 				<CssBaseline />
-				<Component {...pageProps} />
+				{loaded && <Component {...pageProps} />}
 			</ThemeProvider>
 			<ToastContainer
 				position='bottom-right'
-				autoClose={4000}
+				autoClose={1500}
 				newestOnTop={false}
 				draggable={false}
 				closeOnClick

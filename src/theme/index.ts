@@ -39,7 +39,7 @@ const theme = createTheme({
 					color: 'inherit',
 					textDecoration: 'none'
 				},
-				ol: {
+				'ol, ul': {
 					paddingLeft: 0
 				},
 				li: {

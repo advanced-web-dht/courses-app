@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Link from 'next/link';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/icons-material/AccountCircleRounded';
-import { useSession } from 'next-auth/client';
 
 import useToggle from '../../hooks/useToggle';
-import { Container, Section, Separator } from './style';
+import { Container, Section, ToolBar, HeaderLink, BottomAppBar } from './style';
 import UserOptions from '../userOptions';
 
 interface HeaderProps {
@@ -15,6 +14,7 @@ interface HeaderProps {
 	icon: React.ReactNode;
 	middleAction?: React.ReactNode;
 	rightAction?: React.ReactNode;
+	isAuth?: boolean;
 }
 
 /**
@@ -25,47 +25,67 @@ interface HeaderProps {
  */
 
 const Header: React.FC<HeaderProps> = (props) => {
-	const { title, icon, middleAction, rightAction } = props;
-	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-	const [session] = useSession();
+	const { title, icon, middleAction, rightAction, isAuth } = props;
+
+	const userRef = useRef<HTMLButtonElement>(null);
 
 	const { isOpen, handleClose, handleOpen } = useToggle();
 
-	const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
-		setAnchorEl(event.currentTarget);
-		handleOpen();
-	};
 	return (
-		<Container>
-			<Section>
-				{icon}
-				<Typography variant='h5'>{title}</Typography>
-			</Section>
-			<Separator />
-			<Section>{middleAction}</Section>
-			<Separator />
-			<Section>
-				{session ? (
-					<React.Fragment>
-						{rightAction}
-						<IconButton size='large' aria-label='user-actions' onClick={handleOpenMenu}>
-							<Avatar />
-						</IconButton>
-						<UserOptions isOpen={isOpen} handleClose={handleClose} anchorEl={anchorEl} />
-					</React.Fragment>
-				) : (
-					<Link href='/signin' passHref>
-						<Button variant='text'>Đăng nhập</Button>
-					</Link>
-				)}
-			</Section>
-		</Container>
+		<React.Fragment>
+			<Container>
+				<ToolBar>
+					<Section>
+						<Link href='/class' passHref>
+							<HeaderLink>
+								{icon}
+								<Typography variant='h5' component='h1'>
+									{title}
+								</Typography>
+							</HeaderLink>
+						</Link>
+					</Section>
+					<Section middle>{middleAction}</Section>
+					<Section>
+						{isAuth ? (
+							<React.Fragment>
+								{rightAction}
+								<IconButton
+									size='large'
+									aria-label='user-actions'
+									onClick={() => handleOpen()}
+									ref={userRef}
+								>
+									<Avatar />
+								</IconButton>
+							</React.Fragment>
+						) : (
+							<React.Fragment>
+								<Link href='/signin' passHref>
+									<Button variant='text'>Đăng nhập</Button>
+								</Link>
+								<Link href='/signup' passHref>
+									<Button variant='contained' color='error'>
+										Đăng ký
+									</Button>
+								</Link>
+							</React.Fragment>
+						)}
+					</Section>
+					{isOpen && <UserOptions isOpen={isOpen} handleClose={handleClose} anchorEl={userRef.current} />}
+				</ToolBar>
+			</Container>
+			<BottomAppBar>
+				<ToolBar position='bottom'>{middleAction}</ToolBar>
+			</BottomAppBar>
+		</React.Fragment>
 	);
 };
 
 Header.defaultProps = {
 	middleAction: null,
-	rightAction: null
+	rightAction: null,
+	isAuth: false
 };
 
 export default Header;

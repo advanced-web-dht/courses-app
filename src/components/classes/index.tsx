@@ -1,14 +1,11 @@
 import React, { useContext } from 'react';
-import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
-
-import DDDIcon from '@mui/icons-material/MoreVert';
 import PlusIcon from '@mui/icons-material/AddCircleOutlined';
 
 import { ClassContext } from '../../store/class';
-import { ClassesHeader, ClassesListContainer, ClassesList } from './style';
+import { ClassesHeader, ClassesListContainer } from './style';
 import Container from '../UI/Container';
-import { StyledCard } from './class/style';
+import { FakeCard } from './class/style';
 import Class from './class';
 import AddClassModal from '../addClassModal';
 import useToggle from '../../hooks/useToggle';
@@ -18,29 +15,24 @@ const Classes: React.FC = () => {
 	const { isOpen, handleOpen, handleClose } = useToggle();
 
 	return (
-		<Container fixed>
+		<Container>
 			<ClassesHeader>
 				<div>Các lớp đang tham gia</div>
-				<IconButton aria-label='classes-options'>
-					<DDDIcon />
-				</IconButton>
 			</ClassesHeader>
 			<ClassesListContainer>
-				<ClassesList>
+				<Grid component='ol' container spacing={2}>
 					{classes.map((cls) => (
 						<Grid key={cls.id} item xs={12} md={6} lg={4} component='li'>
 							<Class classData={cls} />
 						</Grid>
 					))}
 					<Grid item xs={12} md={6} lg={4} component='li'>
-						<StyledCard className='fake-card' onClick={() => handleOpen()}>
-							<div>
-								<PlusIcon fontSize='large' />
-								<div>Thêm lớp mới</div>
-							</div>
-						</StyledCard>
+						<FakeCard onClick={() => handleOpen()}>
+							<PlusIcon fontSize='large' />
+							<div>Thêm lớp mới</div>
+						</FakeCard>
 					</Grid>
-				</ClassesList>
+				</Grid>
 			</ClassesListContainer>
 			<AddClassModal open={isOpen} handleClose={handleClose} />
 		</Container>

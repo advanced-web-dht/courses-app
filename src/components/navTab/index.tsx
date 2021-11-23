@@ -9,11 +9,11 @@ const NavTabs: React.FC = () => {
 	const { currentTab, changeTab } = useContext(NavContext);
 
 	return (
-		<NavBar sx={{ width: '100%' }}>
+		<NavBar>
 			<Tabs value={currentTab} aria-label='nav tabs example'>
 				<Tab label='Bảng tin' onClick={() => changeTab(0)} />
-				<Tab label='Học viên' onClick={() => changeTab(1)} />
-				<Tab label='Giảng viên' onClick={() => changeTab(2)} />
+				<Tab label='Học viên' onClick={() => changeTab(1, 'students')} />
+				<Tab label='Giảng viên' onClick={() => changeTab(2, 'teachers')} />
 			</Tabs>
 		</NavBar>
 	);

@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
-	reactStrictMode: false,
+	reactStrictMode: true,
 	productionBrowserSourceMaps: false,
+	swcMinify: true,
 	experimental: {
 		styledComponents: true
 	}
