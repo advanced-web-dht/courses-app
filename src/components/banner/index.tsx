@@ -15,7 +15,7 @@ const Banner: React.FC<BannerProps> = ({ title, code }) => {
 				<CustomBanner>
 					<TitleBanner>
 						<h1>{title}</h1>
-						<Typography>{code}</Typography>
+						<Typography color='white'>{code}</Typography>
 					</TitleBanner>
 				</CustomBanner>
 			</FullBanner>

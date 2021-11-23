@@ -27,3 +27,23 @@ export const submitSignUp = async (newAccount: ISignUpDTO): Promise<boolean> => 
 		// do nothing
 	}
 };
+
+export const getProfile = async (): Promise<Record<string, string>> => {
+	try {
+		const response = await provider.get('/accounts/profile');
+		return response.data;
+	} finally {
+		// do nothing
+	}
+};
+
+export const updateProfie = async (name: string, studentId: string): Promise<Record<string, string>> => {
+	try {
+		const response = await provider.put('/accounts', { name, studentId });
+		return response.data;
+	} catch (e) {
+		return {
+			message: 'Cập nhật không thành công'
+		};
+	}
+};

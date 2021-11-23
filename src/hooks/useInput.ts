@@ -10,7 +10,8 @@ type ReturnProps = [
 	IError,
 	(e: React.ChangeEvent<HTMLInputElement>) => void,
 	(err: string) => void,
-	() => void
+	() => void,
+	React.Dispatch<React.SetStateAction<string>>
 ];
 
 const initialError: IError = {
@@ -43,7 +44,7 @@ const useInput = (initialValue = ''): ReturnProps => {
 		setValue('');
 	}, []);
 
-	return [value, error, handleChange, handleHavingError, resetVal];
+	return [value, error, handleChange, handleHavingError, resetVal, setValue];
 };
 
 export default useInput;
