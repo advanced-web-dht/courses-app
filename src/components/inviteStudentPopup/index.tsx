@@ -3,13 +3,15 @@ import IconButton from '@mui/material/IconButton';
 import Popover from '@mui/material/Popover';
 import GroupAddRounded from '@mui/icons-material/GroupAddRounded';
 import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import { toast } from 'react-toastify';
 
 import { InviteStudent } from '../../api/client';
 import useToggle from '../../hooks/useToggle';
 import useInput from '../../hooks/useInput';
 import RoundedButton from '../UI/RoundedButton';
-import PopupBox from './style';
+import { PopupBox, PopupActions } from './style';
 import { EMAIL_CHECK } from '../../constants';
 
 interface Props {
@@ -19,6 +21,7 @@ interface Props {
 const InviteStudentPopup: React.FC<Props> = ({ classCode }) => {
 	const { isOpen, handleClose, handleOpen } = useToggle();
 	const [canSubmit, setCanSubmit] = useState(true);
+	const [isTeacher, setIsTeacher] = useState(false);
 	const anchorRef = useRef<HTMLButtonElement>(null);
 
 	const [email, error, handleChangeEmail, handleError, resetValue] = useInput();
@@ -40,7 +43,7 @@ const InviteStudentPopup: React.FC<Props> = ({ classCode }) => {
 		if (!canSubmit) return;
 		setCanSubmit(false);
 		if (email && !error.status) {
-			const result = await InviteStudent(classCode, email);
+			const result = await InviteStudent(classCode, email, isTeacher);
 			if (result) {
 				toast.success('Đã mời thành công');
 				resetValue();
@@ -82,9 +85,23 @@ const InviteStudentPopup: React.FC<Props> = ({ classCode }) => {
 						label='Email'
 						onKeyDown={HandleKeyPress}
 					/>
-					<RoundedButton onClick={handleSubmit} variant='contained'>
-						Mời
-					</RoundedButton>
+					<PopupActions>
+						<FormControlLabel
+							control={
+								<Checkbox
+									size='small'
+									value={isTeacher}
+									onChange={() => {
+										setIsTeacher(!isTeacher);
+									}}
+								/>
+							}
+							label='Giảng viên'
+						/>
+						<RoundedButton onClick={handleSubmit} variant='contained'>
+							Mời
+						</RoundedButton>
+					</PopupActions>
 				</PopupBox>
 			</Popover>
 		</React.Fragment>

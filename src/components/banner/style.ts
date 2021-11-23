@@ -28,5 +28,6 @@ export const TitleBanner = styled.div`
 		font-size: 2.25rem;
 		font-weight: 500;
 		line-height: 2.75rem;
+		color: #fff;
 	}
 `;

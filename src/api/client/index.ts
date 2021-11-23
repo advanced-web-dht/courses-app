@@ -40,23 +40,61 @@ export const GetClassByCode = async (classCode: string): Promise<IClass> => {
 	}
 };
 
-export const EnrollClass = async (classId: number): Promise<boolean> => {
+export const EnrollClass = async (classId: number): Promise<{ isSuccess: boolean; message: string }> => {
 	try {
 		const response = await provider.post(`/classes/${classId}/students`);
-		return response.data.isSuccess as boolean;
+		return {
+			isSuccess: response.data.isSuccess as boolean,
+			message: 'Ghi danh lớp học thành công'
+		};
 	} catch (e) {
 		const axiosError = e as AxiosError;
-		if (axiosError.response?.status === 301) {
-			return false;
+		if (axiosError.response?.status === 409) {
+			return {
+				isSuccess: false,
+				message: 'Bạn đã tham gia lớp học này trước đó'
+			};
 		}
-		console.log('Internal Server Error');
-		return false;
+		return {
+			isSuccess: false,
+			message: 'Lỗi server'
+		};
 	}
 };
 
-export const InviteStudent = async (classCode: string, email: string): Promise<boolean> => {
+export const EnrollClassForTeacher = async (
+	classId: number,
+	token: string
+): Promise<{ isSuccess: boolean; message: string }> => {
 	try {
-		const response = await provider.post(`/classes/${classCode}/invite`, { email });
+		const response = await provider.post(`/classes/${classId}/teachers`, { token });
+		return { isSuccess: response.data.isSuccess as boolean, message: 'Bạn đã trở thành giảng viên' };
+	} catch (e) {
+		const axiosError = e as AxiosError;
+		if (axiosError.response?.status === 409) {
+			return {
+				isSuccess: false,
+				message: 'Bạn đã tham gia lớp học này trước đó'
+			};
+		}
+		if (axiosError.response?.status === 401) {
+			return {
+				isSuccess: false,
+				message: 'Token đã hết hạn hoặc không hợp lệ'
+			};
+		}
+
+		return {
+			isSuccess: false,
+			message: 'Lỗi server'
+		};
+	}
+};
+
+export const InviteStudent = async (classCode: string, email: string, isTeacher: boolean): Promise<boolean> => {
+	try {
+		const url = `/classes/${classCode}/invite`;
+		const response = await provider.post(url, { email, isTeacher });
 		return response.data.isSuccess as boolean;
 	} catch (e) {
 		return false;
