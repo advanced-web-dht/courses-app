@@ -6,26 +6,34 @@ import Typography from '@mui/material/Typography';
 import { StyledContainer, Routes } from './style';
 import RoundedButton from '../UI/RoundedButton';
 import { IClass } from '../../type';
-import { EnrollClass as EnrollClassAPI } from '../../api/client';
+import { EnrollClass as EnrollClassAPI, EnrollClassForTeacher } from '../../api/client';
 import useRedirect from '../../hooks/useRedirect';
 
 interface EnrollClassProps {
 	classData: IClass;
 	isAuth: boolean;
+	token?: string;
 }
 
-const EnrollClass: React.FC<EnrollClassProps> = ({ isAuth, classData }) => {
+const EnrollClass: React.FC<EnrollClassProps> = ({ isAuth, classData, token }) => {
 	const redirect = useRedirect();
 
 	const handleEnroll = async () => {
-		const result = await EnrollClassAPI(classData.id);
+		let result;
+		if (token) {
+			result = await EnrollClassForTeacher(classData.id, token);
+		} else {
+			result = await EnrollClassAPI(classData.id);
+		}
 		const redirectUrl = `/class/${classData.code}`;
-		if (result) {
+		if (result.isSuccess) {
 			toast.success('Bạn đã tham gia thành công', { onClose: () => redirect.doRedirect(redirectUrl) });
 		} else {
-			toast.warning('Bạn đã tham gia lớp này rồi', { onClose: () => redirect.doRedirect(redirectUrl) });
+			toast.warning(result.message, { onClose: () => redirect.doRedirect(redirectUrl) });
 		}
 	};
+
+	const redirectUrl = `/enroll/${classData?.code}${token && `?token=${token}`}`;
 
 	return (
 		<StyledContainer>
@@ -44,10 +52,10 @@ const EnrollClass: React.FC<EnrollClassProps> = ({ isAuth, classData }) => {
 				</Routes>
 			) : (
 				<Routes>
-					<Link href={`/signin?redirect=/enroll/${classData?.code}`} passHref>
+					<Link href={`/signin?redirect=${redirectUrl}`} passHref>
 						<RoundedButton variant='contained'>Đăng nhập</RoundedButton>
 					</Link>
-					<Link href={`/signup?redirect=/enroll/${classData?.code}`} passHref>
+					<Link href={`/signup?redirect=${redirectUrl}`} passHref>
 						<RoundedButton variant='contained' color='error'>
 							Đăng ký
 						</RoundedButton>
@@ -56,6 +64,10 @@ const EnrollClass: React.FC<EnrollClassProps> = ({ isAuth, classData }) => {
 			)}
 		</StyledContainer>
 	);
+};
+
+EnrollClass.defaultProps = {
+	token: ''
 };
 
 export default EnrollClass;

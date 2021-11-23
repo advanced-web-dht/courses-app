@@ -36,7 +36,6 @@ const NavContextProvider: React.FC = ({ children }) => {
 		setCurrentTab(tab);
 		const { query } = router;
 		const currentUrl = router.pathname;
-		console.log(currentUrl);
 		const as = url ? `/class/${query.code}#${url}` : `/class/${query.code}`;
 		router.push(currentUrl, as, { shallow: true });
 	};

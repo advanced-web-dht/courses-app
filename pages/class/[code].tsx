@@ -28,7 +28,7 @@ const ClassPage: NextPage<ClassPageProps> = ({ classData }: ClassPageProps) => {
 				title='Fit Class'
 				icon={<ClassIcon />}
 				middleAction={<NavTab />}
-				rightAction={<InviteStudentPopup classCode={classData.code} />}
+				rightAction={classData.isOwner ? <InviteStudentPopup classCode={classData.code} /> : null}
 				isAuth
 			/>
 			<ClassContent classData={classData} />
@@ -42,9 +42,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	if (session) {
 		const classData = await GetClass(code, session?.accessToken as string);
 
+		if (classData) {
+			return {
+				props: {
+					classData
+				}
+			};
+		}
 		return {
-			props: {
-				classData
+			redirect: {
+				destination: '/class',
+				statusCode: 302
 			}
 		};
 	}

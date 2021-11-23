@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const PopupBox = styled.div`
+export const PopupBox = styled.div`
 	display: flex;
 	align-items: center;
 	padding: 15px 25px;
@@ -10,4 +10,7 @@ const PopupBox = styled.div`
 	}
 `;
 
-export default PopupBox;
+export const PopupActions = styled.div`
+	display: flex;
+	flex-direction: column;
+`;

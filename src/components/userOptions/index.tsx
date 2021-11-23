@@ -14,7 +14,7 @@ interface UserOptionsProps {
 
 const UserOptions: React.FC<UserOptionsProps> = ({ isOpen, handleClose, anchorEl }) => {
 	const handleSignOut = async () => {
-		await signout();
+		await signout({ callbackUrl: `${window.location.origin}/signin` });
 	};
 
 	return (
