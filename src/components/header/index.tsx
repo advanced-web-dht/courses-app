@@ -15,6 +15,8 @@ interface HeaderProps {
 	middleAction?: React.ReactNode;
 	rightAction?: React.ReactNode;
 	isAuth?: boolean;
+	isSignIn?: boolean;
+	isSignUp?: boolean;
 }
 
 /**
@@ -25,7 +27,7 @@ interface HeaderProps {
  */
 
 const Header: React.FC<HeaderProps> = (props) => {
-	const { title, icon, middleAction, rightAction, isAuth } = props;
+	const { title, icon, middleAction, rightAction, isAuth, isSignIn, isSignUp } = props;
 
 	const userRef = useRef<HTMLButtonElement>(null);
 
@@ -61,23 +63,31 @@ const Header: React.FC<HeaderProps> = (props) => {
 							</React.Fragment>
 						) : (
 							<React.Fragment>
-								<Link href='/signin' passHref>
-									<Button variant='text'>Đăng nhập</Button>
-								</Link>
-								<Link href='/signup' passHref>
-									<Button variant='contained' color='error'>
-										Đăng ký
-									</Button>
-								</Link>
+								{isSignUp && (
+									<Link href='/signin' passHref>
+										<Button variant='contained' color='primary' size='small'>
+											Đăng nhập
+										</Button>
+									</Link>
+								)}
+								{isSignIn && (
+									<Link href='/signup' passHref>
+										<Button variant='contained' color='primary' size='small'>
+											Đăng ký
+										</Button>
+									</Link>
+								)}
 							</React.Fragment>
 						)}
 					</Section>
 					{isOpen && <UserOptions isOpen={isOpen} handleClose={handleClose} anchorEl={userRef.current} />}
 				</ToolBar>
 			</Container>
-			<BottomAppBar>
-				<ToolBar position='bottom'>{middleAction}</ToolBar>
-			</BottomAppBar>
+			{middleAction && (
+				<BottomAppBar>
+					<ToolBar position='bottom'>{middleAction}</ToolBar>
+				</BottomAppBar>
+			)}
 		</React.Fragment>
 	);
 };
@@ -85,7 +95,9 @@ const Header: React.FC<HeaderProps> = (props) => {
 Header.defaultProps = {
 	middleAction: null,
 	rightAction: null,
-	isAuth: false
+	isAuth: false,
+	isSignIn: false,
+	isSignUp: false
 };
 
 export default Header;

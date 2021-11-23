@@ -51,6 +51,20 @@ const theme = createTheme({
 				'h1, h2 , h3, h4': {
 					margin: 0,
 					padding: 0
+				},
+				'::-webkit-scrollbar': {
+					width: '8px'
+				},
+				'::-webkit-scrollbar-thumb': {
+					'&:hover': {
+						backgroundColor: 'grey'
+					},
+					background: 'silver',
+					borderRadius: '5px'
+				},
+				'::-webkit-scrollbar-track': {
+					boxShadow: '#c4c4c4 0px 0px 5px inset',
+					borderRadius: '10px'
 				}
 			}
 		}

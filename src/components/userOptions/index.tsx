@@ -7,7 +7,7 @@ import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import Typography from '@mui/material/Typography';
 import Fade from '@mui/material/Fade';
 import { signout, useSession } from 'next-auth/client';
-import Form from '../members/member/memberForm';
+import Form from '../profileModal';
 import useToggle from '../../hooks/useToggle';
 
 interface UserOptionsProps {

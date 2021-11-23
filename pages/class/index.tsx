@@ -44,7 +44,7 @@ const Home: NextPage<ClassesPageProps> = ({ classes }: ClassesPageProps) => {
 				<meta name='description' content='Danh sách lớp học' />
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<Header title='Fit class' icon={<ClassIcon />} rightAction={<AddClassModalWithButton />} isAuth />
+			<Header title='Fit Class' icon={<ClassIcon />} rightAction={<AddClassModalWithButton />} isAuth />
 			<Classes />
 		</ClassProvider>
 	);

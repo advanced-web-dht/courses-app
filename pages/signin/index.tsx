@@ -31,7 +31,7 @@ const SignIn: NextPage = () => {
 				<meta name='description' content='Đăng nhập vào Fit class' />
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<Header title='Fit class' icon={<LockOpenRounded />} />
+			<Header title='Fit class' icon={<LockOpenRounded />} isSignIn />
 			<SignInForm />
 		</React.Fragment>
 	);

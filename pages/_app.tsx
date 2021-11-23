@@ -12,7 +12,6 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 	const [loaded, setLoaded] = useState(false);
 
-	//
 	useEffect(() => {
 		setLoaded(true);
 	}, []);

@@ -59,4 +59,8 @@ export const FormFooter = styled.div`
 	@media (max-width: 600px) {
 		justify-content: center;
 	}
+	.MuiButton-text {
+		font-weight: bold;
+		font-size: 15px;
+	}
 `;
