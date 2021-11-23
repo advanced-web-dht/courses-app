@@ -16,6 +16,7 @@ export const Container = styled(AppBar)`
 	background: initial;
 	color: #3e4b4b;
 	min-height: 65px;
+	background: #f4f6f6;
 `;
 
 export const BottomAppBar = styled(Container)`

@@ -210,7 +210,9 @@ const SignUpForm = () => {
 				<FormFooter>
 					<span>Đã có tài khoản? </span>
 					<Link href='/signin' passHref>
-						<Button variant='text'>Đăng nhập</Button>
+						<Button variant='text' color='error'>
+							Đăng nhập
+						</Button>
 					</Link>
 				</FormFooter>
 			</FormWrapper>

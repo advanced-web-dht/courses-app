@@ -78,7 +78,9 @@ const SignInForm = () => {
 				<FormFooter>
 					<span>Chưa có tài khoản? </span>
 					<Link href='/signup' passHref>
-						<Button variant='text'>Đăng Ký</Button>
+						<Button variant='text' color='error'>
+							Đăng Ký
+						</Button>
 					</Link>
 				</FormFooter>
 			</FormWrapper>

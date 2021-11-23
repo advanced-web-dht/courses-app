@@ -5,8 +5,6 @@ import Providers from 'next-auth/providers';
 
 import { submitGoogleSignIn, submitSignIn } from '../../../src/api/server/auth';
 
-const sessionMaxAge = 10 * 60 ** 2; // 10 hours
-
 declare module 'next-auth/jwt' {
 	interface DefaultJWT {
 		accessToken?: string | null;
@@ -19,6 +17,8 @@ declare module 'next-auth' {
 		accessToken?: string | null;
 	}
 }
+
+const sessionMaxAge = parseInt('172700', 10);
 
 export default NextAuth({
 	providers: [
