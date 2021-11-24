@@ -4,15 +4,18 @@ import { signIn } from 'next-auth/client';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-import { StyledContainer, FormWrapper, FormHeader, FormContent, FormFooter, FormActions, GoogleButton } from './style';
+import { FormActions, FormContent, FormFooter, FormHeader, FormWrapper, GoogleButton, StyledContainer } from './style';
 import RoundedButton from '../UI/RoundedButton';
 import GoogleSignIn from './google';
 import useInput from '../../hooks/useInput';
+import useRedirect from '../../hooks/useRedirect';
 
 const SignInForm = () => {
 	const [username, setUsername] = useState('');
 	const [popup, setPopup] = useState(false);
 	const [password, error, setPassword, setError] = useInput();
+	const { url } = useRedirect();
+	const redirectUrl = url ? `?redirect=${url}` : '';
 
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
@@ -77,7 +80,7 @@ const SignInForm = () => {
 				</FormContent>
 				<FormFooter>
 					<span>Chưa có tài khoản? </span>
-					<Link href='/signup' passHref>
+					<Link href={`/signup${redirectUrl}`} passHref>
 						<Button variant='text' color='error'>
 							Đăng Ký
 						</Button>

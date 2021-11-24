@@ -19,6 +19,7 @@ export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 	return (
 		<Provider session={pageProps.session}>
 			<Head>
+				<title>Fit Class</title>
 				<meta name='viewport' content='initial-scale=1, width=device-width' />
 			</Head>
 			<ThemeProvider theme={theme}>

@@ -18,9 +18,10 @@ const SignUpForm = () => {
 	const [password, passwordError, onPasswordChange, onPassWordError] = useInput();
 	const [rePassword, rePasswordError, onRePasswordChange, onRePassWordError] = useInput();
 	const [name, nameError, onNameChange] = useInput();
-	const redirect = useRedirect('/signin');
 
 	const [popup, setPopup] = useState(false);
+	const redirect = useRedirect('/signin');
+	const redirectUrl = redirect.url ? `?redirect=${redirect.url}` : '';
 
 	// Check email existed
 	useEffect(() => {
@@ -209,7 +210,7 @@ const SignUpForm = () => {
 				</FormContent>
 				<FormFooter>
 					<span>Đã có tài khoản? </span>
-					<Link href='/signin' passHref>
+					<Link href={`/signin${redirectUrl}`} passHref>
 						<Button variant='text' color='error'>
 							Đăng nhập
 						</Button>
