@@ -19,10 +19,10 @@ const Class: React.FC<ClassProps> = ({ classData }) => {
 						<Image src='/class.png' height={60} width={60} alt='class-icon' />
 					</div>
 					<ClassTitle>
-						<Typography variant='h5' className='class-name'>
+						<Typography variant='h5' className='class-name' component='span'>
 							{classData.name}
 						</Typography>
-						<Typography variant='subtitle2'>{classData.code}</Typography>
+						<Typography variant='body2'>{classData.code}</Typography>
 					</ClassTitle>
 				</CardHeader>
 				<CardFooter />

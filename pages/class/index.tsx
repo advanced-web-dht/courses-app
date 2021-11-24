@@ -3,6 +3,7 @@ import type { NextPage } from 'next';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Button from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import { getSession } from 'next-auth/client';
 
 import ClassIcon from '@mui/icons-material/Class';
@@ -26,9 +27,11 @@ const addClassModalWithButton = () => {
 
 	return (
 		<React.Fragment>
-			<Button onClick={handleOpen} aria-label='Add Class'>
-				<PlusIcon />
-			</Button>
+			<Tooltip title='Thêm lớp học'>
+				<Button onClick={handleOpen} aria-label='Add Class'>
+					<PlusIcon />
+				</Button>
+			</Tooltip>
 			<AddClassModal open={isOpen} handleClose={handleClose} />
 		</React.Fragment>
 	);

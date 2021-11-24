@@ -39,6 +39,11 @@ export const FormActions = styled.div`
 			margin-top: 5px;
 		}
 	}
+	.MuiButton-root {
+		@media (max-width: 600px) {
+			width: 100%;
+		}
+	}
 `;
 
 export const GoogleButton = styled(RoundedButton)`
