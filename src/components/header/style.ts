@@ -36,6 +36,7 @@ export const BottomAppBar = styled(Container)`
 export const ToolBar = styled(Toolbar)<ToolBarProps>`
 	display: flex;
 	flex-direction: row;
+	width: 100%;
 	justify-content: ${(props) => (props.position === 'bottom' ? 'center' : 'space-between')};
 	align-items: ${(props) => (props.position === 'bottom' ? 'flex-start' : 'center')};
 `;
@@ -53,7 +54,6 @@ export const Section = styled(Box)<SectionProps>`
 	display: flex;
 	align-items: center;
 	@media screen and (max-width: 650px) {
-		visibility: ${(props) => props.middle && 'hidden'};
-		order: 1;
+		display: ${(props) => props.middle && 'none'};
 	}
 `;
