@@ -18,3 +18,14 @@ export const submitSignIn = async (credential: Record<string, string>): Promise<
 		// do nothing
 	}
 };
+
+export const getProfile = async (accessToken: string): Promise<Record<string, string>> => {
+	try {
+		const response = await provider.get('/accounts/profile', {
+			headers: { Authorization: `Bearer ${accessToken}` }
+		});
+		return response.data;
+	} finally {
+		// do nothing
+	}
+};

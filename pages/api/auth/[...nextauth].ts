@@ -3,7 +3,7 @@ import NextAuth, { User } from 'next-auth';
 import { Awaitable } from 'next-auth/internals/utils';
 import Providers from 'next-auth/providers';
 
-import { submitGoogleSignIn, submitSignIn } from '../../../src/api/server/auth';
+import { submitGoogleSignIn, submitSignIn, getProfile } from '../../../src/api/server/auth';
 
 declare module 'next-auth/jwt' {
 	interface DefaultJWT {
@@ -64,6 +64,8 @@ export default NextAuth({
 				...(user as User)
 			};
 			session.accessToken = token.accessToken as string;
+			const info = await getProfile(session.accessToken as string);
+			session.user.name = info.name;
 			return session;
 		}
 	},

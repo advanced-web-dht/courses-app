@@ -5,6 +5,7 @@ import XIcon from '@mui/icons-material/Close';
 import TextField from '@mui/material/TextField';
 import Zoom from '@mui/material/Zoom';
 import { toast } from 'react-toastify';
+import { getSession } from 'next-auth/client';
 
 // import { CustomModal, StyledModal, FormFooter, FormContent } from './style';
 import { StyledModal, FormHeader, FormAction, Form } from '../addClassModal/style';

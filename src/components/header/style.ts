@@ -20,14 +20,14 @@ export const Container = styled(AppBar)`
 `;
 
 export const BottomAppBar = styled(Container)`
-	display: none;
+	visibility: hidden;
 	position: fixed;
 	top: auto;
 	bottom: 0;
 	min-height: 50px;
 	height: 50px;
 	@media screen and (max-width: 650px) {
-		display: block;
+		visibility: visible;
 	}
 	border: none;
 	box-shadow: none;
@@ -53,6 +53,7 @@ export const Section = styled(Box)<SectionProps>`
 	display: flex;
 	align-items: center;
 	@media screen and (max-width: 650px) {
-		display: ${(props) => props.middle && 'none'};
+		visibility: ${(props) => props.middle && 'hidden'};
+		order: 1;
 	}
 `;
