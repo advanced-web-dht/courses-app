@@ -5,6 +5,7 @@ import GroupAddRounded from '@mui/icons-material/GroupAddRounded';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import Tooltip from '@mui/material/Tooltip';
 import { toast } from 'react-toastify';
 
 import { InviteStudent } from '../../api/client';
@@ -64,9 +65,11 @@ const InviteStudentPopup: React.FC<Props> = ({ classCode }) => {
 
 	return (
 		<React.Fragment>
-			<IconButton onClick={() => handleOpen()} size='large' ref={anchorRef}>
-				<GroupAddRounded />
-			</IconButton>
+			<Tooltip title='Thêm thành viên mới'>
+				<IconButton onClick={() => handleOpen()} size='large' ref={anchorRef}>
+					<GroupAddRounded />
+				</IconButton>
+			</Tooltip>
 			<Popover
 				open={isOpen}
 				onClose={handleClose}
@@ -98,7 +101,7 @@ const InviteStudentPopup: React.FC<Props> = ({ classCode }) => {
 							}
 							label='Giảng viên'
 						/>
-						<RoundedButton onClick={handleSubmit} variant='contained'>
+						<RoundedButton onClick={handleSubmit} variant='contained' size='small'>
 							Mời
 						</RoundedButton>
 					</PopupActions>

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
 import Avatar from '@mui/icons-material/AccountCircleRounded';
 
 import useToggle from '../../hooks/useToggle';
@@ -37,29 +38,33 @@ const Header: React.FC<HeaderProps> = (props) => {
 		<React.Fragment>
 			<Container>
 				<ToolBar>
-					<Section>
-						<Link href='/class' passHref>
-							<HeaderLink>
-								{icon}
-								<Typography variant='h5' component='h1'>
-									{title}
-								</Typography>
-							</HeaderLink>
-						</Link>
-					</Section>
+					<Tooltip title='Quay về lớp học'>
+						<Section>
+							<Link href='/class' passHref>
+								<HeaderLink>
+									{icon}
+									<Typography variant='h5' component='h1'>
+										{title}
+									</Typography>
+								</HeaderLink>
+							</Link>
+						</Section>
+					</Tooltip>
 					<Section middle>{middleAction}</Section>
 					<Section>
 						{isAuth ? (
 							<React.Fragment>
 								{rightAction}
-								<IconButton
-									size='large'
-									aria-label='user-actions'
-									onClick={() => handleOpen()}
-									ref={userRef}
-								>
-									<Avatar />
-								</IconButton>
+								<Tooltip title='Tài khoản của bạn'>
+									<IconButton
+										size='large'
+										aria-label='user-actions'
+										onClick={() => handleOpen()}
+										ref={userRef}
+									>
+										<Avatar />
+									</IconButton>
+								</Tooltip>
 							</React.Fragment>
 						) : (
 							<React.Fragment>
