@@ -30,15 +30,16 @@ const ProfileModal: React.FC<FormProps> = ({ isOpenForm, close }) => {
 				setCanEditId(false);
 			}
 		})();
-	}, []);
+	}, [isOpenForm]);
 
 	const handleSubmit = async () => {
 		if (name.trim().length > 5) {
 			const result = await updateProfie(name, id);
 			if (!result.message) {
-				toast.success('Cập nhật thông tin thành công', { onClose: () => close() });
+				close();
+				toast.success('Cập nhật thông tin thành công');
 			} else {
-				toast.error(result.message, { onClose: () => close() });
+				toast.error(result.message);
 			}
 		} else {
 			onNameError('Họ tên it nhất 5 ký tự');
