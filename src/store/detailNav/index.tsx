@@ -32,8 +32,27 @@ const NavContextProvider: React.FC = ({ children }) => {
 		}
 	}, []);
 
+	// listen url change for browser return
+	useEffect(() => {
+		const handleHashChange = () => {
+			const { hash } = window.location;
+			if (hash) {
+				const target = NavRoutes[hash];
+				setCurrentTab(target);
+			} else {
+				setCurrentTab(0);
+			}
+		};
+
+		router.events.on('hashChangeComplete', handleHashChange);
+
+		return () => {
+			router.events.off('hashChangeComplete', handleHashChange);
+		};
+	}, []);
+
 	const changeTab = (tab: number, url?: string): void => {
-		setCurrentTab(tab);
+		// setCurrentTab(tab);
 		const { query } = router;
 		const currentUrl = router.pathname;
 		const as = url ? `/class/${query.code}#${url}` : `/class/${query.code}`;

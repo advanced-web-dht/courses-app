@@ -1,19 +1,20 @@
-import React, { memo } from 'react';
-import type { NextPage } from 'next';
-import { GetServerSideProps } from 'next';
+import React, { memo, useContext, useEffect } from 'react';
+import type { NextPage, GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Button from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import Box from '@mui/material/Box';
 import { getSession } from 'next-auth/client';
 
 import ClassIcon from '@mui/icons-material/Class';
 import PlusIcon from '@mui/icons-material/Add';
 
+import Navigation from '../../src/components/navigation';
 import Classes from '../../src/components/classes';
 import Header from '../../src/components/header';
 import AddClassModal from '../../src/components/addClassModal';
 import useToggle from '../../src/hooks/useToggle';
-import ClassProvider from '../../src/store/class';
+import { ClassContext } from '../../src/store/class';
 import { GetAllClasses } from '../../src/api/server';
 
 import { IClass } from '../../src/type';
@@ -40,16 +41,27 @@ const addClassModalWithButton = () => {
 const AddClassModalWithButton = memo(addClassModalWithButton);
 
 const Home: NextPage<ClassesPageProps> = ({ classes }: ClassesPageProps) => {
+	const { StoreClasses } = useContext(ClassContext);
+
+	useEffect(() => {
+		StoreClasses(classes);
+	}, []);
+
 	return (
-		<ClassProvider initClasses={classes}>
+		<React.Fragment>
 			<Head>
 				<title>Fit Class - Lớp học</title>
 				<meta name='description' content='Danh sách lớp học' />
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<Header title='Fit Class' icon={<ClassIcon />} rightAction={<AddClassModalWithButton />} isAuth />
-			<Classes />
-		</ClassProvider>
+			<Box sx={{ display: 'flex' }}>
+				<Navigation />
+				<Box width='100%'>
+					<Header title='Fit Class' icon={<ClassIcon />} rightAction={<AddClassModalWithButton />} isAuth />
+					<Classes />
+				</Box>
+			</Box>
+		</React.Fragment>
 	);
 };
 

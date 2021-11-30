@@ -8,4 +8,5 @@ const useToggle = () => {
 
 	return { isOpen, handleClose, handleOpen };
 };
+
 export default useToggle;

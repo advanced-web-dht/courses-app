@@ -1,44 +1,39 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import { NavContext } from '../../store/detailNav';
+import { ClassContext } from '../../store/class';
 import Members from '../members';
 import Banner from '../banner';
-import { IClass, IClassMember } from '../../type';
+import { IClassMember } from '../../type';
 
-interface ClassContentProps {
-	classData: IClass;
-}
-
-const ClassContent: React.FC<ClassContentProps> = ({ classData }) => {
+const ClassContent: React.FC = () => {
 	const { currentTab } = useContext(NavContext);
+	const { currentClass } = useContext(ClassContext);
 	const [displayMember, setDisplayMember] = useState<IClassMember[]>([]);
 
 	useEffect(() => {
 		let members;
 		switch (currentTab) {
 			case 1:
-				members = classData.members.filter((member: IClassMember) => member.details?.role === 'student');
-				setDisplayMember(members);
+				members = currentClass.members?.filter((member: IClassMember) => member.detail?.role === 'student');
+				setDisplayMember(members as IClassMember[]);
 				break;
 			case 2:
-				members = classData.members.filter(
-					(member: IClassMember) => member.details?.role === 'teacher' || member.details?.role === 'owner'
+				members = currentClass.members?.filter(
+					(member: IClassMember) => member.detail?.role === 'teacher' || member.detail?.role === 'owner'
 				);
-				setDisplayMember(members);
+				setDisplayMember(members as IClassMember[]);
 				break;
 			default:
 				break;
 		}
 	}, [currentTab]);
 
-	const Content =
-		currentTab === 0 ? (
-			<Banner title={classData.name} code={classData.code} />
-		) : (
-			<Members members={displayMember} role={currentTab === 1 ? 'student' : 'teacher'} />
-		);
-
-	return Content;
+	return currentTab === 0 ? (
+		<Banner title={currentClass.name} code={currentClass.code} />
+	) : (
+		<Members members={displayMember} role={currentTab === 1 ? 'student' : 'teacher'} />
+	);
 };
 
 export default ClassContent;

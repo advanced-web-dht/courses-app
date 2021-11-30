@@ -5,9 +5,15 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ToastContainer } from 'react-toastify';
 import { Provider } from 'next-auth/client';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fab } from '@fortawesome/free-brands-svg-icons';
 
 import theme from '../src/theme';
+import CommonProvider from '../src/store/common';
+import ClassProvider from '../src/store/class';
 import 'react-toastify/dist/ReactToastify.css';
+
+library.add(fab);
 
 export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 	const [loaded, setLoaded] = useState(false);
@@ -23,8 +29,12 @@ export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 				<meta name='viewport' content='initial-scale=1, width=device-width' />
 			</Head>
 			<ThemeProvider theme={theme}>
-				<CssBaseline />
-				{loaded && <Component {...pageProps} />}
+				<CommonProvider>
+					<ClassProvider>
+						<CssBaseline />
+						{loaded && <Component {...pageProps} />}
+					</ClassProvider>
+				</CommonProvider>
 			</ThemeProvider>
 			<ToastContainer
 				position='bottom-right'

@@ -43,7 +43,7 @@ const EnrollClass: React.FC<EnrollClassProps> = ({ isAuth, classData, token }) =
 			<Typography variant='h4' fontWeight='bold' textAlign='center'>
 				{classData?.name}
 			</Typography>
-			<Typography>Giảng viên: {classData?.members[0].name}</Typography>
+			<Typography>Giảng viên: {classData?.members[0]?.name}</Typography>
 			{isAuth ? (
 				<Routes>
 					<RoundedButton variant='contained' color='success' onClick={handleEnroll}>
