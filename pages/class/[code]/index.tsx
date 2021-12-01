@@ -15,6 +15,7 @@ import { GetClass } from '../../../src/api/server';
 import Navigation from '../../../src/components/navigation';
 import { ClassContext } from '../../../src/store/class';
 import { ROLES } from '../../../src/constants';
+import 'react-datepicker/dist/react-datepicker.css';
 
 interface ClassPageProps {
 	classData: IClass;

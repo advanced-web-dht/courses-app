@@ -6,19 +6,19 @@ import Box from '@mui/material/Box';
 import ClassIcon from '@mui/icons-material/Class';
 
 import NavProvider from '../../../src/store/detailNav';
-import InviteStudentPopup from '../../../src/components/inviteStudentPopup';
 import Header from '../../../src/components/header';
 import ClassGrade from '../../../src/components/classGrade';
-import { IClass } from '../../../src/type';
-import { GetClass } from '../../../src/api/server';
+import { IClass, IPointPart } from '../../../src/type';
+import { GetAllGrades, GetClass } from '../../../src/api/server';
 import Navigation from '../../../src/components/navigation';
 import { ClassContext } from '../../../src/store/class';
 
 interface ClassPageProps {
 	classData: IClass;
+	grades: IPointPart[];
 }
 
-const GradePage: NextPage<ClassPageProps> = ({ classData }: ClassPageProps) => {
+const GradePage: NextPage<ClassPageProps> = ({ classData, grades }: ClassPageProps) => {
 	const { StoreCurrentClass } = useContext(ClassContext);
 
 	useEffect(() => {
@@ -41,7 +41,7 @@ const GradePage: NextPage<ClassPageProps> = ({ classData }: ClassPageProps) => {
 						link={`/class/${classData.code}`}
 						isAuth
 					/>
-					<ClassGrade />
+					<ClassGrade grades={grades} />
 				</Box>
 			</Box>
 		</NavProvider>
@@ -53,11 +53,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	const code = context.params?.code as string;
 	if (session) {
 		const classData = await GetClass(code, session?.accessToken as string);
+		const pointParts = await GetAllGrades(classData.id, session?.accessToken as string);
 
 		if (classData) {
 			return {
 				props: {
-					classData
+					classData,
+					grades: pointParts
 				}
 			};
 		}

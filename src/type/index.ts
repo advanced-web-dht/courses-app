@@ -38,3 +38,9 @@ export interface IPointPart {
 	ratio: number;
 	order: number;
 }
+
+export interface IAssignment {
+	id: number;
+	name: string;
+	dateEnded: string;
+}
