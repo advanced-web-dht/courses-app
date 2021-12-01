@@ -14,8 +14,9 @@ const initNavContext: INavContext = {
 export const NavContext = React.createContext(initNavContext);
 
 const NavRoutes: Record<string, number> = {
-	'#students': 1,
-	'#teachers': 2
+	'#assignments': 1,
+	'#students': 2,
+	'#teachers': 3
 };
 
 const NavContextProvider: React.FC = ({ children }) => {

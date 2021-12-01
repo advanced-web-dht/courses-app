@@ -12,8 +12,9 @@ const NavTabs: React.FC = () => {
 		<NavBar>
 			<Tabs value={currentTab} aria-label='nav tabs example'>
 				<Tab label='Bảng tin' onClick={() => changeTab(0)} />
-				<Tab label='Học viên' onClick={() => changeTab(1, 'students')} />
-				<Tab label='Giảng viên' onClick={() => changeTab(2, 'teachers')} />
+				<Tab label='Bài tập' onClick={() => changeTab(1, 'assignments')} />
+				<Tab label='Học viên' onClick={() => changeTab(2, 'students')} />
+				<Tab label='Giảng viên' onClick={() => changeTab(3, 'teachers')} />
 			</Tabs>
 		</NavBar>
 	);

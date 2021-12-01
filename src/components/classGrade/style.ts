@@ -6,7 +6,12 @@ export const ListGrade = styled.div`
 	flex-direction: column;
 `;
 
-export const GradeContainer = styled.form`
+interface ContainerProps {
+	position?: 'sticky' | 'relative';
+}
+
+export const GradeContainer = styled.form<ContainerProps>`
+	position: ${(props) => props.position};
 	display: flex;
 	width: 100%;
 	justify-content: space-between;
@@ -15,6 +20,10 @@ export const GradeContainer = styled.form`
 	border-radius: 10px;
 	min-height: 150px;
 `;
+
+GradeContainer.defaultProps = {
+	position: 'relative'
+};
 
 export const GradeForm = styled.div`
 	flex-grow: 1;

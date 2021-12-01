@@ -30,6 +30,20 @@ const initial: IPointPart[] = [
 		name: 'Miệng',
 		ratio: 10,
 		order: 3
+	},
+	{
+		id: 4,
+		classId: 1,
+		name: 'Miệng',
+		ratio: 10,
+		order: 3
+	},
+	{
+		id: 5,
+		classId: 1,
+		name: 'Miệng',
+		ratio: 10,
+		order: 3
 	}
 ];
 

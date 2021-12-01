@@ -8,16 +8,16 @@ import { IClassMember } from '../../type';
 
 interface MemberProps {
 	members: IClassMember[];
-	role: string;
+	roleType: string;
 }
 
-const Members: React.FC<MemberProps> = ({ members, role }) => {
+const Members: React.FC<MemberProps> = ({ members, roleType }) => {
 	return (
 		<StyledContainer>
 			{members.length > 0 ? (
 				<React.Fragment>
 					<ClassesHeader>
-						<div>Danh sách {role === 'student' ? 'học viên' : 'giảng viên'}</div>
+						<div>Danh sách {roleType}</div>
 					</ClassesHeader>
 					<ClassesListContainer>
 						<Grid component='ul' container spacing={2}>

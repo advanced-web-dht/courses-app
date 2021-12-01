@@ -23,7 +23,7 @@ const AddGrade: React.FC = () => {
 	};
 
 	return (
-		<GradeContainer onSubmit={handleSubmit}>
+		<GradeContainer onSubmit={handleSubmit} position='sticky'>
 			{isEdit ? (
 				<Fade in={isEdit}>
 					<React.Fragment>
