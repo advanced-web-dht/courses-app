@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import { toast } from 'react-toastify';
 
 import { ClassesHeader } from '../classes/style';
 import { ListGrade } from './style';
@@ -8,49 +9,18 @@ import Container from '../UI/Container';
 import AddGrade from './addGrade';
 import { reorder } from './helper';
 import { IPointPart } from '../../type';
+import { UpdatePointPartOrder } from '../../api/client';
+import { ClassContext } from '../../store/class';
 
-const initial: IPointPart[] = [
-	{
-		id: 1,
-		classId: 1,
-		name: 'Cuối kỳ',
-		ratio: 60,
-		order: 1
-	},
-	{
-		id: 2,
-		classId: 1,
-		name: 'Giữa kỳ',
-		ratio: 30,
-		order: 2
-	},
-	{
-		id: 3,
-		classId: 1,
-		name: 'Miệng',
-		ratio: 10,
-		order: 3
-	},
-	{
-		id: 4,
-		classId: 1,
-		name: 'Miệng',
-		ratio: 10,
-		order: 3
-	},
-	{
-		id: 5,
-		classId: 1,
-		name: 'Miệng',
-		ratio: 10,
-		order: 3
-	}
-];
+interface ClassGradeProps {
+	grades: IPointPart[];
+}
 
-const ClassGrade: React.FC = () => {
-	const [state, setState] = useState<IPointPart[]>(initial);
+const ClassGrade: React.FC<ClassGradeProps> = ({ grades: initGrades }) => {
+	const [grades, setGrades] = useState<IPointPart[]>(initGrades);
+	const { currentClass } = useContext(ClassContext);
 
-	const onDragEnd = (result: DropResult) => {
+	const onDragEnd = async (result: DropResult) => {
 		if (!result.destination) {
 			return;
 		}
@@ -59,9 +29,19 @@ const ClassGrade: React.FC = () => {
 			return;
 		}
 
-		const quotes = reorder(state, result.source.index, result.destination.index);
+		const newGrades = reorder(grades, result.source.index, result.destination.index);
 
-		setState([...quotes]);
+		const newOrder = newGrades.map((grade, index) => ({ id: grade.id, order: index }));
+		const response = await UpdatePointPartOrder(currentClass.id, newOrder);
+		if (response) {
+			setGrades([...newGrades]);
+		} else {
+			toast.error('Thay đổi thứ tự không thảnh công!');
+		}
+	};
+
+	const HandleAddGrade = (newGrade: IPointPart) => {
+		setGrades((prev) => [...prev, newGrade]);
 	};
 
 	return (
@@ -74,7 +54,7 @@ const ClassGrade: React.FC = () => {
 					<Droppable droppableId='list'>
 						{(provided) => (
 							<div ref={provided.innerRef} {...provided.droppableProps}>
-								{state.map((item, index) => (
+								{grades.map((item, index) => (
 									<Grade grade={item} index={index} key={item.id} />
 								))}
 								{provided.placeholder}
@@ -82,7 +62,7 @@ const ClassGrade: React.FC = () => {
 						)}
 					</Droppable>
 				</DragDropContext>
-				<AddGrade />
+				<AddGrade newOrder={grades.length + 1} onAddComplete={HandleAddGrade} />
 			</ListGrade>
 		</Container>
 	);

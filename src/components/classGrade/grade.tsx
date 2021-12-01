@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import TextField from '@mui/material/TextField';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons/faPencilAlt';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import { faSave } from '@fortawesome/free-solid-svg-icons/faSave';
+import { toast } from 'react-toastify';
 
 import useInput from '../../hooks/useInput';
 import { GradeContainer, GradeForm, GradeActions, ActionButton } from './style';
 import { IPointPart } from '../../type';
+import { UpdatePointPart } from '../../api/client';
+import { ClassContext } from '../../store/class';
 
 interface GradeProps {
 	grade: IPointPart;
@@ -16,15 +19,26 @@ interface GradeProps {
 }
 
 const Grade: React.FC<GradeProps> = ({ grade, index }) => {
+	const { currentClass } = useContext(ClassContext);
 	const [name, , onNameChange] = useInput(grade.name);
 	const [ratio, ratioError, onRatioChange, onRatioError] = useInput(grade.ratio.toString());
 	const [isDisabled, setIsDisabled] = useState(true);
 
-	const handleSubmit = (event: React.FormEvent) => {
+	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
 		const ratioNumber = parseInt(ratio, 10);
 		if (ratioNumber < 1 || ratioNumber > 100) {
 			onRatioError('Tỉ lệ điểm không hợp lệ');
+			return;
+		}
+
+		const ratioNum = parseInt(ratio, 10);
+		const result = await UpdatePointPart(currentClass.id, ratioNum, name, grade.id);
+		if (result) {
+			toast.success('Cập nhật thành công');
+			setIsDisabled(true);
+		} else {
+			toast.error('Cập nhật không thành công');
 		}
 	};
 

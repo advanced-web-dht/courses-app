@@ -13,21 +13,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 
 import { ClassContext } from '../../store/class';
-import { StyledModal, Form, FormHeader, FormAction, DatePickerModal } from './style';
-import { AddNewClass } from '../../api/client';
+import { AddAssignment } from '../../api/client';
 import useInput from '../../hooks/useInput';
 import useToggle from '../../hooks/useToggle';
-import { AddAssignmentButton } from '../assignment/style';
+import { AddAssignmentButton, StyledModal, Form, FormHeader, FormAction, DatePickerModal } from './style';
 
-const AddAssignmentModal: React.FC = () => {
+import { IAssignment, IPointPart } from '../../type';
+
+interface AddAssignmentProps {
+	grades: IPointPart[];
+	onAddAssignmentComplete: (newAssignment: IAssignment) => void;
+}
+
+const AddAssignmentModal: React.FC<AddAssignmentProps> = ({ grades, onAddAssignmentComplete }) => {
 	const { isOpen, handleOpen, handleClose } = useToggle();
 
 	const [name, error, setName, setError, resetVal] = useInput();
-	const [startDate, setStartDate] = React.useState<Date>(new Date());
+	const [dateEnded, setDateEnded] = React.useState<Date>(new Date());
 	const [grade, setGrade] = React.useState('');
 
 	const [canSubmit, setCanSubmit] = useState(true);
-	const { AddClass } = useContext(ClassContext);
+	const { currentClass } = useContext(ClassContext);
 
 	const HandleCloseModal = () => {
 		resetVal();
@@ -42,21 +48,15 @@ const AddAssignmentModal: React.FC = () => {
 			return;
 		}
 		try {
-			const newClass = await AddNewClass({ name });
-			AddClass(newClass);
+			const gradeNum = parseInt(grade, 10);
+			const newAssignment = await AddAssignment(currentClass.id, gradeNum, name, dateEnded);
+			onAddAssignmentComplete(newAssignment);
 			HandleCloseModal();
 			toast.success('Bài tập đã được thêm thành công');
 		} catch (e) {
 			toast.error('Thêm bài tập không thành công!');
 		}
 		setCanSubmit(true);
-	};
-
-	const HandleKeyPress = async (event: React.KeyboardEvent<HTMLInputElement>) => {
-		if (event.key === 'Enter') {
-			event.preventDefault();
-			await HandleSubmit();
-		}
 	};
 
 	const handleChange = (event: SelectChangeEvent) => {
@@ -89,7 +89,6 @@ const AddAssignmentModal: React.FC = () => {
 								onChange={setName}
 								error={error.status}
 								helperText={error.message}
-								onKeyDown={HandleKeyPress}
 								autoFocus
 								margin='normal'
 							/>
@@ -102,14 +101,16 @@ const AddAssignmentModal: React.FC = () => {
 									label='Điểm'
 									onChange={handleChange}
 								>
-									<MenuItem value={20}>20%</MenuItem>
-									<MenuItem value={30}>30%</MenuItem>
-									<MenuItem value={50}>50%</MenuItem>
+									{grades.map((gradeItem) => (
+										<MenuItem value={gradeItem.id} key={gradeItem.id}>
+											{gradeItem.name} - {gradeItem.ratio}%
+										</MenuItem>
+									))}
 								</Select>
 								<DatePickerModal
 									placeholderText='Hạn nộp'
-									selected={startDate}
-									onChange={(date: Date) => setStartDate(date)}
+									selected={dateEnded}
+									onChange={(date: Date) => setDateEnded(date)}
 									timeInputLabel='Time:'
 									dateFormat='MM/dd/yyyy h:mm aa'
 									showTimeInput

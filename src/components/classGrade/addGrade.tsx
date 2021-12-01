@@ -1,24 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import TextField from '@mui/material/TextField';
 import PlusIcon from '@mui/icons-material/AddCircleOutlined';
 import Fade from '@mui/material/Fade';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-solid-svg-icons/faSave';
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
+import { toast } from 'react-toastify';
 
 import useInput from '../../hooks/useInput';
 import { GradeContainer, GradeForm, GradeActions, ActionButton, ActivateMask } from './style';
+import { AddPointPart } from '../../api/client';
+import { ClassContext } from '../../store/class';
+import { IPointPart } from '../../type';
 
-const AddGrade: React.FC = () => {
-	const [name, , onNameChange] = useInput();
-	const [ratio, ratioError, onRatioChange, onRatioError] = useInput();
+interface AddGradeProps {
+	newOrder: number;
+	onAddComplete: (newGrade: IPointPart) => void;
+}
+
+const AddGrade: React.FC<AddGradeProps> = ({ newOrder, onAddComplete }) => {
+	const [name, , onNameChange, , resetName] = useInput();
+	const [ratio, ratioError, onRatioChange, onRatioError, resetRatio] = useInput();
 	const [isEdit, setIsEdit] = useState(false);
+	const { currentClass } = useContext(ClassContext);
 
-	const handleSubmit = (event: React.FormEvent) => {
+	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
 		const ratioNumber = parseInt(ratio, 10);
 		if (ratioNumber < 1 || ratioNumber > 100) {
 			onRatioError('Tỉ lệ điểm không hợp lệ');
+			return;
+		}
+		try {
+			const newGrade = await AddPointPart(currentClass.id, newOrder, parseInt(ratio, 10), name);
+			onAddComplete(newGrade);
+			toast.success('Thêm cột điểm thành công!');
+			resetRatio();
+			resetName();
+			setIsEdit(false);
+		} catch {
+			toast.error('Internal Server Error');
 		}
 	};
 

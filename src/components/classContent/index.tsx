@@ -1,17 +1,19 @@
-import React, { useContext, useEffect, useState, useMemo } from 'react';
+import React, { useContext, useMemo, useEffect, useState } from 'react';
 
 import { NavContext } from '../../store/detailNav';
 import { ClassContext } from '../../store/class';
 import Members from '../members';
 import Banner from '../banner';
-import { IClassMember } from '../../type';
 import AddAssignMent from '../assignment';
+import { GetAllGrades } from '../../api/client';
 
 import { ROLES } from '../../constants';
+import { IPointPart } from '../../type';
 
 const ClassContent: React.FC = () => {
 	const { currentTab } = useContext(NavContext);
 	const { currentClass } = useContext(ClassContext);
+	const [grades, setGrades] = useState<IPointPart[]>([]);
 
 	const teachers = useMemo(
 		() =>
@@ -31,11 +33,15 @@ const ClassContent: React.FC = () => {
 		[currentClass.id]
 	);
 
+	useEffect(() => {
+		GetAllGrades(currentClass.id).then((data) => setGrades([...data]));
+	}, [currentClass.id]);
+
 	switch (currentTab) {
 		case 0:
 			return <Banner title={currentClass.name} owner={owner && owner.name} />;
 		case 1:
-			return <AddAssignMent />;
+			return <AddAssignMent grades={grades} />;
 		case 2:
 			return <Members members={students} roleType='student' />;
 		case 3:
