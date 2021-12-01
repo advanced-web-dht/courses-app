@@ -11,7 +11,7 @@ export interface IClass {
 	code: string;
 	name: string;
 	members: IClassMember[];
-	isOwner: boolean;
+	role: string;
 }
 
 export interface ICreateClassDTO {

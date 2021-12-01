@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import Link from 'next/link';
 import List from '@mui/material/List';
 import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
@@ -24,17 +25,19 @@ const SubListClass: React.FC<SubListClassProps> = ({ isOpen, list, type }) => {
 				}
 				return false;
 			}),
-		[list]
+		[list.length]
 	);
 
 	return (
 		<Collapse in={isOpen} timeout='auto' unmountOnExit>
 			<List component='div' disablePadding>
 				{renderList.map((cls) => (
-					<SubListItemButton key={cls.id}>
-						<StandName>{cls.name.charAt(0).toUpperCase()}</StandName>
-						<ListItemText primary={cls.name} />
-					</SubListItemButton>
+					<Link key={cls.id} href={`/class/${cls.code}`} passHref prefetch={false}>
+						<SubListItemButton>
+							<StandName>{cls.name.charAt(0).toUpperCase()}</StandName>
+							<ListItemText primary={cls.name} />
+						</SubListItemButton>
+					</Link>
 				))}
 			</List>
 		</Collapse>

@@ -11,7 +11,7 @@ interface IClassContext {
 	StoreCurrentClass: (newClass: IClass) => void;
 }
 
-const initClass = { id: -1, members: [], code: '', name: '', isOwner: false };
+const initClass = { id: -1, members: [], code: '', name: '', role: 'student' };
 
 const initClassContext: IClassContext = {
 	classes: [],

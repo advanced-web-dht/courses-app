@@ -1,10 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
+import Link from 'next/link';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 import CollapseIcon from '@mui/icons-material/KeyboardArrowLeft';
 import ExpandedIcon from '@mui/icons-material/KeyboardArrowRight';
 import CloseIcon from '@mui/icons-material/Close';
@@ -13,13 +15,15 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChalkboardTeacher } from '@fortawesome/free-solid-svg-icons/faChalkboardTeacher';
 import { faGraduationCap } from '@fortawesome/free-solid-svg-icons/faGraduationCap';
+import { faHome } from '@fortawesome/free-solid-svg-icons/faHome';
 
 import { CommonContext } from '../../store/common';
 import { ClassContext } from '../../store/class';
 import SubListClass from './subListClass';
 import ClassRoutes from './classRoutes';
 import useWindowWidth from '../../hooks/useWindowWidth';
-import { StyledDrawer, DrawerHeader } from './style';
+import { StyledDrawer, DrawerHeader, HomePage } from './style';
+import { ROLES } from '../../constants';
 
 interface NavigationProps {
 	classDetail?: boolean;
@@ -27,7 +31,7 @@ interface NavigationProps {
 
 const Navigation: React.FC<NavigationProps> = ({ classDetail }) => {
 	const { isNavOpen, openNav, closeNav } = useContext(CommonContext);
-	const { classes } = useContext(ClassContext);
+	const { classes, currentClass } = useContext(ClassContext);
 
 	const [expanded, setExpanded] = useState(false);
 	const [isOpenTeachClass, setIsOpenTeachClass] = useState(false);
@@ -62,6 +66,11 @@ const Navigation: React.FC<NavigationProps> = ({ classDetail }) => {
 				$expanded={expanded}
 			>
 				<DrawerHeader>
+					<Link href='/class' passHref>
+						<HomePage>
+							<FontAwesomeIcon icon={faHome} size='2x' />
+						</HomePage>
+					</Link>
 					{isMobile ? (
 						<IconButton size='large' onClick={handleCloseDrawer}>
 							<CloseIcon />
@@ -73,7 +82,9 @@ const Navigation: React.FC<NavigationProps> = ({ classDetail }) => {
 					)}
 				</DrawerHeader>
 				<Divider />
-				{classDetail && <ClassRoutes />}
+				{classDetail && (currentClass.role === ROLES.owner || currentClass.role === ROLES.teacher) && (
+					<ClassRoutes />
+				)}
 				<List>
 					<ListItemButton onClick={() => setIsOpenTeachClass(!isOpenTeachClass)}>
 						<ListItemIcon>

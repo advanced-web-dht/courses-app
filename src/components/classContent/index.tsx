@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useMemo } from 'react';
 
 import { NavContext } from '../../store/detailNav';
 import { ClassContext } from '../../store/class';
@@ -27,10 +27,15 @@ const ClassContent: React.FC = () => {
 			default:
 				break;
 		}
-	}, [currentTab]);
+	}, [currentTab, currentClass]);
+
+	const owner = useMemo(
+		() => currentClass.members.find((member) => member.detail?.role === 'owner'),
+		[currentClass.id]
+	);
 
 	return currentTab === 0 ? (
-		<Banner title={currentClass.name} code={currentClass.code} />
+		<Banner title={currentClass.name} owner={owner && owner.name} />
 	) : (
 		<Members members={displayMember} role={currentTab === 1 ? 'student' : 'teacher'} />
 	);

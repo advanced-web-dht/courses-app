@@ -14,6 +14,7 @@ import { IClass } from '../../../src/type';
 import { GetClass } from '../../../src/api/server';
 import Navigation from '../../../src/components/navigation';
 import { ClassContext } from '../../../src/store/class';
+import { ROLES } from '../../../src/constants';
 
 interface ClassPageProps {
 	classData: IClass;
@@ -24,7 +25,7 @@ const ClassPage: NextPage<ClassPageProps> = ({ classData }: ClassPageProps) => {
 
 	useEffect(() => {
 		StoreCurrentClass(classData);
-	}, []);
+	}, [classData]);
 
 	return (
 		<NavProvider>
@@ -40,7 +41,10 @@ const ClassPage: NextPage<ClassPageProps> = ({ classData }: ClassPageProps) => {
 						title={classData.code.toUpperCase()}
 						icon={<ClassIcon />}
 						middleAction={<NavTab />}
-						rightAction={classData.isOwner ? <InviteStudentPopup classCode={classData.code} /> : null}
+						rightAction={
+							classData.role === ROLES.owner ? <InviteStudentPopup classCode={classData.code} /> : null
+						}
+						link={`/class/${classData.code}`}
 						isAuth
 					/>
 					<ClassContent />

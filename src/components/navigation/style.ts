@@ -49,12 +49,12 @@ export const StyledDrawer = styled(Drawer)<ExtendedDrawerProps>`
 
 export const DrawerHeader = styled.div`
 	display: flex;
-	justify-content: flex-end;
+	justify-content: space-between;
 	align-items: center;
 	overflow: hidden;
 	width: ${drawerWidth};
 	height: 60px;
-	padding: 10px;
+	padding: 5px;
 `;
 
 export const StandName = styled.div`
@@ -72,4 +72,13 @@ export const StandName = styled.div`
 
 export const SubListItemButton = styled(ListItemButton)`
 	padding-left: 30px;
+`;
+
+export const HomePage = styled.div`
+	display: flex;
+	align-items: center;
+	margin-left: 15px;
+	:hover {
+		cursor: pointer;
+	}
 `;

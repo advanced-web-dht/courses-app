@@ -38,7 +38,6 @@ const GradePage: NextPage<ClassPageProps> = ({ classData }: ClassPageProps) => {
 					<Header
 						title={classData.code.toUpperCase()}
 						icon={<ClassIcon />}
-						rightAction={classData.isOwner ? <InviteStudentPopup classCode={classData.code} /> : null}
 						link={`/class/${classData.code}`}
 						isAuth
 					/>
