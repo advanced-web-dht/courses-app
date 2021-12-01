@@ -4,6 +4,7 @@ import { NavContext } from '../../store/detailNav';
 import Members from '../members';
 import Banner from '../banner';
 import { IClass, IClassMember } from '../../type';
+import AddAssignMent from '../assignment';
 
 interface ClassContentProps {
 	classData: IClass;
@@ -31,12 +32,14 @@ const ClassContent: React.FC<ClassContentProps> = ({ classData }) => {
 		}
 	}, [currentTab]);
 
-	const Content =
-		currentTab === 0 ? (
-			<Banner title={classData.name} code={classData.code} />
-		) : (
-			<Members members={displayMember} role={currentTab === 1 ? 'student' : 'teacher'} />
-		);
+	let Content;
+	if (currentTab === 0) {
+		Content = <Banner title={classData.name} code={classData.code} />;
+	} else if (currentTab === 1) {
+		Content = <AddAssignMent />;
+	} else {
+		Content = <Members members={displayMember} role={currentTab === 2 ? 'student' : 'teacher'} />;
+	}
 
 	return Content;
 };
