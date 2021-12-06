@@ -1,4 +1,5 @@
-import React, { useRef, useContext, useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import AssignmentIcon from '@mui/icons-material/AssignmentRounded';
@@ -6,11 +7,11 @@ import IconButton from '@mui/material/IconButton';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { toast } from 'react-toastify';
 
+import { AppState } from '../../reducers';
 import useToggle from '../../hooks/useToggle';
 import { DeleteAssignment } from '../../api/client';
 import { AssignmentItem, AssignmentItemTitle, AssignmentItemAction } from './style';
 import { IAssignment } from '../../type';
-import { ClassContext } from '../../store/class';
 import EditAssignmentModal from './editAssignment';
 
 interface AssignmentProps {
@@ -24,7 +25,7 @@ const Assignment: React.FC<AssignmentProps> = ({ assignment, onDeleteAssignment,
 	const { isOpen, handleOpen, handleClose } = useToggle();
 	const [isEdit, setIsEdit] = useState(false);
 
-	const { currentClass } = useContext(ClassContext);
+	const { info: currentClass } = useSelector((state: AppState) => state.currentClass);
 
 	const date = new Date(assignment.dateEnded);
 

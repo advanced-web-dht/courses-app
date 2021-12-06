@@ -1,4 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
@@ -6,7 +7,8 @@ import Button from '@mui/material/Button';
 import Zoom from '@mui/material/Zoom';
 import XIcon from '@mui/icons-material/Close';
 import FormControl from '@mui/material/FormControl';
-import { ClassContext } from '../../store/class';
+
+import { AppState } from '../../reducers';
 import { UpdateAssignment } from '../../api/client';
 import useInput from '../../hooks/useInput';
 import { StyledModal, Form, FormHeader, FormAction, DatePickerModal } from './style';
@@ -34,7 +36,7 @@ const EditAssignmentModal: React.FC<AddAssignmentProps> = ({
 	const [dateEnded, setDateEnded] = React.useState<Date>(oldDeadline);
 
 	const [canSubmit, setCanSubmit] = useState(true);
-	const { currentClass } = useContext(ClassContext);
+	const { info: currentClass } = useSelector((state: AppState) => state.currentClass);
 
 	const HandleCloseModal = () => {
 		resetVal();

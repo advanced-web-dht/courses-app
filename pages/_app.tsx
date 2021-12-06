@@ -8,14 +8,20 @@ import { Provider } from 'next-auth/client';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 
+import { wrapper } from '../src/reducers';
+import { Page } from '../src/type/page';
 import theme from '../src/theme';
 import CommonProvider from '../src/store/common';
-import ClassProvider from '../src/store/class';
 import 'react-toastify/dist/ReactToastify.css';
+
+type AppPropsWithLayoutProps = AppProps & {
+	Component: Page;
+};
 
 library.add(fab);
 
-export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
+const MyApp = ({ Component, pageProps }: AppPropsWithLayoutProps): JSX.Element => {
+	const getLayout = Component.getLayout ?? ((page) => page);
 	const [loaded, setLoaded] = useState(false);
 
 	useEffect(() => {
@@ -30,10 +36,8 @@ export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 			</Head>
 			<ThemeProvider theme={theme}>
 				<CommonProvider>
-					<ClassProvider>
-						<CssBaseline />
-						{loaded && <Component {...pageProps} />}
-					</ClassProvider>
+					<CssBaseline />
+					{loaded && getLayout(<Component {...pageProps} />)}
 				</CommonProvider>
 			</ThemeProvider>
 			<ToastContainer
@@ -46,4 +50,6 @@ export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 			/>
 		</Provider>
 	);
-}
+};
+
+export default wrapper.withRedux(MyApp);

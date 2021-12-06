@@ -1,11 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Divider from '@mui/material/Divider';
 
+import { AppState } from '../../reducers';
 import Container from '../UI/Container';
 import { ClassesHeader } from '../classes/style';
 import AddAssignmentModal from './addAssignment';
 import AssignmentList from './assignmentList';
-import { ClassContext } from '../../store/class';
 import { GetAllAssignments } from '../../api/client';
 
 import { ROLES } from '../../constants';
@@ -16,7 +17,7 @@ interface AddAssignmentProps {
 }
 
 const AddAssignment: React.FC<AddAssignmentProps> = ({ grades }) => {
-	const { currentClass } = useContext(ClassContext);
+	const { info: currentClass } = useSelector((state: AppState) => state.currentClass);
 	const [assignments, setAssignments] = useState<IAssignment[]>([]);
 
 	useEffect(() => {

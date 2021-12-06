@@ -1,8 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import Grid from '@mui/material/Grid';
 import PlusIcon from '@mui/icons-material/AddCircleOutlined';
 
-import { ClassContext } from '../../store/class';
+import { AppState } from '../../reducers';
 import { ClassesHeader, ClassesListContainer } from './style';
 import Container from '../UI/Container';
 import { FakeCard } from './class/style';
@@ -11,7 +12,7 @@ import AddClassModal from '../addClassModal';
 import useToggle from '../../hooks/useToggle';
 
 const Classes: React.FC = () => {
-	const { classes } = useContext(ClassContext);
+	const { list: classes } = useSelector((state: AppState) => state.classes);
 	const { isOpen, handleOpen, handleClose } = useToggle();
 
 	return (

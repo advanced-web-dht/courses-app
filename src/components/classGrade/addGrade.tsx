@@ -1,4 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import TextField from '@mui/material/TextField';
 import PlusIcon from '@mui/icons-material/AddCircleOutlined';
 import Fade from '@mui/material/Fade';
@@ -8,21 +9,20 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
 import { toast } from 'react-toastify';
 
 import useInput from '../../hooks/useInput';
-import { GradeContainer, GradeForm, GradeActions, ActionButton, ActivateMask } from './style';
 import { AddPointPart } from '../../api/client';
-import { ClassContext } from '../../store/class';
-import { IPointPart } from '../../type';
+import { GradeContainer, GradeForm, GradeActions, ActionButton, ActivateMask } from './style';
+import { addGrade } from './action';
 
 interface AddGradeProps {
 	newOrder: number;
-	onAddComplete: (newGrade: IPointPart) => void;
+	classId: number;
 }
 
-const AddGrade: React.FC<AddGradeProps> = ({ newOrder, onAddComplete }) => {
+const AddGrade: React.FC<AddGradeProps> = ({ classId, newOrder }) => {
 	const [name, , onNameChange, , resetName] = useInput();
 	const [ratio, ratioError, onRatioChange, onRatioError, resetRatio] = useInput();
 	const [isEdit, setIsEdit] = useState(false);
-	const { currentClass } = useContext(ClassContext);
+	const dispatch = useDispatch();
 
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
@@ -32,8 +32,8 @@ const AddGrade: React.FC<AddGradeProps> = ({ newOrder, onAddComplete }) => {
 			return;
 		}
 		try {
-			const newGrade = await AddPointPart(currentClass.id, newOrder, parseInt(ratio, 10), name);
-			onAddComplete(newGrade);
+			const newGrade = await AddPointPart(classId, newOrder, parseInt(ratio, 10), name);
+			dispatch(addGrade(newGrade));
 			toast.success('Thêm cột điểm thành công!');
 			resetRatio();
 			resetName();

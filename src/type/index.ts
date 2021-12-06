@@ -12,6 +12,7 @@ export interface IClass {
 	name: string;
 	members: IClassMember[];
 	role: string;
+	grades?: IPointPart[];
 }
 
 export interface ICreateClassDTO {

@@ -1,4 +1,5 @@
-import React, { useRef, useState, useContext } from 'react';
+import React, { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
@@ -7,10 +8,10 @@ import Zoom from '@mui/material/Zoom';
 
 import XIcon from '@mui/icons-material/Close';
 
-import { ClassContext } from '../../store/class';
-import { StyledModal, Form, FormHeader, FormAction } from './style';
-import { AddNewClass } from '../../api/client';
 import useInput from '../../hooks/useInput';
+import { AddNewClass } from '../../api/client';
+import { StyledModal, Form, FormHeader, FormAction } from './style';
+import { addClass } from './action';
 
 interface ModalProps {
 	open: boolean;
@@ -19,10 +20,10 @@ interface ModalProps {
 
 const AddClassModal: React.FC<ModalProps> = ({ open, handleClose }) => {
 	const inputRef = useRef<HTMLInputElement>(null);
+	const dispatch = useDispatch();
 
 	const [name, error, setName, setError, resetVal] = useInput();
 	const [canSubmit, setCanSubmit] = useState(true);
-	const { AddClass } = useContext(ClassContext);
 
 	const HandleCloseModal = () => {
 		resetVal();
@@ -39,7 +40,7 @@ const AddClassModal: React.FC<ModalProps> = ({ open, handleClose }) => {
 		}
 		try {
 			const newClass = await AddNewClass({ name });
-			AddClass(newClass);
+			dispatch(addClass(newClass));
 			HandleCloseModal();
 			toast.success('Lớp học đã được thêm thành công');
 		} catch (e) {

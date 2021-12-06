@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -9,11 +9,13 @@ import { faWindowRestore } from '@fortawesome/free-solid-svg-icons/faWindowResto
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 
-import { ClassContext } from '../../store/class';
 import { SubListItemButton } from './style';
 
-const ClassRoutes: React.FC = () => {
-	const { currentClass } = useContext(ClassContext);
+interface ClassRoutesProps {
+	classCode?: string;
+}
+
+const ClassRoutes: React.FC<ClassRoutesProps> = ({ classCode }) => {
 	return (
 		<React.Fragment>
 			<List>
@@ -24,7 +26,7 @@ const ClassRoutes: React.FC = () => {
 					<ListItemText primary='Quản lý lớp học' />
 				</ListItem>
 				<List>
-					<Link href={`/class${currentClass.code && `/${currentClass.code}`}/grade`}>
+					<Link href={`/class/${classCode}/grade`}>
 						<a>
 							<SubListItemButton>
 								<ListItemIcon>
@@ -40,4 +42,9 @@ const ClassRoutes: React.FC = () => {
 		</React.Fragment>
 	);
 };
+
+ClassRoutes.defaultProps = {
+	classCode: ''
+};
+
 export default ClassRoutes;

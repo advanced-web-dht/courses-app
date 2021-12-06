@@ -1,4 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Draggable } from 'react-beautiful-dnd';
 import TextField from '@mui/material/TextField';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,21 +9,22 @@ import { faSave } from '@fortawesome/free-solid-svg-icons/faSave';
 import { toast } from 'react-toastify';
 
 import useInput from '../../hooks/useInput';
-import { GradeContainer, GradeForm, GradeActions, ActionButton } from './style';
 import { IPointPart } from '../../type';
 import { UpdatePointPart } from '../../api/client';
-import { ClassContext } from '../../store/class';
+import { GradeContainer, GradeForm, GradeActions, ActionButton } from './style';
+import { updateGrade } from './action';
 
 interface GradeProps {
 	grade: IPointPart;
 	index: number;
+	classId: number;
 }
 
-const Grade: React.FC<GradeProps> = ({ grade, index }) => {
-	const { currentClass } = useContext(ClassContext);
+const Grade: React.FC<GradeProps> = ({ grade, index, classId }) => {
 	const [name, , onNameChange] = useInput(grade.name);
 	const [ratio, ratioError, onRatioChange, onRatioError] = useInput(grade.ratio.toString());
 	const [isDisabled, setIsDisabled] = useState(true);
+	const dispatch = useDispatch();
 
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
@@ -33,9 +35,12 @@ const Grade: React.FC<GradeProps> = ({ grade, index }) => {
 		}
 
 		const ratioNum = parseInt(ratio, 10);
-		const result = await UpdatePointPart(currentClass.id, ratioNum, name, grade.id);
+		const result = await UpdatePointPart(classId, ratioNum, name, grade.id);
+		const targetGrade = { ...grade, ratio: ratioNum, name };
+
 		if (result) {
 			toast.success('Cập nhật thành công');
+			dispatch(updateGrade(targetGrade));
 			setIsDisabled(true);
 		} else {
 			toast.error('Cập nhật không thành công');

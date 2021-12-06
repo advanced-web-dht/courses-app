@@ -17,9 +17,10 @@ import { EMAIL_CHECK } from '../../constants';
 
 interface Props {
 	classCode: string;
+	inviteTeacher?: boolean;
 }
 
-const InviteStudentPopup: React.FC<Props> = ({ classCode }) => {
+const InviteStudentPopup: React.FC<Props> = ({ classCode, inviteTeacher }) => {
 	const { isOpen, handleClose, handleOpen } = useToggle();
 	const [canSubmit, setCanSubmit] = useState(true);
 	const [isTeacher, setIsTeacher] = useState(false);
@@ -89,18 +90,20 @@ const InviteStudentPopup: React.FC<Props> = ({ classCode }) => {
 						onKeyDown={HandleKeyPress}
 					/>
 					<PopupActions>
-						<FormControlLabel
-							control={
-								<Checkbox
-									size='small'
-									value={isTeacher}
-									onChange={() => {
-										setIsTeacher(!isTeacher);
-									}}
-								/>
-							}
-							label='Giảng viên'
-						/>
+						{inviteTeacher && (
+							<FormControlLabel
+								control={
+									<Checkbox
+										size='small'
+										value={isTeacher}
+										onChange={() => {
+											setIsTeacher(!isTeacher);
+										}}
+									/>
+								}
+								label='Giảng viên'
+							/>
+						)}
 						<RoundedButton onClick={handleSubmit} variant='contained' size='small'>
 							Mời
 						</RoundedButton>
@@ -109,6 +112,10 @@ const InviteStudentPopup: React.FC<Props> = ({ classCode }) => {
 			</Popover>
 		</React.Fragment>
 	);
+};
+
+InviteStudentPopup.defaultProps = {
+	inviteTeacher: false
 };
 
 export default InviteStudentPopup;

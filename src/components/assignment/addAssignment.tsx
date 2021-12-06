@@ -1,4 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
@@ -12,7 +13,7 @@ import FormControl from '@mui/material/FormControl';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 
-import { ClassContext } from '../../store/class';
+import { AppState } from '../../reducers';
 import { AddAssignment } from '../../api/client';
 import useInput from '../../hooks/useInput';
 import useToggle from '../../hooks/useToggle';
@@ -27,13 +28,13 @@ interface AddAssignmentProps {
 
 const AddAssignmentModal: React.FC<AddAssignmentProps> = ({ grades, onAddAssignmentComplete }) => {
 	const { isOpen, handleOpen, handleClose } = useToggle();
+	const { info: currentClass } = useSelector((state: AppState) => state.currentClass);
 
 	const [name, error, setName, setError, resetVal] = useInput();
 	const [dateEnded, setDateEnded] = React.useState<Date>(new Date());
 	const [grade, setGrade] = React.useState('');
 
 	const [canSubmit, setCanSubmit] = useState(true);
-	const { currentClass } = useContext(ClassContext);
 
 	const HandleCloseModal = () => {
 		resetVal();

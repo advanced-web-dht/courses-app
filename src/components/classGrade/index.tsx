@@ -1,24 +1,21 @@
-import React, { useState, useContext } from 'react';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { toast } from 'react-toastify';
 
+import { AppState } from '../../reducers';
 import { ClassesHeader } from '../classes/style';
-import { ListGrade } from './style';
 import Grade from './grade';
 import Container from '../UI/Container';
 import AddGrade from './addGrade';
 import { reorder } from './helper';
-import { IPointPart } from '../../type';
 import { UpdatePointPartOrder } from '../../api/client';
-import { ClassContext } from '../../store/class';
+import { ListGrade } from './style';
+import { updateOrder } from './action';
 
-interface ClassGradeProps {
-	grades: IPointPart[];
-}
-
-const ClassGrade: React.FC<ClassGradeProps> = ({ grades: initGrades }) => {
-	const [grades, setGrades] = useState<IPointPart[]>(initGrades);
-	const { currentClass } = useContext(ClassContext);
+const ClassGrade: React.FC = () => {
+	const { grades, info: currentClass } = useSelector((state: AppState) => state.currentClass);
+	const dispatch = useDispatch();
 
 	const onDragEnd = async (result: DropResult) => {
 		if (!result.destination) {
@@ -30,18 +27,13 @@ const ClassGrade: React.FC<ClassGradeProps> = ({ grades: initGrades }) => {
 		}
 
 		const newGrades = reorder(grades, result.source.index, result.destination.index);
+		dispatch(updateOrder(newGrades));
 
 		const newOrder = newGrades.map((grade, index) => ({ id: grade.id, order: index }));
-		const response = await UpdatePointPartOrder(currentClass.id, newOrder);
-		if (response) {
-			setGrades([...newGrades]);
-		} else {
+		const response = await UpdatePointPartOrder(currentClass?.id as number, newOrder);
+		if (!response) {
 			toast.error('Thay đổi thứ tự không thảnh công!');
 		}
-	};
-
-	const HandleAddGrade = (newGrade: IPointPart) => {
-		setGrades((prev) => [...prev, newGrade]);
 	};
 
 	return (
@@ -55,14 +47,14 @@ const ClassGrade: React.FC<ClassGradeProps> = ({ grades: initGrades }) => {
 						{(provided) => (
 							<div ref={provided.innerRef} {...provided.droppableProps}>
 								{grades.map((item, index) => (
-									<Grade grade={item} index={index} key={item.id} />
+									<Grade grade={item} index={index} key={item.id} classId={item.classId} />
 								))}
 								{provided.placeholder}
 							</div>
 						)}
 					</Droppable>
 				</DragDropContext>
-				<AddGrade newOrder={grades.length + 1} onAddComplete={HandleAddGrade} />
+				<AddGrade newOrder={grades.length} classId={currentClass?.id as number} />
 			</ListGrade>
 		</Container>
 	);

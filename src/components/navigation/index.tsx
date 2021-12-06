@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import Link from 'next/link';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
@@ -16,8 +17,8 @@ import { faChalkboardTeacher } from '@fortawesome/free-solid-svg-icons/faChalkbo
 import { faGraduationCap } from '@fortawesome/free-solid-svg-icons/faGraduationCap';
 import { faHome } from '@fortawesome/free-solid-svg-icons/faHome';
 
+import { AppState } from '../../reducers';
 import { CommonContext } from '../../store/common';
-import { ClassContext } from '../../store/class';
 import SubListClass from './subListClass';
 import ClassRoutes from './classRoutes';
 import useWindowWidth from '../../hooks/useWindowWidth';
@@ -25,12 +26,13 @@ import { StyledDrawer, DrawerHeader, HomePage } from './style';
 import { ROLES } from '../../constants';
 
 interface NavigationProps {
-	classDetail?: boolean;
+	detail?: boolean;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ classDetail }) => {
+const Navigation: React.FC<NavigationProps> = ({ detail }) => {
 	const { isNavOpen, openNav, closeNav } = useContext(CommonContext);
-	const { classes, currentClass } = useContext(ClassContext);
+	const { list: classes } = useSelector((state: AppState) => state.classes);
+	const { info: currentClass } = useSelector((state: AppState) => state.currentClass);
 
 	const [expanded, setExpanded] = useState(false);
 	const [isOpenTeachClass, setIsOpenTeachClass] = useState(false);
@@ -81,8 +83,8 @@ const Navigation: React.FC<NavigationProps> = ({ classDetail }) => {
 					)}
 				</DrawerHeader>
 				<Divider />
-				{classDetail && (currentClass.role === ROLES.owner || currentClass.role === ROLES.teacher) && (
-					<ClassRoutes />
+				{detail && (currentClass.role === ROLES.owner || currentClass.role === ROLES.teacher) && (
+					<ClassRoutes classCode={currentClass.code} />
 				)}
 				<List>
 					<ListItemButton onClick={() => setIsOpenTeachClass(!isOpenTeachClass)}>
@@ -111,7 +113,7 @@ const Navigation: React.FC<NavigationProps> = ({ classDetail }) => {
 };
 
 Navigation.defaultProps = {
-	classDetail: false
+	detail: false
 };
 
 export default Navigation;
