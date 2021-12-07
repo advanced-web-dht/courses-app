@@ -24,6 +24,8 @@ import ClassRoutes from './classRoutes';
 import useWindowWidth from '../../hooks/useWindowWidth';
 import { StyledDrawer, DrawerHeader, HomePage } from './style';
 import { ROLES } from '../../constants';
+import useRequest from '../../hooks/useRequest';
+import { IClass } from '../../type';
 
 interface NavigationProps {
 	detail?: boolean;
@@ -31,8 +33,8 @@ interface NavigationProps {
 
 const Navigation: React.FC<NavigationProps> = ({ detail }) => {
 	const { isNavOpen, openNav, closeNav } = useContext(CommonContext);
-	const { list: classes } = useSelector((state: AppState) => state.classes);
 	const { info: currentClass } = useSelector((state: AppState) => state.currentClass);
+	const { data: classes } = useRequest<IClass[]>({ url: '/classes' });
 
 	const [expanded, setExpanded] = useState(false);
 	const [isOpenTeachClass, setIsOpenTeachClass] = useState(false);
@@ -56,13 +58,25 @@ const Navigation: React.FC<NavigationProps> = ({ detail }) => {
 		}
 	};
 
+	const handleCloseDrawerByLeaveMouse = () => {
+		if (!isMobile && !expanded) {
+			closeNav();
+			setIsOpenTeachClass(false);
+			setIsOpenStudyClass(false);
+		}
+	};
+
+	const handleOpenDrawer = () => {
+		openNav();
+	};
+
 	return (
 		<React.Fragment>
 			<StyledDrawer
 				variant={isMobile ? 'temporary' : 'permanent'}
 				open={isNavOpen}
-				onMouseEnter={openNav}
-				onMouseLeave={handleCloseDrawer}
+				onMouseEnter={handleOpenDrawer}
+				onMouseLeave={handleCloseDrawerByLeaveMouse}
 				onClose={handleCloseDrawer}
 				$expanded={expanded}
 			>
@@ -94,7 +108,7 @@ const Navigation: React.FC<NavigationProps> = ({ detail }) => {
 						<ListItemText primary='Giảng dạy' />
 						{isOpenTeachClass ? <ExpandLess /> : <ExpandMore />}
 					</ListItemButton>
-					<SubListClass isOpen={isOpenTeachClass} list={classes} type='teacher' />
+					<SubListClass isOpen={isOpenTeachClass} list={classes as IClass[]} type='teacher' />
 				</List>
 				<Divider />
 				<List>
@@ -105,7 +119,7 @@ const Navigation: React.FC<NavigationProps> = ({ detail }) => {
 						<ListItemText primary='Đã đăng ký' />
 						{isOpenStudyClass ? <ExpandLess /> : <ExpandMore />}
 					</ListItemButton>
-					<SubListClass isOpen={isOpenStudyClass} list={classes} type='student' />
+					<SubListClass isOpen={isOpenStudyClass} list={classes as IClass[]} type='student' />
 				</List>
 			</StyledDrawer>
 		</React.Fragment>

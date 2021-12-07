@@ -8,3 +8,5 @@ export enum ROLES {
 	teacher = 'teacher',
 	student = 'student'
 }
+
+export const MOBILE_WIDTH = 650;

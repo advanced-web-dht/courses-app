@@ -1,18 +1,20 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import Grid from '@mui/material/Grid';
 import PlusIcon from '@mui/icons-material/AddCircleOutlined';
 
-import { AppState } from '../../reducers';
 import { ClassesHeader, ClassesListContainer } from './style';
 import Container from '../UI/Container';
 import { FakeCard } from './class/style';
 import Class from './class';
 import AddClassModal from '../addClassModal';
 import useToggle from '../../hooks/useToggle';
+import { IClass } from '../../type';
 
-const Classes: React.FC = () => {
-	const { list: classes } = useSelector((state: AppState) => state.classes);
+interface ClassesProps {
+	classes: IClass[];
+}
+
+const Classes: React.FC<ClassesProps> = ({ classes }) => {
 	const { isOpen, handleOpen, handleClose } = useToggle();
 
 	return (
@@ -22,7 +24,7 @@ const Classes: React.FC = () => {
 			</ClassesHeader>
 			<ClassesListContainer>
 				<Grid component='ol' container spacing={2}>
-					{classes.map((cls) => (
+					{classes?.map((cls) => (
 						<Grid key={cls.id} item xs={12} md={6} lg={4} component='li'>
 							<Class classData={cls} />
 						</Grid>

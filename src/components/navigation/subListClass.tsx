@@ -16,7 +16,7 @@ interface SubListClassProps {
 const SubListClass: React.FC<SubListClassProps> = ({ isOpen, list, type }) => {
 	const renderList = useMemo(
 		() =>
-			list.filter((cls) => {
+			list?.filter((cls) => {
 				if (cls.members[0].detail?.role === type) {
 					return true;
 				}
@@ -25,13 +25,13 @@ const SubListClass: React.FC<SubListClassProps> = ({ isOpen, list, type }) => {
 				}
 				return false;
 			}),
-		[list.length]
+		[list?.length]
 	);
 
 	return (
 		<Collapse in={isOpen} timeout='auto' unmountOnExit>
 			<List component='div' disablePadding>
-				{renderList.map((cls) => (
+				{renderList?.map((cls) => (
 					<Link key={cls.id} href={`/class/${cls.code}`} passHref prefetch={false}>
 						<SubListItemButton>
 							<StandName>{cls.name.charAt(0).toUpperCase()}</StandName>

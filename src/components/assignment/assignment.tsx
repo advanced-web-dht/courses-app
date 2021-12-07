@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -13,31 +13,43 @@ import { DeleteAssignment } from '../../api/client';
 import { AssignmentItem, AssignmentItemTitle, AssignmentItemAction } from './style';
 import { IAssignment } from '../../type';
 import EditAssignmentModal from './editAssignment';
+import useRequest from '../../hooks/useRequest';
 
 interface AssignmentProps {
 	assignment: IAssignment;
-	onDeleteAssignment: (id: number) => void;
-	onUpdateAssignment: (targetAssignment: IAssignment) => void;
 }
 
-const Assignment: React.FC<AssignmentProps> = ({ assignment, onDeleteAssignment, onUpdateAssignment }) => {
+const Assignment: React.FC<AssignmentProps> = ({ assignment }) => {
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const { isOpen, handleOpen, handleClose } = useToggle();
 	const [isEdit, setIsEdit] = useState(false);
-
 	const { info: currentClass } = useSelector((state: AppState) => state.currentClass);
 
-	const date = new Date(assignment.dateEnded);
+	const fetchUrl = `/assignment/${currentClass.id}`;
+	const { mutate, data: assignments, response } = useRequest<IAssignment[]>({ url: fetchUrl });
 
-	const handleDeleteAssignment = async () => {
+	const handleDeleteAssignment = useCallback(async () => {
 		const result = await DeleteAssignment(currentClass.id, assignment.id);
 		if (result) {
-			onDeleteAssignment(assignment.id);
+			// update swr cache
+			const data = assignments?.filter((item) => item.id !== assignment.id);
+			await mutate({ ...response, data: data as IAssignment[] }, false);
+
 			toast.success('Xoá bài tập thành công');
 		} else {
 			toast.error('Xoá không thành công');
 		}
-	};
+	}, []);
+
+	const date = useMemo(() => new Date(assignment.dateEnded), [assignment.dateEnded]);
+
+	// update swr only
+	const handleUpdateAssignment = useCallback(async (targetAssignment: IAssignment) => {
+		const data = [...(assignments as IAssignment[])];
+		const index = data.findIndex((item) => item.id === targetAssignment.id);
+		data[index] = targetAssignment;
+		await mutate({ ...response, data: data as IAssignment[] }, false);
+	}, []);
 
 	return (
 		<AssignmentItem>
@@ -70,14 +82,19 @@ const Assignment: React.FC<AssignmentProps> = ({ assignment, onDeleteAssignment,
 				<MenuItem onClick={handleDeleteAssignment}>Xoá</MenuItem>
 				<MenuItem onClick={() => setIsEdit(true)}>Cập nhật</MenuItem>
 			</Menu>
-			<EditAssignmentModal
-				isOpen={isEdit}
-				handleClose={() => setIsEdit(false)}
-				onUpdateAssignmentComplete={onUpdateAssignment}
-				oldDeadline={new Date(assignment.dateEnded)}
-				oldName={assignment.name}
-				id={assignment.id}
-			/>
+			{isEdit && (
+				<EditAssignmentModal
+					isOpen={isEdit}
+					handleClose={() => {
+						setIsEdit(false);
+						handleClose();
+					}}
+					oldDeadline={new Date(assignment.dateEnded)}
+					oldName={assignment.name}
+					id={assignment.id}
+					updateAssignmentContext={handleUpdateAssignment}
+				/>
+			)}
 		</AssignmentItem>
 	);
 };

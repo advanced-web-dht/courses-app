@@ -12,9 +12,9 @@ const Index: NextPage = () => {
 	useEffect(() => {
 		if (!loading) {
 			if (session) {
-				router.push('/class');
+				router.replace('/class');
 			} else {
-				router.push('/signin');
+				router.replace('/signin');
 			}
 		}
 	}, [loading, session]);

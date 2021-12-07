@@ -11,7 +11,7 @@ const useWindowWidth = () => {
 		let timeoutId: NodeJS.Timeout;
 		const resizeListener = () => {
 			clearTimeout(timeoutId);
-			timeoutId = setTimeout(() => setWidth(getWidth()), 150);
+			timeoutId = setTimeout(() => setWidth(getWidth()), 100);
 		};
 
 		window.addEventListener('resize', resizeListener);

@@ -22,7 +22,7 @@ const EnrollClassPage: NextPage<EnrollPageProps> = ({ classData }: EnrollPagePro
 		if (!classData) {
 			toast.warning('Không tìm thấy lớp học! Bạn có thể nhập lại mã lớp', {
 				autoClose: 1800,
-				onClose: () => router.push('/enroll')
+				onClose: () => router.replace('/enroll')
 			});
 		}
 	}, []);

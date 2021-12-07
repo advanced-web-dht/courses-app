@@ -19,6 +19,7 @@ export const GradeContainer = styled.form<ContainerProps>`
 	margin: 15px 0;
 	border-radius: 10px;
 	min-height: 150px;
+	box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
 `;
 
 GradeContainer.defaultProps = {

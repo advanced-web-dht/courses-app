@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
 
-import ClassesReducer from './classes';
 import ClassReducer from './class';
 
 const RootStore = configureStore({
 	reducer: {
-		classes: ClassesReducer,
 		currentClass: ClassReducer
 	},
 	devTools: process.env.NODE_ENV === 'development'

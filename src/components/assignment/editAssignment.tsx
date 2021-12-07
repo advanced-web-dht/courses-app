@@ -18,19 +18,19 @@ import { IAssignment } from '../../type';
 interface AddAssignmentProps {
 	isOpen: boolean;
 	handleClose: () => void;
-	onUpdateAssignmentComplete: (newAssignment: IAssignment) => void;
 	oldDeadline: Date;
 	oldName: string;
 	id: number;
+	updateAssignmentContext: (targetAssignment: IAssignment) => void;
 }
 
 const EditAssignmentModal: React.FC<AddAssignmentProps> = ({
-	onUpdateAssignmentComplete,
 	isOpen,
 	handleClose,
 	oldDeadline,
 	oldName,
-	id
+	id,
+	updateAssignmentContext
 }) => {
 	const [name, error, setName, setError, resetVal] = useInput(oldName);
 	const [dateEnded, setDateEnded] = React.useState<Date>(oldDeadline);
@@ -45,14 +45,16 @@ const EditAssignmentModal: React.FC<AddAssignmentProps> = ({
 
 	const HandleSubmit = async () => {
 		setCanSubmit(false);
+
 		if (name.length < 6) {
 			setError('Tên bài tập ít nhất 6 ký tự!');
 			setCanSubmit(true);
 			return;
 		}
+
 		const result = await UpdateAssignment(currentClass.id, name, dateEnded, id);
 		if (result) {
-			onUpdateAssignmentComplete({ id, name, dateEnded: dateEnded.toString() });
+			updateAssignmentContext({ id, name, dateEnded: dateEnded.toString() });
 			HandleCloseModal();
 			toast.success('Bài tập đã được cập nhật thành công');
 		} else {

@@ -16,7 +16,8 @@ import UserOptions from '../userOptions';
 import AddClassModal from '../addClassModal';
 import useToggle from '../../hooks/useToggle';
 import InviteStudentPopup from '../inviteStudentPopup';
-import { ROLES } from '../../constants';
+import useWindowWidth from '../../hooks/useWindowWidth';
+import { ROLES, MOBILE_WIDTH } from '../../constants';
 
 interface ClassLayoutProps {
 	router: NextRouter;
@@ -27,19 +28,17 @@ interface ClassLayoutProps {
 const ClassLayout: React.FC<ClassLayoutProps> = ({ children, router, icon, title }) => {
 	const userRef = useRef<HTMLButtonElement>(null);
 	const { isOpen, handleClose, handleOpen } = useToggle();
-
+	const { isOpen: isOpenUser, handleClose: handleCloseUser, handleOpen: handleOpenUser } = useToggle();
 	const { info: currentClass } = useSelector((state: AppState) => state.currentClass);
+
+	const windowWidth = useWindowWidth();
 
 	return (
 		<Box sx={{ display: 'flex' }}>
-			<Navigation />
+			<Navigation detail={router.pathname.includes('/class/[code]')} />
 			<Box width='100%'>
-				<Header
-					icon={icon}
-					title={title}
-					link={router.pathname === '/class/[code]/grade' ? `/class/${currentClass.code}` : '/class'}
-				>
-					{router.pathname === '/class/[code]' && (
+				<Header icon={icon} title={title} link={`/class/${currentClass.code}`}>
+					{router.pathname === '/class/[code]' && windowWidth >= MOBILE_WIDTH && (
 						<Section>
 							<NavTabs />
 						</Section>
@@ -64,13 +63,13 @@ const ClassLayout: React.FC<ClassLayoutProps> = ({ children, router, icon, title
 							<IconButton
 								size='large'
 								aria-label='user-actions'
-								onClick={() => handleOpen()}
+								onClick={() => handleOpenUser()}
 								ref={userRef}
 							>
 								<Avatar />
 							</IconButton>
 						</Tooltip>
-						<UserOptions isOpen={isOpen} handleClose={handleClose} anchorEl={userRef.current} />
+						<UserOptions isOpen={isOpenUser} handleClose={handleCloseUser} anchorEl={userRef.current} />
 					</Section>
 				</Header>
 				<Box>{children}</Box>

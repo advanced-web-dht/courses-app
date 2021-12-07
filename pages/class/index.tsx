@@ -9,10 +9,16 @@ import { ClassesActions } from '../../src/reducers/classes';
 import Classes from '../../src/components/classes';
 import { GetAllClasses } from '../../src/api/server';
 import ClassLayout from '../../src/components/layout/class';
-
 import { IClass } from '../../src/type';
+import useRequest from '../../src/hooks/useRequest';
 
-const Home: Page = () => {
+interface ClassesPageProps {
+	fallbackData: IClass[];
+}
+
+const Home: Page<ClassesPageProps> = ({ fallbackData }: ClassesPageProps) => {
+	const { data } = useRequest<IClass[]>({ url: '/classes' }, { fallbackData });
+
 	return (
 		<React.Fragment>
 			<Head>
@@ -20,7 +26,7 @@ const Home: Page = () => {
 				<meta name='description' content='Danh sách lớp học' />
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<Classes />
+			<Classes classes={data as IClass[]} />
 		</React.Fragment>
 	);
 };
@@ -32,7 +38,9 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
 		store.dispatch(ClassesActions.storeClass(classes));
 
 		return {
-			props: {}
+			props: {
+				fallbackData: classes
+			}
 		};
 	}
 

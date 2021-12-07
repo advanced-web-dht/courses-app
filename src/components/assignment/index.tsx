@@ -1,36 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
 
 import { AppState } from '../../reducers';
 import Container from '../UI/Container';
 import { ClassesHeader } from '../classes/style';
 import AddAssignmentModal from './addAssignment';
-import AssignmentList from './assignmentList';
-import { GetAllAssignments } from '../../api/client';
+import useRequest from '../../hooks/useRequest';
+import Assignment from './assignment';
+import { ListWrapper } from './style';
 
 import { ROLES } from '../../constants';
-import { IAssignment, IPointPart } from '../../type';
+import { IAssignment } from '../../type';
 
-interface AddAssignmentProps {
-	grades: IPointPart[];
-}
+const Assignments: React.FC = () => {
+	const { info: currentClass, grades } = useSelector((state: AppState) => state.currentClass);
 
-const AddAssignment: React.FC<AddAssignmentProps> = ({ grades }) => {
-	const { info: currentClass } = useSelector((state: AppState) => state.currentClass);
-	const [assignments, setAssignments] = useState<IAssignment[]>([]);
+	const fetchUrl = `/assignment/${currentClass.id}`;
+	const {
+		data: assignments,
+		mutate,
+		response
+	} = useRequest<IAssignment[]>(
+		{
+			url: fetchUrl
+		},
+		{}
+	);
 
-	useEffect(() => {
-		GetAllAssignments(currentClass.id).then((data) => setAssignments([...data]));
-	}, []);
-
-	const handleAddAssignment = (newAssignment: IAssignment) => setAssignments((prev) => [...prev, newAssignment]);
-
-	const handleDeleteAssignment = (id: number) => setAssignments((prev) => prev.filter((item) => item.id !== id));
-
-	const handleUpdateAssignment = (targetAssignment: IAssignment) => {
-		const newAssignments = assignments.filter((item) => item.id !== targetAssignment.id);
-		setAssignments([...newAssignments, targetAssignment]);
+	const handleAddAssignment = async (newAssignment: IAssignment) => {
+		const data = [...(assignments as IAssignment[]), newAssignment];
+		await mutate({ ...response, data }, false);
 	};
 
 	return (
@@ -43,13 +44,17 @@ const AddAssignment: React.FC<AddAssignmentProps> = ({ grades }) => {
 				)}
 			</ClassesHeader>
 			<Divider />
-			<AssignmentList
-				assignments={assignments}
-				onDeleteAssignment={handleDeleteAssignment}
-				onUpdateAssignment={handleUpdateAssignment}
-			/>
+			<ListWrapper>
+				{assignments ? (
+					assignments.map((item) => <Assignment assignment={item} key={item.id} />)
+				) : (
+					<Typography component='span' variant='h6'>
+						Chưa có bài tập
+					</Typography>
+				)}
+			</ListWrapper>
 		</Container>
 	);
 };
 
-export default AddAssignment;
+export default Assignments;

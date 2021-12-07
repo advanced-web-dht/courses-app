@@ -29,9 +29,6 @@ export const BottomAppBar = styled(Container)`
 	bottom: 0;
 	min-height: 50px;
 	height: 50px;
-	@media screen and (max-width: 650px) {
-		visibility: visible;
-	}
 `;
 
 export const ToolBar = styled(Toolbar)<ToolBarProps>`
@@ -54,9 +51,6 @@ export const HeaderLink = styled.a`
 export const Section = styled(Box)<SectionProps>`
 	display: flex;
 	align-items: center;
-	@media screen and (max-width: 650px) {
-		display: ${(props) => props.middle && 'none'};
-	}
 `;
 
 export const Icons = styled.div`
