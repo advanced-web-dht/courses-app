@@ -16,10 +16,14 @@ const Banner: React.FC<BannerProps> = ({ title, owner }) => {
 		<StyledContainer>
 			<FullBanner>
 				<CustomBanner>
-					<Image src={banner} layout='fill' quality={100} priority />
+					<Image src={banner} layout='fill' quality={100} priority alt='cover' />
 					<TitleBanner>
-						<Typography variant='h4'>{title}</Typography>
-						<Typography variant='h6'>Giảng viên: {owner}</Typography>
+						<Typography variant='h4' component='div'>
+							{title}
+						</Typography>
+						<Typography variant='h6' component='div'>
+							Giảng viên: {owner}
+						</Typography>
 					</TitleBanner>
 				</CustomBanner>
 			</FullBanner>

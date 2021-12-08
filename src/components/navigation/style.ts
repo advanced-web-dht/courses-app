@@ -1,6 +1,9 @@
-import styled, { css } from 'styled-components';
+import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import Drawer, { DrawerProps } from '@mui/material/Drawer';
 import ListItemButton from '@mui/material/ListItemButton';
+import { SvgIcon } from '@mui/material';
+import List from '@mui/material/List';
 
 import theme from '../../theme';
 
@@ -37,6 +40,14 @@ export const StyledDrawer = styled(Drawer)<ExtendedDrawerProps>`
 	white-space: nowrap;
 	box-sizing: border-box;
 	transition: width 0.2s ${theme.transitions.easing.sharp};
+	-ms-overflow-style: none; /* for Internet Explorer, Edge */
+	.MuiPaper-root {
+		scrollbar-width: none; /* for Firefox */
+		overflow-y: scroll;
+		&::-webkit-scrollbar {
+			display: none; /* for Chrome, Safari, and Opera */
+		}
+	}
 	${(props) =>
 		props.$expanded
 			? expandedStyles
@@ -51,10 +62,11 @@ export const DrawerHeader = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	overflow: hidden;
 	width: ${drawerWidth};
 	height: 60px;
 	padding: 5px;
+	background: #fff;
+	z-index: 1000;
 `;
 
 export const StandName = styled.div`
@@ -70,15 +82,29 @@ export const StandName = styled.div`
 	margin-right: 10px;
 `;
 
-export const SubListItemButton = styled(ListItemButton)`
-	padding-left: 30px;
-`;
-
-export const HomePage = styled.div`
+export const HomePage = styled(SvgIcon)`
 	display: flex;
 	align-items: center;
 	margin-left: 15px;
 	:hover {
 		cursor: pointer;
 	}
+`;
+
+export const SubListItemButton = styled(ListItemButton)`
+	padding-left: 30px;
+`;
+
+export const ClassRoutesList = styled(List)`
+	@keyframes slidein {
+		from {
+			margin-top: -100px;
+		}
+		to {
+			margin-top: 0;
+		}
+	}
+	animation-duration: 0.2s;
+	animation-name: slidein;
+	animation-timing-function: linear;
 `;

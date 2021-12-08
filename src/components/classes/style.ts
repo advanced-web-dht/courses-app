@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 export const ClassesHeader = styled.div`
 	font-size: 18px;

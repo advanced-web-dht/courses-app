@@ -4,12 +4,12 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { toast } from 'react-toastify';
 
-import { StyledContainer, FormWrapper, FormHeader, FormContent, FormFooter, GoogleButton, FormActions } from './style';
 import RoundedButton from '../UI/RoundedButton';
 import useInput from '../../hooks/useInput';
 import useRedirect from '../../hooks/useRedirect';
 import { checkEmailExisted, checkUsernameExisted, submitSignUp } from '../../api/client/auth';
 import GoogleSignIn from './google';
+import { StyledContainer, FormWrapper, FormHeader, FormContent, FormFooter, GoogleButton, FormActions } from './style';
 import { EMAIL_CHECK, PASSWORD_CHECK } from '../../constants';
 
 const SignUpForm = () => {

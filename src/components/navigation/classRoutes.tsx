@@ -3,13 +3,13 @@ import Link from 'next/link';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTasks } from '@fortawesome/free-solid-svg-icons/faTasks';
 import { faWindowRestore } from '@fortawesome/free-solid-svg-icons/faWindowRestore';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 
-import { SubListItemButton } from './style';
+import FontAwesomeSvgIcon from '../UI/fontAweosomeIcon';
+import { SubListItemButton, ClassRoutesList } from './style';
 
 interface ClassRoutesProps {
 	classCode?: string;
@@ -18,26 +18,26 @@ interface ClassRoutesProps {
 const ClassRoutes: React.FC<ClassRoutesProps> = ({ classCode }) => {
 	return (
 		<React.Fragment>
-			<List>
+			<ClassRoutesList>
 				<ListItem>
 					<ListItemIcon>
-						<FontAwesomeIcon icon={faTasks} size='2x' />
+						<FontAwesomeSvgIcon icon={faTasks} size='large' />
 					</ListItemIcon>
 					<ListItemText primary='Quản lý lớp học' />
 				</ListItem>
-				<List>
+				<List component='div'>
 					<Link href={`/class/${classCode}/grade`}>
 						<a>
 							<SubListItemButton>
 								<ListItemIcon>
-									<FontAwesomeIcon icon={faWindowRestore} size='lg' />
+									<FontAwesomeSvgIcon icon={faWindowRestore} />
 								</ListItemIcon>
 								<ListItemText primary='Cấu trúc điểm' />
 							</SubListItemButton>
 						</a>
 					</Link>
 				</List>
-			</List>
+			</ClassRoutesList>
 			<Divider />
 		</React.Fragment>
 	);

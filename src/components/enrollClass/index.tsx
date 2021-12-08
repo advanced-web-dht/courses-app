@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import Typography from '@mui/material/Typography';
 
@@ -12,16 +13,17 @@ import useRedirect from '../../hooks/useRedirect';
 interface EnrollClassProps {
 	classData: IClass;
 	isAuth: boolean;
-	token?: string;
 }
 
-const EnrollClass: React.FC<EnrollClassProps> = ({ isAuth, classData, token }) => {
+const EnrollClass: React.FC<EnrollClassProps> = ({ isAuth, classData }) => {
 	const redirect = useRedirect();
+	const router = useRouter();
 
 	const handleEnroll = async () => {
 		let result;
+		const { token } = router.query;
 		if (token) {
-			result = await EnrollClassForTeacher(classData.id, token);
+			result = await EnrollClassForTeacher(classData.id, token as string);
 		} else {
 			result = await EnrollClassAPI(classData.id);
 		}
@@ -33,7 +35,7 @@ const EnrollClass: React.FC<EnrollClassProps> = ({ isAuth, classData, token }) =
 		}
 	};
 
-	const redirectUrl = `/enroll/${classData?.code}${token && `?token=${token}`}`;
+	const redirectUrl = `/enroll/${classData?.code}${router.query.token ? `?token=${router.query.tokentoken}` : ''}`;
 
 	return (
 		<StyledContainer>
@@ -64,10 +66,6 @@ const EnrollClass: React.FC<EnrollClassProps> = ({ isAuth, classData, token }) =
 			)}
 		</StyledContainer>
 	);
-};
-
-EnrollClass.defaultProps = {
-	token: ''
 };
 
 export default EnrollClass;

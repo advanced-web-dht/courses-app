@@ -30,7 +30,7 @@ const SubListClass: React.FC<SubListClassProps> = ({ isOpen, list, type }) => {
 
 	return (
 		<Collapse in={isOpen} timeout='auto' unmountOnExit>
-			<List component='div' disablePadding>
+			<List disablePadding>
 				{renderList?.map((cls) => (
 					<Link key={cls.id} href={`/class/${cls.code}`} passHref prefetch={false}>
 						<SubListItemButton>

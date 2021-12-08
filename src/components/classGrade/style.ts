@@ -1,4 +1,5 @@
-import styled, { css } from 'styled-components';
+import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import Button, { ButtonProps } from '@mui/material/Button';
 
 export const ListGrade = styled.div`

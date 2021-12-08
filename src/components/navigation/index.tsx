@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import Link from 'next/link';
 import Divider from '@mui/material/Divider';
@@ -12,7 +12,6 @@ import ExpandedIcon from '@mui/icons-material/KeyboardArrowRight';
 import CloseIcon from '@mui/icons-material/Close';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChalkboardTeacher } from '@fortawesome/free-solid-svg-icons/faChalkboardTeacher';
 import { faGraduationCap } from '@fortawesome/free-solid-svg-icons/faGraduationCap';
 import { faHome } from '@fortawesome/free-solid-svg-icons/faHome';
@@ -22,6 +21,7 @@ import { CommonContext } from '../../store/common';
 import SubListClass from './subListClass';
 import ClassRoutes from './classRoutes';
 import useWindowWidth from '../../hooks/useWindowWidth';
+import FontAwesomeSvgIcon from '../UI/fontAweosomeIcon';
 import { StyledDrawer, DrawerHeader, HomePage } from './style';
 import { ROLES } from '../../constants';
 import useRequest from '../../hooks/useRequest';
@@ -41,6 +41,7 @@ const Navigation: React.FC<NavigationProps> = ({ detail }) => {
 	const [isOpenStudyClass, setIsOpenStudyClass] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
 	const windowWidth = useWindowWidth();
+	const drawerRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		if (windowWidth < 650) {
@@ -51,11 +52,9 @@ const Navigation: React.FC<NavigationProps> = ({ detail }) => {
 	}, [windowWidth]);
 
 	const handleCloseDrawer = () => {
-		if (!expanded) {
-			closeNav();
-			setIsOpenTeachClass(false);
-			setIsOpenStudyClass(false);
-		}
+		closeNav();
+		setIsOpenTeachClass(false);
+		setIsOpenStudyClass(false);
 	};
 
 	const handleCloseDrawerByLeaveMouse = () => {
@@ -79,19 +78,20 @@ const Navigation: React.FC<NavigationProps> = ({ detail }) => {
 				onMouseLeave={handleCloseDrawerByLeaveMouse}
 				onClose={handleCloseDrawer}
 				$expanded={expanded}
+				ref={drawerRef}
 			>
 				<DrawerHeader>
 					<Link href='/class' passHref>
-						<HomePage>
-							<FontAwesomeIcon icon={faHome} size='2x' />
+						<HomePage fontSize='large'>
+							<FontAwesomeSvgIcon icon={faHome} size='large' />
 						</HomePage>
 					</Link>
 					{isMobile ? (
-						<IconButton size='large' onClick={handleCloseDrawer}>
+						<IconButton size='large' onClick={handleCloseDrawer} aria-label='close nav'>
 							<CloseIcon />
 						</IconButton>
 					) : (
-						<IconButton size='large' onClick={() => setExpanded(!expanded)}>
+						<IconButton size='large' onClick={() => setExpanded(!expanded)} aria-label='expand nav'>
 							{expanded ? <CollapseIcon /> : <ExpandedIcon />}
 						</IconButton>
 					)}
@@ -100,10 +100,10 @@ const Navigation: React.FC<NavigationProps> = ({ detail }) => {
 				{detail && (currentClass.role === ROLES.owner || currentClass.role === ROLES.teacher) && (
 					<ClassRoutes classCode={currentClass.code} />
 				)}
-				<List>
+				<List component='div'>
 					<ListItemButton onClick={() => setIsOpenTeachClass(!isOpenTeachClass)}>
 						<ListItemIcon>
-							<FontAwesomeIcon icon={faChalkboardTeacher} size='2x' />
+							<FontAwesomeSvgIcon icon={faChalkboardTeacher} size='large' />
 						</ListItemIcon>
 						<ListItemText primary='Giảng dạy' />
 						{isOpenTeachClass ? <ExpandLess /> : <ExpandMore />}
@@ -111,10 +111,10 @@ const Navigation: React.FC<NavigationProps> = ({ detail }) => {
 					<SubListClass isOpen={isOpenTeachClass} list={classes as IClass[]} type='teacher' />
 				</List>
 				<Divider />
-				<List>
+				<List component='div'>
 					<ListItemButton onClick={() => setIsOpenStudyClass(!isOpenStudyClass)}>
 						<ListItemIcon>
-							<FontAwesomeIcon icon={faGraduationCap} size='2x' />
+							<FontAwesomeSvgIcon icon={faGraduationCap} size='large' />
 						</ListItemIcon>
 						<ListItemText primary='Đã đăng ký' />
 						{isOpenStudyClass ? <ExpandLess /> : <ExpandMore />}

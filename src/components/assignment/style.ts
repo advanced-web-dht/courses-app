@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import DatePicker from 'react-datepicker';

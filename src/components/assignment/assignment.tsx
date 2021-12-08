@@ -61,7 +61,7 @@ const Assignment: React.FC<AssignmentProps> = ({ assignment }) => {
 				<span>
 					Đến hạn {date.toLocaleDateString()} | {date.toLocaleTimeString()}
 				</span>
-				<IconButton ref={buttonRef} onClick={handleOpen}>
+				<IconButton ref={buttonRef} onClick={handleOpen} aria-label='assignment options'>
 					<MoreVertRoundedIcon />
 				</IconButton>
 			</AssignmentItemAction>

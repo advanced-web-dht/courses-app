@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import AppBar from '@mui/material/AppBar';
 import Toolbar, { ToolbarProps } from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
@@ -23,7 +23,6 @@ export const Container = styled(AppBar)`
 `;
 
 export const BottomAppBar = styled(Container)`
-	visibility: hidden;
 	position: fixed;
 	top: auto;
 	bottom: 0;

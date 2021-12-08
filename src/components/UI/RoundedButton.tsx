@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Button from '@mui/material/Button';
 
 const RoundedButton = styled(Button)`
