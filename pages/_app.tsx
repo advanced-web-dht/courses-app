@@ -33,7 +33,7 @@ const MyApp = ({ Component, pageProps, emotionCache = clientSideEmotionCache }: 
         <title>Fit Class</title>
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
-      <CacheProvider value={emotionCache} abc>
+      <CacheProvider value={emotionCache}>
         <ThemeProvider theme={theme}>
           <CommonProvider>
             <CssBaseline />
