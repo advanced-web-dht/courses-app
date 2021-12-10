@@ -9,6 +9,9 @@ const NavTab = styled(Box)`
 	span {
 		height: 5px;
 	}
+	.MuiTabs-scroller {
+		overflow-x: scroll !important;
+	}
 `;
 
 export default NavTab;

@@ -48,7 +48,7 @@ const Assignment: React.FC<AssignmentProps> = ({ assignment }) => {
 		const data = [...(assignments as IAssignment[])];
 		const index = data.findIndex((item) => item.id === targetAssignment.id);
 		data[index] = targetAssignment;
-		await mutate({ ...response, data: data as IAssignment[] }, false);
+		await mutate({ ...response, data }, false);
 	}, []);
 
 	return (
