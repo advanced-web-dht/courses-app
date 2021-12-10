@@ -1,44 +1,37 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 
-import { NavContext } from '../../store/detailNav';
+import { AppState } from '../../reducers';
 import Members from '../members';
 import Banner from '../banner';
-import { IClass, IClassMember } from '../../type';
+import Assignments from '../assignment';
 
-interface ClassContentProps {
-	classData: IClass;
-}
+import { ROLES } from '../../constants';
 
-const ClassContent: React.FC<ClassContentProps> = ({ classData }) => {
-	const { currentTab } = useContext(NavContext);
-	const [displayMember, setDisplayMember] = useState<IClassMember[]>([]);
+const ClassContent: React.FC = () => {
+  const { info, members, currentTab } = useSelector((state: AppState) => state.currentClass);
 
-	useEffect(() => {
-		let members;
-		switch (currentTab) {
-			case 1:
-				members = classData.members.filter((member: IClassMember) => member.details?.role === 'student');
-				setDisplayMember(members);
-				break;
-			case 2:
-				members = classData.members.filter(
-					(member: IClassMember) => member.details?.role === 'teacher' || member.details?.role === 'owner'
-				);
-				setDisplayMember(members);
-				break;
-			default:
-				break;
-		}
-	}, [currentTab]);
+  const teachers = useMemo(
+    () => members.filter((member) => member.detail?.role === ROLES.owner || member.detail?.role === ROLES.teacher),
+    [info?.id]
+  );
 
-	const Content =
-		currentTab === 0 ? (
-			<Banner title={classData.name} code={classData.code} />
-		) : (
-			<Members members={displayMember} role={currentTab === 1 ? 'student' : 'teacher'} />
-		);
+  const students = useMemo(() => members.filter((member) => member.detail?.role === ROLES.student), [info?.id]);
 
-	return Content;
+  const owner = useMemo(() => members.find((member) => member.detail?.role === 'owner'), [info?.id]);
+
+  switch (currentTab) {
+    case 0:
+      return <Banner title={info?.name as string} owner={owner && owner.name} />;
+    case 1:
+      return <Assignments />;
+    case 2:
+      return <Members members={students} roleType='student' />;
+    case 3:
+      return <Members members={teachers} roleType='teacher' />;
+    default:
+      return null;
+  }
 };
 
 export default ClassContent;

@@ -10,31 +10,31 @@ import SignInForm from '../../src/components/auth/signInForm';
 import useRedirect from '../../src/hooks/useRedirect';
 
 const SignIn: NextPage = () => {
-	const [session, loading] = useSession();
-	const redirect = useRedirect();
-	const { isReady } = redirect;
+  const [session, loading] = useSession();
+  const redirect = useRedirect();
+  const { isReady } = redirect;
 
-	useEffect(() => {
-		(async () => {
-			if (!loading && session && isReady) {
-				await redirect.doRedirect('/class');
-			}
-		})();
-	}, [session, loading, isReady]);
+  useEffect(() => {
+    (async () => {
+      if (!loading && session && isReady) {
+        await redirect.doRedirect('/class');
+      }
+    })();
+  }, [session, loading, isReady]);
 
-	return loading ? (
-		<LinearProgress color='secondary' />
-	) : (
-		<React.Fragment>
-			<Head>
-				<title>Fit Class - Đăng Nhập</title>
-				<meta name='description' content='Đăng nhập vào Fit class' />
-				<link rel='icon' href='/favicon.ico' />
-			</Head>
-			<Header title='Fit class' icon={<LockOpenRounded />} isSignIn />
-			<SignInForm />
-		</React.Fragment>
-	);
+  return loading ? (
+    <LinearProgress color='secondary' />
+  ) : (
+    <React.Fragment>
+      <Head>
+        <title>Fit Class - Đăng Nhập</title>
+        <meta name='description' content='Đăng nhập vào Fit class' />
+        <link rel='icon' href='/favicon.ico' />
+      </Head>
+      <Header title='Fit class' icon={<LockOpenRounded />} />
+      <SignInForm />
+    </React.Fragment>
+  );
 };
 
 export default SignIn;

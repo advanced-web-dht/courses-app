@@ -1,76 +1,62 @@
-import React, { memo } from 'react';
-import type { NextPage } from 'next';
-import { GetServerSideProps } from 'next';
+import React from 'react';
 import Head from 'next/head';
-import Button from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
 import { getSession } from 'next-auth/client';
-
 import ClassIcon from '@mui/icons-material/Class';
-import PlusIcon from '@mui/icons-material/Add';
 
+import { wrapper } from '../../src/reducers';
+import { Page } from '../../src/type/page';
+import { ClassesActions } from '../../src/reducers/classes';
 import Classes from '../../src/components/classes';
-import Header from '../../src/components/header';
-import AddClassModal from '../../src/components/addClassModal';
-import useToggle from '../../src/hooks/useToggle';
-import ClassProvider from '../../src/store/class';
 import { GetAllClasses } from '../../src/api/server';
-
+import ClassLayout from '../../src/components/layout/class';
 import { IClass } from '../../src/type';
+import useRequest from '../../src/hooks/useRequest';
 
 interface ClassesPageProps {
-	classes: IClass[];
+  fallbackData: IClass[];
 }
 
-const addClassModalWithButton = () => {
-	const { isOpen, handleOpen, handleClose } = useToggle();
+const Home: Page<ClassesPageProps> = ({ fallbackData }: ClassesPageProps) => {
+  const { data } = useRequest<IClass[]>({ url: '/classes' }, { fallbackData });
 
-	return (
-		<React.Fragment>
-			<Tooltip title='Thêm lớp học'>
-				<Button onClick={handleOpen} aria-label='Add Class'>
-					<PlusIcon />
-				</Button>
-			</Tooltip>
-			<AddClassModal open={isOpen} handleClose={handleClose} />
-		</React.Fragment>
-	);
+  return (
+    <React.Fragment>
+      <Head>
+        <title>Fit Class - Lớp học</title>
+        <meta name='description' content='Danh sách lớp học' />
+        <link rel='icon' href='/favicon.ico' />
+      </Head>
+      <Classes classes={data as IClass[]} />
+    </React.Fragment>
+  );
 };
 
-const AddClassModalWithButton = memo(addClassModalWithButton);
+export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+  const session = await getSession(context);
+  if (session) {
+    const classes: IClass[] = await GetAllClasses(session?.accessToken as string);
+    store.dispatch(ClassesActions.storeClass(classes));
 
-const Home: NextPage<ClassesPageProps> = ({ classes }: ClassesPageProps) => {
-	return (
-		<ClassProvider initClasses={classes}>
-			<Head>
-				<title>Fit Class - Lớp học</title>
-				<meta name='description' content='Danh sách lớp học' />
-				<link rel='icon' href='/favicon.ico' />
-			</Head>
-			<Header title='Fit Class' icon={<ClassIcon />} rightAction={<AddClassModalWithButton />} isAuth />
-			<Classes />
-		</ClassProvider>
-	);
+    return {
+      props: {
+        fallbackData: classes
+      }
+    };
+  }
+
+  return {
+    redirect: {
+      destination: '/signin',
+      statusCode: 302
+    }
+  };
+});
+
+Home.getLayout = (page: React.ReactElement) => {
+  return (
+    <ClassLayout icon={<ClassIcon />} title='Fit Class'>
+      {page}
+    </ClassLayout>
+  );
 };
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-	const session = await getSession(context);
-	if (session) {
-		const classes: IClass[] = await GetAllClasses(session?.accessToken as string);
-
-		return {
-			props: {
-				classes
-			}
-		};
-	}
-
-	return {
-		redirect: {
-			destination: '/signin',
-			statusCode: 302
-		}
-	};
-};
-
 export default Home;
