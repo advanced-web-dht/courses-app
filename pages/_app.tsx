@@ -17,8 +17,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import createEmotionCache from '../src/cache';
 
 type AppPropsWithLayoutProps = AppProps & {
-	Component: Page;
-	emotionCache: EmotionCache;
+  Component: Page;
+  emotionCache: EmotionCache;
 };
 
 library.add(fab);
@@ -26,24 +26,24 @@ library.add(fab);
 const clientSideEmotionCache = createEmotionCache();
 
 const MyApp = ({ Component, pageProps, emotionCache = clientSideEmotionCache }: AppPropsWithLayoutProps): JSX.Element => {
-	const getLayout = Component.getLayout ?? ((page) => page);
-	return (
-		<Provider session={pageProps.session}>
-			<Head>
-				<title>Fit Class</title>
-				<meta name='viewport' content='initial-scale=1, width=device-width' />
-			</Head>
-			<CacheProvider value={emotionCache}>
-				<ThemeProvider theme={theme}>
-					<CommonProvider>
-						<CssBaseline />
-						{getLayout(<Component {...pageProps} />)}
-					</CommonProvider>
-				</ThemeProvider>
-			</CacheProvider>
-			<ToastContainer position='bottom-right' autoClose={1500} newestOnTop={false} draggable={false} closeOnClick pauseOnHover />
-		</Provider>
-	);
+  const getLayout = Component.getLayout ?? ((page) => page);
+  return (
+    <Provider session={pageProps.session}>
+      <Head>
+        <title>Fit Class</title>
+        <meta name='viewport' content='initial-scale=1, width=device-width' />
+      </Head>
+      <CacheProvider value={emotionCache}>
+        <ThemeProvider theme={theme}>
+          <CommonProvider>
+            <CssBaseline />
+            {getLayout(<Component {...pageProps} />)}
+          </CommonProvider>
+        </ThemeProvider>
+      </CacheProvider>
+      <ToastContainer position='bottom-right' autoClose={1500} newestOnTop={false} draggable={false} closeOnClick pauseOnHover />
+    </Provider>
+  );
 };
 
 export default wrapper.withRedux(MyApp);

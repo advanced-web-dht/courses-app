@@ -11,35 +11,35 @@ import useToggle from '../../hooks/useToggle';
 import { IClass } from '../../type';
 
 interface ClassesProps {
-	classes: IClass[];
+  classes: IClass[];
 }
 
 const Classes: React.FC<ClassesProps> = ({ classes }) => {
-	const { isOpen, handleOpen, handleClose } = useToggle();
+  const { isOpen, handleOpen, handleClose } = useToggle();
 
-	return (
-		<Container>
-			<ClassesHeader>
-				<div>Các lớp đang tham gia</div>
-			</ClassesHeader>
-			<ClassesListContainer>
-				<Grid component='ol' container spacing={2}>
-					{classes?.map((cls) => (
-						<Grid key={cls.id} item xs={12} md={6} lg={4} component='li'>
-							<Class classData={cls} />
-						</Grid>
-					))}
-					<Grid item xs={12} md={6} lg={4} component='li'>
-						<FakeCard onClick={() => handleOpen()}>
-							<PlusIcon fontSize='large' />
-							<div>Thêm lớp mới</div>
-						</FakeCard>
-					</Grid>
-				</Grid>
-			</ClassesListContainer>
-			<AddClassModal open={isOpen} handleClose={handleClose} />
-		</Container>
-	);
+  return (
+    <Container>
+      <ClassesHeader>
+        <div>Các lớp đang tham gia</div>
+      </ClassesHeader>
+      <ClassesListContainer>
+        <Grid component='ol' container spacing={2}>
+          {classes?.map((cls) => (
+            <Grid key={cls.id} item xs={12} md={6} lg={4} component='li'>
+              <Class classData={cls} />
+            </Grid>
+          ))}
+          <Grid item xs={12} md={6} lg={4} component='li'>
+            <FakeCard onClick={() => handleOpen()}>
+              <PlusIcon fontSize='large' />
+              <div>Thêm lớp mới</div>
+            </FakeCard>
+          </Grid>
+        </Grid>
+      </ClassesListContainer>
+      <AddClassModal open={isOpen} handleClose={handleClose} />
+    </Container>
+  );
 };
 
 export default Classes;

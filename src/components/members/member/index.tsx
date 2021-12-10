@@ -7,20 +7,20 @@ import { IClassMember } from '../../../type';
 import Avatar from '../../../../public/avatar.svg';
 
 interface ClassProps {
-	member: IClassMember;
+  member: IClassMember;
 }
 
 const Member: React.FC<ClassProps> = ({ member }) => {
-	return (
-		<StyledCard background='#edf2f1'>
-			<CardContent>
-				<Image src={Avatar} width={98} height={98} alt={member.name} />
-			</CardContent>
-			<CardLabel>
-				<Typography>{member.name}</Typography>
-			</CardLabel>
-		</StyledCard>
-	);
+  return (
+    <StyledCard background='#edf2f1'>
+      <CardContent>
+        <Image src={Avatar} width={98} height={98} alt={member.name} />
+      </CardContent>
+      <CardLabel>
+        <Typography>{member.name}</Typography>
+      </CardLabel>
+    </StyledCard>
+  );
 };
 
 export default Member;

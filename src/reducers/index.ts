@@ -4,10 +4,10 @@ import { createWrapper } from 'next-redux-wrapper';
 import ClassReducer from './class';
 
 const RootStore = configureStore({
-	reducer: {
-		currentClass: ClassReducer
-	},
-	devTools: process.env.NODE_ENV === 'development'
+  reducer: {
+    currentClass: ClassReducer
+  },
+  devTools: process.env.NODE_ENV === 'development'
 });
 
 const makeStore = () => RootStore;

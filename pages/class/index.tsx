@@ -13,50 +13,50 @@ import { IClass } from '../../src/type';
 import useRequest from '../../src/hooks/useRequest';
 
 interface ClassesPageProps {
-	fallbackData: IClass[];
+  fallbackData: IClass[];
 }
 
 const Home: Page<ClassesPageProps> = ({ fallbackData }: ClassesPageProps) => {
-	const { data } = useRequest<IClass[]>({ url: '/classes' }, { fallbackData });
+  const { data } = useRequest<IClass[]>({ url: '/classes' }, { fallbackData });
 
-	return (
-		<React.Fragment>
-			<Head>
-				<title>Fit Class - Lớp học</title>
-				<meta name='description' content='Danh sách lớp học' />
-				<link rel='icon' href='/favicon.ico' />
-			</Head>
-			<Classes classes={data as IClass[]} />
-		</React.Fragment>
-	);
+  return (
+    <React.Fragment>
+      <Head>
+        <title>Fit Class - Lớp học</title>
+        <meta name='description' content='Danh sách lớp học' />
+        <link rel='icon' href='/favicon.ico' />
+      </Head>
+      <Classes classes={data as IClass[]} />
+    </React.Fragment>
+  );
 };
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
-	const session = await getSession(context);
-	if (session) {
-		const classes: IClass[] = await GetAllClasses(session?.accessToken as string);
-		store.dispatch(ClassesActions.storeClass(classes));
+  const session = await getSession(context);
+  if (session) {
+    const classes: IClass[] = await GetAllClasses(session?.accessToken as string);
+    store.dispatch(ClassesActions.storeClass(classes));
 
-		return {
-			props: {
-				fallbackData: classes
-			}
-		};
-	}
+    return {
+      props: {
+        fallbackData: classes
+      }
+    };
+  }
 
-	return {
-		redirect: {
-			destination: '/signin',
-			statusCode: 302
-		}
-	};
+  return {
+    redirect: {
+      destination: '/signin',
+      statusCode: 302
+    }
+  };
 });
 
 Home.getLayout = (page: React.ReactElement) => {
-	return (
-		<ClassLayout icon={<ClassIcon />} title='Fit Class'>
-			{page}
-		</ClassLayout>
-	);
+  return (
+    <ClassLayout icon={<ClassIcon />} title='Fit Class'>
+      {page}
+    </ClassLayout>
+  );
 };
 export default Home;

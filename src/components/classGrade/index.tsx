@@ -14,50 +14,50 @@ import { ListGrade } from './style';
 import { updateOrder } from './action';
 
 const ClassGrade: React.FC = () => {
-	const { grades, info: currentClass } = useSelector((state: AppState) => state.currentClass);
-	const dispatch = useDispatch();
+  const { grades, info: currentClass } = useSelector((state: AppState) => state.currentClass);
+  const dispatch = useDispatch();
 
-	const onDragEnd = async (result: DropResult) => {
-		if (!result.destination) {
-			return;
-		}
+  const onDragEnd = async (result: DropResult) => {
+    if (!result.destination) {
+      return;
+    }
 
-		if (result.destination.index === result.source.index) {
-			return;
-		}
+    if (result.destination.index === result.source.index) {
+      return;
+    }
 
-		const newGrades = reorder(grades, result.source.index, result.destination.index);
-		dispatch(updateOrder(newGrades));
+    const newGrades = reorder(grades, result.source.index, result.destination.index);
+    dispatch(updateOrder(newGrades));
 
-		const newOrder = newGrades.map((grade, index) => ({ id: grade.id, order: index }));
-		const response = await UpdatePointPartOrder(currentClass?.id as number, newOrder);
-		if (!response) {
-			toast.error('Thay đổi thứ tự không thảnh công!');
-		}
-	};
+    const newOrder = newGrades.map((grade, index) => ({ id: grade.id, order: index }));
+    const response = await UpdatePointPartOrder(currentClass?.id as number, newOrder);
+    if (!response) {
+      toast.error('Thay đổi thứ tự không thảnh công!');
+    }
+  };
 
-	return (
-		<Container>
-			<ClassesHeader>
-				<div>Cấu trúc điểm</div>
-			</ClassesHeader>
-			<ListGrade>
-				<DragDropContext onDragEnd={onDragEnd}>
-					<Droppable droppableId='list'>
-						{(provided) => (
-							<div ref={provided.innerRef} {...provided.droppableProps}>
-								{grades.map((item, index) => (
-									<Grade grade={item} index={index} key={item.id} classId={item.classId} />
-								))}
-								{provided.placeholder}
-							</div>
-						)}
-					</Droppable>
-				</DragDropContext>
-				<AddGrade newOrder={grades.length} classId={currentClass?.id as number} />
-			</ListGrade>
-		</Container>
-	);
+  return (
+    <Container>
+      <ClassesHeader>
+        <div>Cấu trúc điểm</div>
+      </ClassesHeader>
+      <ListGrade>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId='list'>
+            {(provided) => (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                {grades.map((item, index) => (
+                  <Grade grade={item} index={index} key={item.id} classId={item.classId} />
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+        <AddGrade newOrder={grades.length} classId={currentClass?.id as number} />
+      </ListGrade>
+    </Container>
+  );
 };
 
 export default ClassGrade;

@@ -22,104 +22,104 @@ import { AddAssignmentButton, StyledModal, Form, FormHeader, FormAction, DatePic
 import { IAssignment, IPointPart } from '../../type';
 
 interface AddAssignmentProps {
-	grades: IPointPart[];
-	onAddAssignmentComplete: (newAssignment: IAssignment) => void;
+  grades: IPointPart[];
+  onAddAssignmentComplete: (newAssignment: IAssignment) => void;
 }
 
 const AddAssignmentModal: React.FC<AddAssignmentProps> = ({ grades, onAddAssignmentComplete }) => {
-	const { isOpen, handleOpen, handleClose } = useToggle();
-	const { info: currentClass } = useSelector((state: AppState) => state.currentClass);
+  const { isOpen, handleOpen, handleClose } = useToggle();
+  const { info: currentClass } = useSelector((state: AppState) => state.currentClass);
 
-	const [name, error, setName, setError, resetVal] = useInput();
-	const [dateEnded, setDateEnded] = React.useState<Date>(new Date());
-	const [grade, setGrade] = React.useState('');
+  const [name, error, setName, setError, resetVal] = useInput();
+  const [dateEnded, setDateEnded] = React.useState<Date>(new Date());
+  const [grade, setGrade] = React.useState('');
 
-	const [canSubmit, setCanSubmit] = useState(true);
+  const [canSubmit, setCanSubmit] = useState(true);
 
-	const HandleCloseModal = () => {
-		resetVal();
-		handleClose();
-	};
+  const HandleCloseModal = () => {
+    resetVal();
+    handleClose();
+  };
 
-	const HandleSubmit = async () => {
-		setCanSubmit(false);
-		if (name.length < 6) {
-			setError('Tên bài tập ít nhất 6 ký tự!');
-			setCanSubmit(true);
-			return;
-		}
-		try {
-			const gradeNum = parseInt(grade, 10);
-			const newAssignment = await AddAssignment(currentClass.id, gradeNum, name, dateEnded);
-			onAddAssignmentComplete(newAssignment);
-			HandleCloseModal();
-			toast.success('Bài tập đã được thêm thành công');
-		} catch (e) {
-			toast.error('Thêm bài tập không thành công!');
-		}
-		setCanSubmit(true);
-	};
+  const HandleSubmit = async () => {
+    setCanSubmit(false);
+    if (name.length < 6) {
+      setError('Tên bài tập ít nhất 6 ký tự!');
+      setCanSubmit(true);
+      return;
+    }
+    try {
+      const gradeNum = parseInt(grade, 10);
+      const newAssignment = await AddAssignment(currentClass.id, gradeNum, name, dateEnded);
+      onAddAssignmentComplete(newAssignment);
+      HandleCloseModal();
+      toast.success('Bài tập đã được thêm thành công');
+    } catch (e) {
+      toast.error('Thêm bài tập không thành công!');
+    }
+    setCanSubmit(true);
+  };
 
-	const handleChange = (event: SelectChangeEvent) => {
-		setGrade(event.target.value as string);
-	};
+  const handleChange = (event: SelectChangeEvent) => {
+    setGrade(event.target.value as string);
+  };
 
-	return (
-		<React.Fragment>
-			<AddAssignmentButton onClick={handleOpen} aria-label='add assignment' color='secondary' variant='contained'>
-				<FontAwesomeIcon icon={faPlus} />
-				<span>Tạo</span>
-			</AddAssignmentButton>
-			<StyledModal open={isOpen} onClose={handleClose}>
-				<Zoom in={isOpen}>
-					<Form>
-						<FormHeader>
-							<div>Tạo bài tập</div>
-							<IconButton onClick={handleClose}>
-								<XIcon />
-							</IconButton>
-						</FormHeader>
-						<FormAction component='form'>
-							<TextField
-								required
-								variant='outlined'
-								label='Tiêu đề'
-								placeholder='Tiêu đề'
-								color='primary'
-								value={name}
-								onChange={setName}
-								error={error.status}
-								helperText={error.message}
-								autoFocus
-								margin='normal'
-							/>
-							<FormControl fullWidth margin='normal'>
-								<InputLabel id='select-label'>Điểm</InputLabel>
-								<Select labelId='select-label' id='simple-select' value={grade} label='Điểm' onChange={handleChange}>
-									{grades.map((gradeItem) => (
-										<MenuItem value={gradeItem.id} key={gradeItem.id}>
-											{gradeItem.name} - {gradeItem.ratio}%
-										</MenuItem>
-									))}
-								</Select>
-								<DatePickerModal
-									placeholderText='Hạn nộp'
-									selected={dateEnded}
-									onChange={(date: Date) => setDateEnded(date)}
-									timeInputLabel='Time:'
-									dateFormat='MM/dd/yyyy h:mm aa'
-									showTimeInput
-								/>
-							</FormControl>
-							<Button variant='contained' color='primary' onClick={HandleSubmit} disabled={!canSubmit}>
-								Tạo
-							</Button>
-						</FormAction>
-					</Form>
-				</Zoom>
-			</StyledModal>
-		</React.Fragment>
-	);
+  return (
+    <React.Fragment>
+      <AddAssignmentButton onClick={handleOpen} aria-label='add assignment' color='secondary' variant='contained'>
+        <FontAwesomeIcon icon={faPlus} />
+        <span>Tạo</span>
+      </AddAssignmentButton>
+      <StyledModal open={isOpen} onClose={handleClose}>
+        <Zoom in={isOpen}>
+          <Form>
+            <FormHeader>
+              <div>Tạo bài tập</div>
+              <IconButton onClick={handleClose}>
+                <XIcon />
+              </IconButton>
+            </FormHeader>
+            <FormAction component='form'>
+              <TextField
+                required
+                variant='outlined'
+                label='Tiêu đề'
+                placeholder='Tiêu đề'
+                color='primary'
+                value={name}
+                onChange={setName}
+                error={error.status}
+                helperText={error.message}
+                autoFocus
+                margin='normal'
+              />
+              <FormControl fullWidth margin='normal'>
+                <InputLabel id='select-label'>Điểm</InputLabel>
+                <Select labelId='select-label' id='simple-select' value={grade} label='Điểm' onChange={handleChange}>
+                  {grades.map((gradeItem) => (
+                    <MenuItem value={gradeItem.id} key={gradeItem.id}>
+                      {gradeItem.name} - {gradeItem.ratio}%
+                    </MenuItem>
+                  ))}
+                </Select>
+                <DatePickerModal
+                  placeholderText='Hạn nộp'
+                  selected={dateEnded}
+                  onChange={(date: Date) => setDateEnded(date)}
+                  timeInputLabel='Time:'
+                  dateFormat='MM/dd/yyyy h:mm aa'
+                  showTimeInput
+                />
+              </FormControl>
+              <Button variant='contained' color='primary' onClick={HandleSubmit} disabled={!canSubmit}>
+                Tạo
+              </Button>
+            </FormAction>
+          </Form>
+        </Zoom>
+      </StyledModal>
+    </React.Fragment>
+  );
 };
 
 export default AddAssignmentModal;

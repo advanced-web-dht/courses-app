@@ -20,54 +20,54 @@ import useWindowWidth from '../../hooks/useWindowWidth';
 import { ROLES, MOBILE_WIDTH } from '../../constants';
 
 interface ClassLayoutProps {
-	router: NextRouter;
-	icon: React.ReactNode;
-	title: string;
+  router: NextRouter;
+  icon: React.ReactNode;
+  title: string;
 }
 
 const ClassLayout: React.FC<ClassLayoutProps> = ({ children, router, icon, title }) => {
-	const userRef = useRef<HTMLButtonElement>(null);
-	const { isOpen, handleClose, handleOpen } = useToggle();
-	const { isOpen: isOpenUser, handleClose: handleCloseUser, handleOpen: handleOpenUser } = useToggle();
-	const { info: currentClass } = useSelector((state: AppState) => state.currentClass);
+  const userRef = useRef<HTMLButtonElement>(null);
+  const { isOpen, handleClose, handleOpen } = useToggle();
+  const { isOpen: isOpenUser, handleClose: handleCloseUser, handleOpen: handleOpenUser } = useToggle();
+  const { info: currentClass } = useSelector((state: AppState) => state.currentClass);
 
-	const windowWidth = useWindowWidth();
+  const windowWidth = useWindowWidth();
 
-	return (
-		<Box sx={{ display: 'flex' }}>
-			<Navigation detail={router.pathname.includes('/class/[code]')} />
-			<Box width='100%'>
-				<Header icon={icon} title={title} link={`/class/${currentClass.code}`}>
-					{router.pathname === '/class/[code]' && windowWidth >= MOBILE_WIDTH && (
-						<Section>
-							<NavTabs />
-						</Section>
-					)}
-					<Section>
-						{router.pathname === '/class' ? (
-							<React.Fragment>
-								<Tooltip title='Thêm lớp học'>
-									<IconButton onClick={handleOpen} aria-label='Add Class'>
-										<PlusIcon />
-									</IconButton>
-								</Tooltip>
-								<AddClassModal open={isOpen} handleClose={handleClose} />
-							</React.Fragment>
-						) : (
-							<InviteStudentPopup classCode={currentClass.code} inviteTeacher={currentClass.role === ROLES.owner} />
-						)}
-						<Tooltip title='Tài khoản của bạn'>
-							<IconButton size='large' aria-label='user-actions' onClick={() => handleOpenUser()} ref={userRef}>
-								<Avatar />
-							</IconButton>
-						</Tooltip>
-						<UserOptions isOpen={isOpenUser} handleClose={handleCloseUser} anchorEl={userRef.current} />
-					</Section>
-				</Header>
-				<Box>{children}</Box>
-			</Box>
-		</Box>
-	);
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <Navigation detail={router.pathname.includes('/class/[code]')} />
+      <Box width='100%'>
+        <Header icon={icon} title={title} link={`/class/${currentClass.code}`}>
+          {router.pathname === '/class/[code]' && windowWidth >= MOBILE_WIDTH && (
+            <Section>
+              <NavTabs />
+            </Section>
+          )}
+          <Section>
+            {router.pathname === '/class' ? (
+              <React.Fragment>
+                <Tooltip title='Thêm lớp học'>
+                  <IconButton onClick={handleOpen} aria-label='Add Class'>
+                    <PlusIcon />
+                  </IconButton>
+                </Tooltip>
+                <AddClassModal open={isOpen} handleClose={handleClose} />
+              </React.Fragment>
+            ) : (
+              <InviteStudentPopup classCode={currentClass.code} inviteTeacher={currentClass.role === ROLES.owner} />
+            )}
+            <Tooltip title='Tài khoản của bạn'>
+              <IconButton size='large' aria-label='user-actions' onClick={() => handleOpenUser()} ref={userRef}>
+                <Avatar />
+              </IconButton>
+            </Tooltip>
+            <UserOptions isOpen={isOpenUser} handleClose={handleCloseUser} anchorEl={userRef.current} />
+          </Section>
+        </Header>
+        <Box>{children}</Box>
+      </Box>
+    </Box>
+  );
 };
 
 export default withRouter(ClassLayout);

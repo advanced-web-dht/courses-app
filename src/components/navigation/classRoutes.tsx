@@ -12,39 +12,39 @@ import FontAwesomeSvgIcon from '../UI/fontAweosomeIcon';
 import { SubListItemButton, ClassRoutesList } from './style';
 
 interface ClassRoutesProps {
-	classCode?: string;
+  classCode?: string;
 }
 
 const ClassRoutes: React.FC<ClassRoutesProps> = ({ classCode }) => {
-	return (
-		<React.Fragment>
-			<ClassRoutesList>
-				<ListItem>
-					<ListItemIcon>
-						<FontAwesomeSvgIcon icon={faTasks} size='large' />
-					</ListItemIcon>
-					<ListItemText primary='Quản lý lớp học' />
-				</ListItem>
-				<List component='div'>
-					<Link href={`/class/${classCode}/grade`}>
-						<a>
-							<SubListItemButton>
-								<ListItemIcon>
-									<FontAwesomeSvgIcon icon={faWindowRestore} />
-								</ListItemIcon>
-								<ListItemText primary='Cấu trúc điểm' />
-							</SubListItemButton>
-						</a>
-					</Link>
-				</List>
-			</ClassRoutesList>
-			<Divider />
-		</React.Fragment>
-	);
+  return (
+    <React.Fragment>
+      <ClassRoutesList>
+        <ListItem>
+          <ListItemIcon>
+            <FontAwesomeSvgIcon icon={faTasks} size='large' />
+          </ListItemIcon>
+          <ListItemText primary='Quản lý lớp học' />
+        </ListItem>
+        <List component='div'>
+          <Link href={`/class/${classCode}/grade`}>
+            <a>
+              <SubListItemButton>
+                <ListItemIcon>
+                  <FontAwesomeSvgIcon icon={faWindowRestore} />
+                </ListItemIcon>
+                <ListItemText primary='Cấu trúc điểm' />
+              </SubListItemButton>
+            </a>
+          </Link>
+        </List>
+      </ClassRoutesList>
+      <Divider />
+    </React.Fragment>
+  );
 };
 
 ClassRoutes.defaultProps = {
-	classCode: ''
+  classCode: ''
 };
 
 export default ClassRoutes;

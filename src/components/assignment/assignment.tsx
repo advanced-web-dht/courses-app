@@ -16,87 +16,87 @@ import EditAssignmentModal from './editAssignment';
 import useRequest from '../../hooks/useRequest';
 
 interface AssignmentProps {
-	assignment: IAssignment;
+  assignment: IAssignment;
 }
 
 const Assignment: React.FC<AssignmentProps> = ({ assignment }) => {
-	const buttonRef = useRef<HTMLButtonElement>(null);
-	const { isOpen, handleOpen, handleClose } = useToggle();
-	const [isEdit, setIsEdit] = useState(false);
-	const { info: currentClass } = useSelector((state: AppState) => state.currentClass);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const { isOpen, handleOpen, handleClose } = useToggle();
+  const [isEdit, setIsEdit] = useState(false);
+  const { info: currentClass } = useSelector((state: AppState) => state.currentClass);
 
-	const fetchUrl = `/assignment/${currentClass.id}`;
-	const { mutate, data: assignments, response } = useRequest<IAssignment[]>({ url: fetchUrl });
+  const fetchUrl = `/assignment/${currentClass.id}`;
+  const { mutate, data: assignments, response } = useRequest<IAssignment[]>({ url: fetchUrl });
 
-	const handleDeleteAssignment = useCallback(async () => {
-		const result = await DeleteAssignment(currentClass.id, assignment.id);
-		if (result) {
-			// update swr cache
-			const data = assignments?.filter((item) => item.id !== assignment.id);
-			await mutate({ ...response, data: data as IAssignment[] }, false);
+  const handleDeleteAssignment = useCallback(async () => {
+    const result = await DeleteAssignment(currentClass.id, assignment.id);
+    if (result) {
+      // update swr cache
+      const data = assignments?.filter((item) => item.id !== assignment.id);
+      await mutate({ ...response, data: data as IAssignment[] }, false);
 
-			toast.success('Xoá bài tập thành công');
-		} else {
-			toast.error('Xoá không thành công');
-		}
-	}, []);
+      toast.success('Xoá bài tập thành công');
+    } else {
+      toast.error('Xoá không thành công');
+    }
+  }, []);
 
-	const date = useMemo(() => new Date(assignment.dateEnded), [assignment.dateEnded]);
+  const date = useMemo(() => new Date(assignment.dateEnded), [assignment.dateEnded]);
 
-	// update swr only
-	const handleUpdateAssignment = useCallback(async (targetAssignment: IAssignment) => {
-		const data = [...(assignments as IAssignment[])];
-		const index = data.findIndex((item) => item.id === targetAssignment.id);
-		data[index] = targetAssignment;
-		await mutate({ ...response, data }, false);
-	}, []);
+  // update swr only
+  const handleUpdateAssignment = useCallback(async (targetAssignment: IAssignment) => {
+    const data = [...(assignments as IAssignment[])];
+    const index = data.findIndex((item) => item.id === targetAssignment.id);
+    data[index] = targetAssignment;
+    await mutate({ ...response, data }, false);
+  }, []);
 
-	return (
-		<AssignmentItem>
-			<AssignmentItemTitle>
-				<AssignmentIcon fontSize='large' />
-				<span>{assignment.name}</span>
-			</AssignmentItemTitle>
-			<AssignmentItemAction>
-				<span>
-					Đến hạn {date.toLocaleDateString()} | {date.toLocaleTimeString()}
-				</span>
-				<IconButton ref={buttonRef} onClick={handleOpen} aria-label='assignment options'>
-					<MoreVertRoundedIcon />
-				</IconButton>
-			</AssignmentItemAction>
-			<Menu
-				aria-labelledby='demo-positioned-button'
-				anchorEl={buttonRef.current}
-				open={isOpen}
-				onClose={handleClose}
-				anchorOrigin={{
-					vertical: 'top',
-					horizontal: 'left'
-				}}
-				transformOrigin={{
-					vertical: 'top',
-					horizontal: 'left'
-				}}
-			>
-				<MenuItem onClick={handleDeleteAssignment}>Xoá</MenuItem>
-				<MenuItem onClick={() => setIsEdit(true)}>Cập nhật</MenuItem>
-			</Menu>
-			{isEdit && (
-				<EditAssignmentModal
-					isOpen={isEdit}
-					handleClose={() => {
-						setIsEdit(false);
-						handleClose();
-					}}
-					oldDeadline={new Date(assignment.dateEnded)}
-					oldName={assignment.name}
-					id={assignment.id}
-					updateAssignmentContext={handleUpdateAssignment}
-				/>
-			)}
-		</AssignmentItem>
-	);
+  return (
+    <AssignmentItem>
+      <AssignmentItemTitle>
+        <AssignmentIcon fontSize='large' />
+        <span>{assignment.name}</span>
+      </AssignmentItemTitle>
+      <AssignmentItemAction>
+        <span>
+          Đến hạn {date.toLocaleDateString()} | {date.toLocaleTimeString()}
+        </span>
+        <IconButton ref={buttonRef} onClick={handleOpen} aria-label='assignment options'>
+          <MoreVertRoundedIcon />
+        </IconButton>
+      </AssignmentItemAction>
+      <Menu
+        aria-labelledby='demo-positioned-button'
+        anchorEl={buttonRef.current}
+        open={isOpen}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'left'
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left'
+        }}
+      >
+        <MenuItem onClick={handleDeleteAssignment}>Xoá</MenuItem>
+        <MenuItem onClick={() => setIsEdit(true)}>Cập nhật</MenuItem>
+      </Menu>
+      {isEdit && (
+        <EditAssignmentModal
+          isOpen={isEdit}
+          handleClose={() => {
+            setIsEdit(false);
+            handleClose();
+          }}
+          oldDeadline={new Date(assignment.dateEnded)}
+          oldName={assignment.name}
+          id={assignment.id}
+          updateAssignmentContext={handleUpdateAssignment}
+        />
+      )}
+    </AssignmentItem>
+  );
 };
 
 export default Assignment;

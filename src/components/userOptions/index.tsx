@@ -11,40 +11,40 @@ import Form from '../profileModal';
 import useToggle from '../../hooks/useToggle';
 
 interface UserOptionsProps {
-	isOpen: boolean;
-	handleClose: () => void;
-	anchorEl: HTMLElement | null;
+  isOpen: boolean;
+  handleClose: () => void;
+  anchorEl: HTMLElement | null;
 }
 
 const UserOptions: React.FC<UserOptionsProps> = ({ isOpen, handleClose, anchorEl }) => {
-	const handleSignOut = async () => {
-		await signout({ callbackUrl: `${window.location.origin}/signin` });
-	};
-	const [session] = useSession();
-	const { isOpen: isOpenForm, handleClose: handleCloseForm, handleOpen } = useToggle();
+  const handleSignOut = async () => {
+    await signout({ callbackUrl: `${window.location.origin}/signin` });
+  };
+  const [session] = useSession();
+  const { isOpen: isOpenForm, handleClose: handleCloseForm, handleOpen } = useToggle();
 
-	return (
-		<React.Fragment>
-			<Menu open={isOpen} TransitionComponent={Fade} onClose={() => handleClose()} anchorEl={anchorEl}>
-				<MenuItem>
-					<Typography textAlign='center'>Hello, {session?.user?.name?.split(' ')[0]}</Typography>
-				</MenuItem>
-				<MenuItem onClick={() => handleOpen()}>
-					<ListItemIcon>
-						<PermIdentityIcon fontSize='small' />
-					</ListItemIcon>
-					Profile
-				</MenuItem>
-				<MenuItem onClick={handleSignOut}>
-					<ListItemIcon>
-						<Logout fontSize='small' />
-					</ListItemIcon>
-					Đăng xuất
-				</MenuItem>
-			</Menu>
-			<Form isOpenForm={isOpenForm} close={handleCloseForm} />
-		</React.Fragment>
-	);
+  return (
+    <React.Fragment>
+      <Menu open={isOpen} TransitionComponent={Fade} onClose={() => handleClose()} anchorEl={anchorEl}>
+        <MenuItem>
+          <Typography textAlign='center'>Hello, {session?.user?.name?.split(' ')[0]}</Typography>
+        </MenuItem>
+        <MenuItem onClick={() => handleOpen()}>
+          <ListItemIcon>
+            <PermIdentityIcon fontSize='small' />
+          </ListItemIcon>
+          Profile
+        </MenuItem>
+        <MenuItem onClick={handleSignOut}>
+          <ListItemIcon>
+            <Logout fontSize='small' />
+          </ListItemIcon>
+          Đăng xuất
+        </MenuItem>
+      </Menu>
+      <Form isOpenForm={isOpenForm} close={handleCloseForm} />
+    </React.Fragment>
+  );
 };
 
 export default UserOptions;
