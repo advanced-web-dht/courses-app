@@ -62,13 +62,7 @@ const AddGrade: React.FC<AddGradeProps> = ({ classId, newOrder }) => {
 							/>
 						</GradeForm>
 						<GradeActions>
-							<ActionButton
-								variant='contained'
-								color='error'
-								todo='cancel'
-								type='button'
-								onClick={() => setIsEdit(false)}
-							>
+							<ActionButton variant='contained' color='error' todo='cancel' type='button' onClick={() => setIsEdit(false)}>
 								<FontAwesomeIcon icon={faTimes} />
 							</ActionButton>
 							<ActionButton variant='contained' color='success' todo='save' type='submit'>

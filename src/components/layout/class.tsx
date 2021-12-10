@@ -54,18 +54,10 @@ const ClassLayout: React.FC<ClassLayoutProps> = ({ children, router, icon, title
 								<AddClassModal open={isOpen} handleClose={handleClose} />
 							</React.Fragment>
 						) : (
-							<InviteStudentPopup
-								classCode={currentClass.code}
-								inviteTeacher={currentClass.role === ROLES.owner}
-							/>
+							<InviteStudentPopup classCode={currentClass.code} inviteTeacher={currentClass.role === ROLES.owner} />
 						)}
 						<Tooltip title='Tài khoản của bạn'>
-							<IconButton
-								size='large'
-								aria-label='user-actions'
-								onClick={() => handleOpenUser()}
-								ref={userRef}
-							>
+							<IconButton size='large' aria-label='user-actions' onClick={() => handleOpenUser()} ref={userRef}>
 								<Avatar />
 							</IconButton>
 						</Tooltip>

@@ -63,9 +63,7 @@ const SignUpForm = () => {
 		const timeout = setTimeout(() => {
 			if (password) {
 				if (!PASSWORD_CHECK.test(password)) {
-					onPassWordError(
-						'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt!'
-					);
+					onPassWordError('Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt!');
 				}
 			}
 		}, 500);

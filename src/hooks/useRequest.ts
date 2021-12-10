@@ -5,8 +5,7 @@ import { provider } from '../api/client';
 
 export type GetRequest = AxiosRequestConfig | null;
 
-interface Return<Data, Error>
-	extends Pick<SWRResponse<AxiosResponse<Data>, AxiosError<Error>>, 'isValidating' | 'error' | 'mutate'> {
+interface Return<Data, Error> extends Pick<SWRResponse<AxiosResponse<Data>, AxiosError<Error>>, 'isValidating' | 'error' | 'mutate'> {
 	data: Data | undefined;
 	response: AxiosResponse<Data>;
 }

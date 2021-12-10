@@ -62,10 +62,7 @@ export const EnrollClass = async (classId: number): Promise<{ isSuccess: boolean
 	}
 };
 
-export const EnrollClassForTeacher = async (
-	classId: number,
-	token: string
-): Promise<{ isSuccess: boolean; message: string }> => {
+export const EnrollClassForTeacher = async (classId: number, token: string): Promise<{ isSuccess: boolean; message: string }> => {
 	try {
 		const response = await provider.post(`/classes/${classId}/teachers`, { token });
 		return { isSuccess: response.data.isSuccess as boolean, message: 'Bạn đã trở thành giảng viên' };
@@ -101,12 +98,7 @@ export const InviteStudent = async (classCode: string, email: string, isTeacher:
 	}
 };
 
-export const AddPointPart = async (
-	classId: number,
-	order: number,
-	ratio: number,
-	name: string
-): Promise<IPointPart> => {
+export const AddPointPart = async (classId: number, order: number, ratio: number, name: string): Promise<IPointPart> => {
 	try {
 		const url = `/pointpart/add`;
 		const response = await provider.post(url, { classId, order, ratio, name });
@@ -145,12 +137,7 @@ export const GetAllGrades = async (classId: number): Promise<IPointPart[]> => {
 	}
 };
 
-export const AddAssignment = async (
-	classId: number,
-	pointPartId: number,
-	name: string,
-	dateEnded: Date
-): Promise<IAssignment> => {
+export const AddAssignment = async (classId: number, pointPartId: number, name: string, dateEnded: Date): Promise<IAssignment> => {
 	try {
 		const url = `/assignment/add`;
 		const response = await provider.post(url, { classId, pointPartId, dateEnded, name });
@@ -179,12 +166,7 @@ export const DeleteAssignment = async (classId: number, id: number): Promise<boo
 	}
 };
 
-export const UpdateAssignment = async (
-	classId: number,
-	name: string,
-	dateEnded: Date,
-	id: number
-): Promise<boolean> => {
+export const UpdateAssignment = async (classId: number, name: string, dateEnded: Date, id: number): Promise<boolean> => {
 	try {
 		const url = `/assignment`;
 		const response = await provider.put(url, { classId, name, dateEnded, id });

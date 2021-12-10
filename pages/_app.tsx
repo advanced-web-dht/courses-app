@@ -25,18 +25,8 @@ library.add(fab);
 
 const clientSideEmotionCache = createEmotionCache();
 
-const MyApp = ({
-	Component,
-	pageProps,
-	emotionCache = clientSideEmotionCache
-}: AppPropsWithLayoutProps): JSX.Element => {
+const MyApp = ({ Component, pageProps, emotionCache = clientSideEmotionCache }: AppPropsWithLayoutProps): JSX.Element => {
 	const getLayout = Component.getLayout ?? ((page) => page);
-	// const [loaded, setLoaded] = useState(false);
-	//
-	// useEffect(() => {
-	// 	setLoaded(true);
-	// }, []);
-
 	return (
 		<Provider session={pageProps.session}>
 			<Head>
@@ -51,14 +41,7 @@ const MyApp = ({
 					</CommonProvider>
 				</ThemeProvider>
 			</CacheProvider>
-			<ToastContainer
-				position='bottom-right'
-				autoClose={1500}
-				newestOnTop={false}
-				draggable={false}
-				closeOnClick
-				pauseOnHover
-			/>
+			<ToastContainer position='bottom-right' autoClose={1500} newestOnTop={false} draggable={false} closeOnClick pauseOnHover />
 		</Provider>
 	);
 };

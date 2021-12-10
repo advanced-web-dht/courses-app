@@ -50,20 +50,9 @@ const Grade: React.FC<GradeProps> = ({ grade, index, classId }) => {
 	return (
 		<Draggable draggableId={`${grade.id}`} index={index}>
 			{(provided) => (
-				<GradeContainer
-					ref={provided.innerRef}
-					{...provided.draggableProps}
-					{...provided.dragHandleProps}
-					onSubmit={handleSubmit}
-				>
+				<GradeContainer ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} onSubmit={handleSubmit}>
 					<GradeForm>
-						<TextField
-							value={name}
-							variant='standard'
-							label='Cột điểm'
-							disabled={isDisabled}
-							onChange={onNameChange}
-						/>
+						<TextField value={name} variant='standard' label='Cột điểm' disabled={isDisabled} onChange={onNameChange} />
 						<TextField
 							value={ratio}
 							variant='standard'
@@ -91,13 +80,7 @@ const Grade: React.FC<GradeProps> = ({ grade, index, classId }) => {
 								<FontAwesomeSvgIcon icon={faTrash} size='small' />
 							</ActionButton>
 						) : (
-							<ActionButton
-								variant='contained'
-								color='success'
-								todo='save'
-								type='submit'
-								aria-label='edit grade'
-							>
+							<ActionButton variant='contained' color='success' todo='save' type='submit' aria-label='edit grade'>
 								<FontAwesomeSvgIcon icon={faSave} size='small' />
 							</ActionButton>
 						)}

@@ -95,13 +95,7 @@ const AddAssignmentModal: React.FC<AddAssignmentProps> = ({ grades, onAddAssignm
 							/>
 							<FormControl fullWidth margin='normal'>
 								<InputLabel id='select-label'>Điểm</InputLabel>
-								<Select
-									labelId='select-label'
-									id='simple-select'
-									value={grade}
-									label='Điểm'
-									onChange={handleChange}
-								>
+								<Select labelId='select-label' id='simple-select' value={grade} label='Điểm' onChange={handleChange}>
 									{grades.map((gradeItem) => (
 										<MenuItem value={gradeItem.id} key={gradeItem.id}>
 											{gradeItem.name} - {gradeItem.ratio}%

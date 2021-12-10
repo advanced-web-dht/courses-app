@@ -24,14 +24,7 @@ interface AddAssignmentProps {
 	updateAssignmentContext: (targetAssignment: IAssignment) => void;
 }
 
-const EditAssignmentModal: React.FC<AddAssignmentProps> = ({
-	isOpen,
-	handleClose,
-	oldDeadline,
-	oldName,
-	id,
-	updateAssignmentContext
-}) => {
+const EditAssignmentModal: React.FC<AddAssignmentProps> = ({ isOpen, handleClose, oldDeadline, oldName, id, updateAssignmentContext }) => {
 	const [name, error, setName, setError, resetVal] = useInput(oldName);
 	const [dateEnded, setDateEnded] = React.useState<Date>(oldDeadline);
 
