@@ -175,3 +175,13 @@ export const UpdateAssignment = async (classId: number, name: string, dateEnded:
     return false;
   }
 };
+
+export const UploadStudents = async (classId: number, students: Array<unknown>): Promise<boolean> => {
+  try {
+    const url = `/classes/${classId}/addfromfile`;
+    const response = await provider.post(url, students);
+    return true;
+  } catch {
+    return false;
+  }
+};

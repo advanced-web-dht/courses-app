@@ -10,7 +10,7 @@ const NavTab = styled(Box)`
     height: 5px;
   }
   .MuiTabs-scroller {
-    overflow-x: scroll !important;
+    overflow-x: auto !important;
   }
 `;
 

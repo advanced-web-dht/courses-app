@@ -1,9 +1,12 @@
 import React from 'react';
 import Grid from '@mui/material/Grid';
+import { CSVReader } from 'react-papaparse';
+import { ParseResult } from 'papaparse';
 
 import { ClassesHeader, ClassesListContainer } from './style';
 import StyledContainer from '../UI/Container';
 import Member from './member';
+import StudentListPreview from '../studentListPreview';
 import { IClassMember } from '../../type';
 
 interface MemberProps {
@@ -12,12 +15,17 @@ interface MemberProps {
 }
 
 const Members: React.FC<MemberProps> = ({ members, roleType }) => {
+  const handleOnDrop = (data: Array<ParseResult<unknown>>) => {
+    console.log(data.map((item) => item.data));
+  };
+
   return (
     <StyledContainer>
       {members.length > 0 ? (
         <React.Fragment>
           <ClassesHeader>
             <div>Danh sách {roleType}</div>
+            {roleType === 'student' && <StudentListPreview />}
           </ClassesHeader>
           <ClassesListContainer>
             <Grid component='ul' container spacing={2}>
