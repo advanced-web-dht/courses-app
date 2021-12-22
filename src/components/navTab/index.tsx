@@ -11,7 +11,8 @@ import NavBar from './style';
 const NavRoutes: Record<string, number> = {
   '#assignments': 1,
   '#students': 2,
-  '#teachers': 3
+  '#teachers': 3,
+  '#grades': 4
 };
 
 const NavTabs: React.FC = () => {
@@ -58,11 +59,12 @@ const NavTabs: React.FC = () => {
 
   return (
     <NavBar>
-      <Tabs value={currentTab} aria-label='nav tabs example'>
+      <Tabs value={currentTab} aria-label='nav tabs'>
         <Tab label='Bảng tin' onClick={() => onChangeTab(0)} />
         <Tab label='Bài tập' onClick={() => onChangeTab(1, 'assignments')} />
         <Tab label='Học viên' onClick={() => onChangeTab(2, 'students')} />
         <Tab label='Giảng viên' onClick={() => onChangeTab(3, 'teachers')} />
+        <Tab label='Số điểm' onClick={() => onChangeTab(4, 'grades')} />
       </Tabs>
     </NavBar>
   );

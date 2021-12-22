@@ -6,6 +6,7 @@ import { faPencilAlt } from '@fortawesome/free-solid-svg-icons/faPencilAlt';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import { faSave } from '@fortawesome/free-solid-svg-icons/faSave';
 import { toast } from 'react-toastify';
+import Button from '@mui/material/Button';
 
 import useInput from '../../hooks/useInput';
 import { IPointPart } from '../../type';
@@ -13,6 +14,8 @@ import { UpdatePointPart } from '../../api/client';
 import FontAwesomeSvgIcon from '../UI/fontAweosomeIcon';
 import { GradeContainer, GradeForm, GradeActions, ActionButton } from './style';
 import { updateGrade } from './action';
+import InputGradeTable from '../grade/inputGrade';
+import useToggle from '../../hooks/useToggle';
 
 interface GradeProps {
   grade: IPointPart;
@@ -24,6 +27,7 @@ const Grade: React.FC<GradeProps> = ({ grade, index, classId }) => {
   const [name, , onNameChange] = useInput(grade.name);
   const [ratio, ratioError, onRatioChange, onRatioError] = useInput(grade.ratio.toString());
   const [isDisabled, setIsDisabled] = useState(true);
+  const { isOpen, handleClose, handleOpen } = useToggle();
   const dispatch = useDispatch();
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -64,6 +68,12 @@ const Grade: React.FC<GradeProps> = ({ grade, index, classId }) => {
               helperText={ratioError.message}
               placeholder='Lớn hơn 0 và không quá 100'
             />
+            <div style={{ textAlign: 'center' }}>
+              <Button style={{ width: 150, marginBottom: 5 }} onClick={handleOpen} variant='contained' color='primary'>
+                Nhập điểm
+              </Button>
+            </div>
+            <InputGradeTable open={isOpen} handleClose={handleClose} />
           </GradeForm>
           <GradeActions>
             <ActionButton

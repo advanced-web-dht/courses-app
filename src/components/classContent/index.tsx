@@ -5,6 +5,7 @@ import { AppState } from '../../reducers';
 import Members from '../members';
 import Banner from '../banner';
 import Assignments from '../assignment';
+import GradeTable from '../grade';
 
 import { ROLES } from '../../constants';
 
@@ -29,6 +30,8 @@ const ClassContent: React.FC = () => {
       return <Members members={students} roleType='student' />;
     case 3:
       return <Members members={teachers} roleType='teacher' />;
+    case 4:
+      return <GradeTable />;
     default:
       return null;
   }
