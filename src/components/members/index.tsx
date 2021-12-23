@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import Grid from '@mui/material/Grid';
-import { CSVReader } from 'react-papaparse';
-import { ParseResult } from 'papaparse';
+import { CSVDownloader } from 'react-papaparse';
+import Button from '@mui/material/Button';
 
 import { ClassesHeader, ClassesListContainer } from './style';
 import StyledContainer from '../UI/Container';
@@ -15,10 +15,7 @@ interface MemberProps {
 }
 
 const Members: React.FC<MemberProps> = ({ members, roleType }) => {
-  const handleOnDrop = (data: Array<ParseResult<unknown>>) => {
-    console.log(data.map((item) => item.data));
-  };
-
+  const studentDownload = useMemo(() => members.map((member) => ({ studentId: member.studentId, name: member.name })), []);
   return (
     <StyledContainer>
       {members.length > 0 ? (
@@ -36,6 +33,11 @@ const Members: React.FC<MemberProps> = ({ members, roleType }) => {
               ))}
             </Grid>
           </ClassesListContainer>
+          {roleType === 'student' && (
+            <CSVDownloader data={studentDownload}>
+              <Button>Download</Button>
+            </CSVDownloader>
+          )}
         </React.Fragment>
       ) : (
         <ClassesHeader>
