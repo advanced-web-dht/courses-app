@@ -42,6 +42,7 @@ const Members: React.FC<MemberProps> = ({ members, roleType }) => {
       ) : (
         <ClassesHeader>
           <div>Chưa có học viên</div>
+          {roleType === 'student' && <StudentListPreview />}
         </ClassesHeader>
       )}
     </StyledContainer>
