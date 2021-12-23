@@ -30,7 +30,7 @@ const rows = [
   createData('18120000', 10, 10, 10, 10, 10, 10, 10, 10, 10)
 ].sort((a, b) => (a.name < b.name ? -1 : 1));
 
-const GradeTable: React.FC<GradeTableProps> = () => {
+const GradeTable: React.FC = () => {
   return (
     <Root>
       <table aria-label='custom table'>
