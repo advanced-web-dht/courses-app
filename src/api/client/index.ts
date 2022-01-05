@@ -175,3 +175,33 @@ export const UpdateAssignment = async (classId: number, name: string, dateEnded:
     return false;
   }
 };
+
+export const UploadStudents = async (classId: number, students: Array<unknown>): Promise<boolean> => {
+  try {
+    const url = `/classes/${classId}/addfromfile`;
+    await provider.post(url, students);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+export const UploadGradePoints = async (classId: number, point: Array<unknown>, pointpartId: number): Promise<boolean> => {
+  try {
+    const url = `/point/addfromfile`;
+    await provider.post(url, { classId, point, pointpartId });
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+export const MarkGradeDone = async (pointpartId: number): Promise<boolean> => {
+  try {
+    const url = `/pointpart/done`;
+    await provider.put(url, { id: pointpartId });
+    return true;
+  } catch {
+    return false;
+  }
+};

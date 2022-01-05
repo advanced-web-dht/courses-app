@@ -1,6 +1,7 @@
 export interface IClassMember {
   id?: number;
   name: string;
+  studentId: number;
   detail?: {
     role: string;
   };
@@ -38,6 +39,7 @@ export interface IPointPart {
   name: string;
   ratio: number;
   order: number;
+  isDone: number;
 }
 
 export interface IAssignment {
