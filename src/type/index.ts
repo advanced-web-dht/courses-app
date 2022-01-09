@@ -1,19 +1,24 @@
 export interface IClassMember {
   id?: number;
   name: string;
-  studentId: number;
-  detail?: {
-    role: string;
-  };
+  studentId: string;
+}
+
+export interface IStudent {
+  studentId?: string;
+  name: string;
+  account: IClassMember;
 }
 
 export interface IClass {
   id: number;
   code: string;
   name: string;
-  members: IClassMember[];
+  teachers: IClassMember[];
+  students: IStudent[];
   role: string;
   grades?: IPointPart[];
+  owner: IClassMember;
 }
 
 export interface ICreateClassDTO {

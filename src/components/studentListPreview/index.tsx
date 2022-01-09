@@ -14,6 +14,8 @@ import useToggle from '../../hooks/useToggle';
 import { UploadStudents } from '../../api/client';
 import { StyledModal, Form, FormHeader, FormAction } from '../addClassModal/style';
 
+const ref: React.LegacyRef<CSVReader<string>> = React.createRef();
+
 const StudentListPreview: React.FC = () => {
   const { isOpen, handleClose, handleOpen } = useToggle();
   const [students, setStudents] = useState<{ studentId: number; name: string }[]>([]);
@@ -50,12 +52,13 @@ const StudentListPreview: React.FC = () => {
     } else {
       toast.error('Thêm không thành công');
     }
+    ref?.current?.removeFile();
     handleClose();
   };
 
   return (
     <React.Fragment>
-      <CSVReader onDrop={handleDrop} onError={handleErrorParseCSV}>
+      <CSVReader onDrop={handleDrop} onError={handleErrorParseCSV} ref={ref}>
         <Button>Upload danh sách sinh viên</Button>
       </CSVReader>
       <StyledModal open={isOpen}>

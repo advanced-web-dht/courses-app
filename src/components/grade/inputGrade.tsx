@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Button from '@mui/material/Button';
 import Zoom from '@mui/material/Zoom';
@@ -11,11 +11,11 @@ import { CSVReader } from 'react-papaparse';
 import { ParseResult } from 'papaparse';
 
 import { AppState } from '../../reducers';
+import useRequest from '../../hooks/useRequest';
 import { UploadGradePoints } from '../../api/client';
-import { Form, FormAction, FormHeader, StyledModal } from '../addClassModal/style';
+import { Form, FormAction, FormHeader } from '../addClassModal/style';
+import FullSizeModal from '../UI/FullSizeModal';
 import { Root, StyledTableRow } from './style';
-
-const ariaLabel = { 'aria-label': 'description' };
 
 interface GradeTableProps {
   open: boolean;
@@ -23,14 +23,28 @@ interface GradeTableProps {
   gradeId: number;
 }
 
+type GradeType = Array<{ studentId: string; point: number }>;
+
 const InputGradeTable: React.FC<GradeTableProps> = ({ open, handleClose, gradeId }) => {
-  const { members, info } = useSelector((state: AppState) => state.currentClass);
-  const [grades, setGrade] = useState(() => {
-    return members.map((member) => ({ studentId: member.studentId, point: 0 }));
+  const { students, info } = useSelector((state: AppState) => state.currentClass);
+  const { data: points } = useRequest<GradeType>({ url: `/pointpart/${gradeId}/points` });
+
+  const [grades, setGrade] = useState<GradeType>(() => {
+    return students.map((student) => ({ studentId: student.studentId as string, point: 0 }));
   });
 
+  useEffect(() => {
+    if (points) {
+      const pointsForce = points as GradeType;
+      const pointsObject: Record<string, number> = pointsForce.reduce((result, item) => ({ ...result, [item.studentId]: item.point }), {});
+      const newGrades = grades.map((grade) => ({ ...grade, point: pointsObject[grade.studentId] }));
+      setGrade(newGrades);
+    }
+  }, [points]);
+
   const HandleSubmit = async () => {
-    const check = await UploadGradePoints(info.id, grades, gradeId);
+    const gradesToSubmit = grades.map((grade) => ({ ...grade, point: Number(grade.point) }));
+    const check = await UploadGradePoints(info.id, gradesToSubmit, gradeId);
     if (check) {
       toast.success('Upload điểm thành công');
     } else {
@@ -43,7 +57,7 @@ const InputGradeTable: React.FC<GradeTableProps> = ({ open, handleClose, gradeId
     handleClose();
   };
 
-  const handleChangeGrade = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, studentId: number) => {
+  const handleChangeGrade = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, studentId: string) => {
     const newGrades = [...grades];
     const target = newGrades.findIndex((grade) => grade.studentId === studentId);
     newGrades[target].point = Number(event.target.value);
@@ -51,11 +65,11 @@ const InputGradeTable: React.FC<GradeTableProps> = ({ open, handleClose, gradeId
   };
 
   const handleDropCSV = (data: Array<ParseResult<string>>) => {
-    const newGrades: { studentId: number; point: number }[] = [];
+    const newGrades: GradeType = [];
     for (let i = 0; i < data.length; i += 1) {
       const item = data[i];
       const grade = {
-        studentId: Number(item.data[0]),
+        studentId: item.data[0],
         point: Number(item.data[1])
       };
       newGrades.push(grade);
@@ -64,9 +78,9 @@ const InputGradeTable: React.FC<GradeTableProps> = ({ open, handleClose, gradeId
   };
 
   return (
-    <StyledModal open={open} onClose={HandleCloseModal}>
+    <FullSizeModal open={open} onClose={HandleCloseModal}>
       <Zoom in={open}>
-        <Form>
+        <Form width={800}>
           <FormHeader>
             <div>Nhập cột điểm</div>
             <IconButton onClick={HandleCloseModal}>
@@ -85,16 +99,17 @@ const InputGradeTable: React.FC<GradeTableProps> = ({ open, handleClose, gradeId
                 <tbody>
                   {grades.map((row) => (
                     <StyledTableRow key={row.studentId}>
-                      <td style={{ minWidth: 60 }}>
+                      <td style={{ minWidth: 60 }} className='student-id'>
                         <Typography>{row.studentId}</Typography>
                       </td>
                       <td style={{ minWidth: 60 }}>
                         <Input
                           disableUnderline
-                          inputProps={ariaLabel}
+                          type='number'
+                          inputProps={{ min: 0, max: 100 }}
                           value={row.point}
                           onChange={(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-                            handleChangeGrade(event, row.studentId)
+                            handleChangeGrade(event, row?.studentId as string)
                           }
                         />
                       </td>
@@ -103,7 +118,7 @@ const InputGradeTable: React.FC<GradeTableProps> = ({ open, handleClose, gradeId
                 </tbody>
               </table>
             </Root>
-            <Button variant='contained' color='primary' onClick={HandleSubmit}>
+            <Button variant='contained' color='primary' onClick={HandleSubmit} sx={{ mb: 2 }}>
               Cập nhập
             </Button>
             <CSVReader onDrop={handleDropCSV}>
@@ -112,7 +127,7 @@ const InputGradeTable: React.FC<GradeTableProps> = ({ open, handleClose, gradeId
           </FormAction>
         </Form>
       </Zoom>
-    </StyledModal>
+    </FullSizeModal>
   );
 };
 export default InputGradeTable;

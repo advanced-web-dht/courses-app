@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { NextRouter, withRouter } from 'next/router';
 import Box from '@mui/material/Box';
@@ -30,21 +30,38 @@ const ClassLayout: React.FC<ClassLayoutProps> = ({ children, router, icon, title
   const { isOpen, handleClose, handleOpen } = useToggle();
   const { isOpen: isOpenUser, handleClose: handleCloseUser, handleOpen: handleOpenUser } = useToggle();
   const { info: currentClass } = useSelector((state: AppState) => state.currentClass);
-
   const windowWidth = useWindowWidth();
+  const [showTab, setShowTab] = useState(false);
+  const [isHome, setIsHome] = useState(false);
+
+  useEffect(() => {
+    if (router.pathname === '/class/[code]' && windowWidth >= MOBILE_WIDTH) {
+      setShowTab(true);
+    } else {
+      setShowTab(false);
+    }
+  }, [router.pathname, windowWidth]);
+
+  useEffect(() => {
+    if (router.pathname === '/class') {
+      setIsHome(true);
+    } else {
+      setIsHome(false);
+    }
+  }, [router.pathname]);
 
   return (
     <Box sx={{ display: 'flex' }}>
       <Navigation detail={router.pathname.includes('/class/[code]')} />
       <Box width='100%'>
         <Header icon={icon} title={title} link={`/class/${currentClass.code}`}>
-          {router.pathname === '/class/[code]' && windowWidth >= MOBILE_WIDTH && (
+          {showTab && (
             <Section>
               <NavTabs />
             </Section>
           )}
           <Section>
-            {router.pathname === '/class' ? (
+            {isHome ? (
               <React.Fragment>
                 <Tooltip title='Thêm lớp học'>
                   <IconButton onClick={handleOpen} aria-label='Add Class'>

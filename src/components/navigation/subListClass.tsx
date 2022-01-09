@@ -17,11 +17,11 @@ const SubListClass: React.FC<SubListClassProps> = ({ isOpen, list, type }) => {
   const renderList = useMemo(
     () =>
       list?.filter((cls) => {
-        if (cls.members[0].detail?.role === type) {
+        if (cls.role === type) {
           return true;
         }
         if (type === 'teacher') {
-          return cls.members[0].detail?.role === 'owner';
+          return cls.role === 'owner';
         }
         return false;
       }),

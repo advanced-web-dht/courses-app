@@ -52,64 +52,79 @@ const Grade: React.FC<GradeProps> = ({ grade, index, classId }) => {
   };
 
   const handleMarkGradeDone = async () => {
-    await MarkGradeDone(grade.id);
+    const result = await MarkGradeDone(grade.id);
+    if (result) {
+      const newGrade = { ...grade };
+      newGrade.isDone = 1;
+      dispatch(updateGrade(newGrade));
+    } else {
+      toast.error('Thao tac khônng thành công!!');
+    }
   };
 
   return (
-    <Draggable draggableId={`${grade.id}`} index={index}>
-      {(provided) => (
-        <GradeContainer ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} onSubmit={handleSubmit}>
-          <GradeForm>
-            <TextField value={name} variant='standard' label='Cột điểm' disabled={isDisabled} onChange={onNameChange} />
-            <TextField
-              value={ratio}
-              variant='standard'
-              label='Tỉ lệ'
-              type='number'
-              disabled={isDisabled}
-              onChange={onRatioChange}
-              error={ratioError.status}
-              helperText={ratioError.message}
-              placeholder='Lớn hơn 0 và không quá 100'
-            />
-            <div style={{ textAlign: 'center' }}>
-              <Button style={{ width: 150, margin: 5 }} onClick={handleOpen} variant='contained' color='primary'>
-                Nhập điểm
-              </Button>
-              <Button
-                style={{ width: 150, margin: 5 }}
-                onClick={handleMarkGradeDone}
+    <React.Fragment>
+      <Draggable draggableId={`${grade.id}`} index={index}>
+        {(provided) => (
+          <GradeContainer ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} onSubmit={handleSubmit}>
+            <GradeForm>
+              <TextField value={name} variant='standard' label='Cột điểm' disabled={isDisabled} onChange={onNameChange} />
+              <TextField
+                value={ratio}
+                variant='standard'
+                label='Tỉ lệ'
+                type='number'
+                disabled={isDisabled}
+                onChange={onRatioChange}
+                error={ratioError.status}
+                helperText={ratioError.message}
+                placeholder='Lớn hơn 0 và không quá 100'
+              />
+              <div style={{ textAlign: 'center' }}>
+                <Button
+                  style={{ width: 150, margin: 5 }}
+                  onClick={handleOpen}
+                  variant='contained'
+                  color='primary'
+                  disabled={!!grade.isDone}
+                >
+                  Nhập điểm
+                </Button>
+                <Button
+                  style={{ width: 150, margin: 5 }}
+                  onClick={handleMarkGradeDone}
+                  variant='contained'
+                  color={grade.isDone ? 'success' : 'primary'}
+                >
+                  Hoàn thành
+                </Button>
+              </div>
+            </GradeForm>
+            <GradeActions>
+              <ActionButton
                 variant='contained'
-                color={grade.isDone ? 'success' : 'primary'}
+                color='primary'
+                todo='edit'
+                onClick={() => setIsDisabled(!isDisabled)}
+                aria-label='edit grade'
               >
-                Hoàn thành
-              </Button>
-            </div>
-            <InputGradeTable open={isOpen} handleClose={handleClose} gradeId={grade.id} />
-          </GradeForm>
-          <GradeActions>
-            <ActionButton
-              variant='contained'
-              color='primary'
-              todo='edit'
-              onClick={() => setIsDisabled(!isDisabled)}
-              aria-label='edit grade'
-            >
-              <FontAwesomeSvgIcon icon={faPencilAlt} size='small' />
-            </ActionButton>
-            {isDisabled ? (
-              <ActionButton variant='contained' color='error' todo='delete' aria-label='edit grade'>
-                <FontAwesomeSvgIcon icon={faTrash} size='small' />
+                <FontAwesomeSvgIcon icon={faPencilAlt} size='small' />
               </ActionButton>
-            ) : (
-              <ActionButton variant='contained' color='success' todo='save' type='submit' aria-label='edit grade'>
-                <FontAwesomeSvgIcon icon={faSave} size='small' />
-              </ActionButton>
-            )}
-          </GradeActions>
-        </GradeContainer>
-      )}
-    </Draggable>
+              {isDisabled ? (
+                <ActionButton variant='contained' color='error' todo='delete' aria-label='edit grade'>
+                  <FontAwesomeSvgIcon icon={faTrash} size='small' />
+                </ActionButton>
+              ) : (
+                <ActionButton variant='contained' color='success' todo='save' type='submit' aria-label='edit grade'>
+                  <FontAwesomeSvgIcon icon={faSave} size='small' />
+                </ActionButton>
+              )}
+            </GradeActions>
+          </GradeContainer>
+        )}
+      </Draggable>
+      <InputGradeTable open={isOpen} handleClose={handleClose} gradeId={grade.id} />
+    </React.Fragment>
   );
 };
 

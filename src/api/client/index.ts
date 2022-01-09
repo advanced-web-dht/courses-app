@@ -40,9 +40,9 @@ export const GetClassByCode = async (classCode: string): Promise<IClass> => {
   }
 };
 
-export const EnrollClass = async (classId: number): Promise<{ isSuccess: boolean; message: string }> => {
+export const EnrollClass = async (classId: number, studentId: string): Promise<{ isSuccess: boolean; message: string }> => {
   try {
-    const response = await provider.post(`/classes/${classId}/students`);
+    const response = await provider.post(`/classes/${classId}/students`, { studentId });
     return {
       isSuccess: response.data.isSuccess as boolean,
       message: 'Ghi danh lớp học thành công'
@@ -178,7 +178,7 @@ export const UpdateAssignment = async (classId: number, name: string, dateEnded:
 
 export const UploadStudents = async (classId: number, students: Array<unknown>): Promise<boolean> => {
   try {
-    const url = `/classes/${classId}/addfromfile`;
+    const url = `/classes/${classId}/list`;
     await provider.post(url, students);
     return true;
   } catch {
@@ -186,10 +186,10 @@ export const UploadStudents = async (classId: number, students: Array<unknown>):
   }
 };
 
-export const UploadGradePoints = async (classId: number, point: Array<unknown>, pointpartId: number): Promise<boolean> => {
+export const UploadGradePoints = async (classId: number, points: Array<unknown>, pointpartId: number): Promise<boolean> => {
   try {
-    const url = `/point/addfromfile`;
-    await provider.post(url, { classId, point, pointpartId });
+    const url = `/points/list`;
+    await provider.post(url, { classId, points, pointpartId });
     return true;
   } catch {
     return false;

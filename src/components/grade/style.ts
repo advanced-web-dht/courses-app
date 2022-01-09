@@ -11,19 +11,28 @@ export const Root = styled('div')`
   table {
     font-family: arial, sans-serif;
     table-layout: auto;
-    width: auto;
+    width: 100%;
   }
 
-  td,
-  th {
+  td {
     border: 1px solid #ddd;
-    text-align: left;
     padding: 8px;
     height: 50px;
   }
 
+  td .MuiInput-root {
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  td.student-id {
+    text-align: center;
+  }
+
   th {
+    border: 1px solid #ddd;
     background-color: #ddd;
     height: 60px;
+    text-align: center;
   }
 `;

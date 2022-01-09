@@ -1,20 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 
-import { IClass, IClassMember, IPointPart } from '../type';
+import { IClass, IClassMember, IPointPart, IStudent } from '../type';
 
 interface StateType {
   info: IClass;
-  members: IClassMember[];
+  teachers: IClassMember[];
+  students: IStudent[];
   grades: IPointPart[];
   currentTab: number;
 }
 
 const initialState: StateType = {
-  info: { id: -1, code: '', name: '', role: 'role', members: [] },
-  members: [],
+  info: { id: -1, code: '', name: '', role: 'role', teachers: [], students: [], owner: { id: -1, name: '', studentId: '' } },
+  teachers: [],
   grades: [],
-  currentTab: 0
+  currentTab: 0,
+  students: []
 };
 
 const ClassSlice = createSlice({
@@ -23,7 +25,8 @@ const ClassSlice = createSlice({
   reducers: {
     enterClass(state, action) {
       state.info = action.payload;
-      state.members = action.payload.members;
+      state.students = action.payload.students;
+      state.teachers = action.payload.teachers;
       state.grades = action.payload.grades;
     },
     storeGrade(state, action) {
