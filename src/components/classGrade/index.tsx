@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { toast } from 'react-toastify';
@@ -16,6 +16,12 @@ import { updateOrder } from './action';
 const ClassGrade: React.FC = () => {
   const { grades, info: currentClass } = useSelector((state: AppState) => state.currentClass);
   const dispatch = useDispatch();
+
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    setIsReady(true);
+  }, []);
 
   const onDragEnd = async (result: DropResult) => {
     if (!result.destination) {
@@ -42,18 +48,20 @@ const ClassGrade: React.FC = () => {
         <div>Cấu trúc điểm</div>
       </ClassesHeader>
       <ListGrade>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId='list'>
-            {(provided) => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
-                {grades?.map((item, index) => (
-                  <Grade grade={item} index={index} key={item.id} classId={item.classId} />
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+        {isReady && (
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId='list'>
+              {(provided) => (
+                <div ref={provided.innerRef} {...provided.droppableProps}>
+                  {grades?.map((item, index) => (
+                    <Grade grade={item} index={index} key={item.id} classId={item.classId} />
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        )}
         <AddGrade newOrder={grades.length} classId={currentClass?.id as number} />
       </ListGrade>
     </Container>

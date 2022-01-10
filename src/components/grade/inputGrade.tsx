@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import Button from '@mui/material/Button';
 import Zoom from '@mui/material/Zoom';
@@ -16,38 +16,36 @@ import { UploadGradePoints } from '../../api/client';
 import { Form, FormAction, FormHeader } from '../addClassModal/style';
 import FullSizeModal from '../UI/FullSizeModal';
 import { Root, StyledTableRow, GradeAction } from './style';
-import { IPoint, IPointPart, IStudent } from '../../type';
+import { IPoint, IStudent } from '../../type';
+import { GradeType, findStudent } from './helper';
 
 interface GradeTableProps {
   open: boolean;
   handleClose: () => void;
   gradeId: number;
+  gradeName: string;
 }
 
-type GradeType = Array<{ studentId: string; point: number }>;
-
-const InputGradeTable: React.FC<GradeTableProps> = ({ open, handleClose, gradeId }) => {
+const InputGradeTable: React.FC<GradeTableProps> = ({ open, handleClose, gradeId, gradeName }) => {
   const { students, info } = useSelector((state: AppState) => state.currentClass);
-  const { data: points } = useRequest<IPointPart>({ url: `/pointpart/${gradeId}/points` });
+  const { data } = useRequest<Array<IStudent & { detail: IPoint }>>({ url: `/pointpart/${gradeId}/points` });
 
   const [grades, setGrade] = useState<GradeType>(() => {
-    return students.map((student) => ({ studentId: student.studentId as string, point: 0 }));
+    return students.map((student) => ({ csId: student.id, studentId: student.studentId, point: 0 }));
   });
 
   useEffect(() => {
-    if (points) {
-      const pointsForce = points as IPointPart;
-      const pointsObject: Record<string, number> = (pointsForce?.students as Array<IStudent & { detail: IPoint }>).reduce(
-        (result, item) => ({ ...result, [item.studentId as string]: item.detail.point }),
-        {}
-      );
-      const newGrades = grades.map((grade) => ({ ...grade, point: pointsObject[grade.studentId] }));
+    if (data && data.length > 0) {
+      const studentsList = data as Array<IStudent & { detail: IPoint }>;
+      const newGrades = studentsList.map((student) => ({ csId: student.id, studentId: student.studentId, point: student.detail.point }));
       setGrade(newGrades);
     }
-  }, [points]);
+  }, [data]);
+
+  const downloadGrades = useMemo(() => data?.map((student) => ({ MSSV: student.studentId, điểm: student.detail.point })), [data]);
 
   const HandleSubmit = async () => {
-    const gradesToSubmit = grades.map((grade) => ({ ...grade, point: Number(grade.point) }));
+    const gradesToSubmit = grades.map((grade) => ({ csId: grade.csId, point: Number(grade.point) }));
     const check = await UploadGradePoints(info.id, gradesToSubmit, gradeId);
     if (check) {
       toast.success('Upload điểm thành công');
@@ -68,22 +66,27 @@ const InputGradeTable: React.FC<GradeTableProps> = ({ open, handleClose, gradeId
     setGrade(newGrades);
   };
 
-  const handleDropCSV = (data: Array<ParseResult<string>>) => {
+  const handleDropCSV = (rows: Array<ParseResult<string>>) => {
     const newGrades: GradeType = [];
-    const check = data.some((row) => {
+    const check = rows.some((row) => {
+      const csId = findStudent(grades, row.data[0]);
       const point = Number(row.data[1]);
+
+      if (!csId) {
+        return true;
+      }
+
       if (Number.isNaN(point)) {
         return true;
       }
-      newGrades.push({ studentId: row.data[0], point });
+
+      newGrades.push({ studentId: row.data[0], point, csId });
       return false;
     });
-    if (newGrades.length > grades.length || check) {
+    if (newGrades.length < grades.length || check) {
       toast.error('Import thất bại! Vui lòng kiểm tra lại file!');
     } else {
-      const combinedGrades = [...grades, ...newGrades];
-      const gradesToAdd = [...new Map(combinedGrades.map((item) => [item.studentId as string, item])).values()];
-      setGrade(gradesToAdd);
+      setGrade(newGrades);
     }
   };
 
@@ -92,7 +95,9 @@ const InputGradeTable: React.FC<GradeTableProps> = ({ open, handleClose, gradeId
       <Zoom in={open}>
         <Form width={800}>
           <FormHeader>
-            <div>Nhập cột điểm</div>
+            <div>
+              {info.name} - {gradeName}
+            </div>
             <IconButton onClick={HandleCloseModal}>
               <XIcon />
             </IconButton>
@@ -133,9 +138,9 @@ const InputGradeTable: React.FC<GradeTableProps> = ({ open, handleClose, gradeId
             </CSVReader>
             <GradeAction>
               <Button variant='contained' color='primary' onClick={HandleSubmit}>
-                Cập nhập
+                Cập nhật
               </Button>
-              <CSVDownloader data={points}>
+              <CSVDownloader data={downloadGrades} filename={`${info.name}_${gradeName}`}>
                 <Button variant='contained' color='success'>
                   Download
                 </Button>

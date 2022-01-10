@@ -133,7 +133,7 @@ const Grade: React.FC<GradeProps> = ({ grade, index, classId }) => {
           </GradeContainer>
         )}
       </Draggable>
-      <InputGradeTable open={isOpen} handleClose={handleClose} gradeId={grade.id} />
+      <InputGradeTable open={isOpen} handleClose={handleClose} gradeId={grade.id} gradeName={grade.name} />
     </React.Fragment>
   );
 };

@@ -6,7 +6,8 @@ export interface IAccount {
 }
 
 export interface IStudent {
-  studentId?: string;
+  id: number;
+  studentId: string;
   name: string;
   account: IAccount;
   final?: number;

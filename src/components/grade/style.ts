@@ -84,7 +84,7 @@ export const StudentGradeContainer = styled.div`
   }
 
   table {
-    margin-top: 10px;
+    margin: 10px 0;
     width: 500px;
     text-align: center;
   }
