@@ -7,10 +7,10 @@ import { ClassesHeader, ClassesListContainer } from './style';
 import StyledContainer from '../UI/Container';
 import Member from './member';
 import StudentListPreview from '../studentListPreview';
-import { IClassMember, IStudent } from '../../type';
+import { IAccount, IStudent } from '../../type';
 
 interface MemberProps {
-  members: IClassMember[] | IStudent[];
+  members: IAccount[] | IStudent[];
   roleType: string;
 }
 
@@ -26,8 +26,8 @@ const Members: React.FC<MemberProps> = ({ members, roleType }) => {
           </ClassesHeader>
           <ClassesListContainer>
             <Grid component='ul' container spacing={2}>
-              {members.map((member) => (
-                <Grid key={member.studentId} item xs={12} md={6} lg={4} component='li'>
+              {members.map((member, index) => (
+                <Grid key={member.studentId ?? index} item xs={12} md={6} lg={4} component='li'>
                   <Member member={member} type={roleType} />
                 </Grid>
               ))}

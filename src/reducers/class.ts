@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 
-import { IClass, IClassMember, IPointPart, IStudent } from '../type';
+import { IClass, IAccount, IPointPart, IStudent } from '../type';
 
 interface StateType {
   info: IClass;
-  teachers: IClassMember[];
+  teachers: IAccount[];
   students: IStudent[];
   grades: IPointPart[];
   currentTab: number;

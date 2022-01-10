@@ -7,7 +7,7 @@ import XIcon from '@mui/icons-material/Close';
 import { toast } from 'react-toastify';
 import Input from '@mui/material/Input';
 import Typography from '@mui/material/Typography';
-import { CSVReader } from 'react-papaparse';
+import { CSVReader, CSVDownloader } from 'react-papaparse';
 import { ParseResult } from 'papaparse';
 
 import { AppState } from '../../reducers';
@@ -15,7 +15,8 @@ import useRequest from '../../hooks/useRequest';
 import { UploadGradePoints } from '../../api/client';
 import { Form, FormAction, FormHeader } from '../addClassModal/style';
 import FullSizeModal from '../UI/FullSizeModal';
-import { Root, StyledTableRow } from './style';
+import { Root, StyledTableRow, GradeAction } from './style';
+import { IPoint, IPointPart, IStudent } from '../../type';
 
 interface GradeTableProps {
   open: boolean;
@@ -27,7 +28,7 @@ type GradeType = Array<{ studentId: string; point: number }>;
 
 const InputGradeTable: React.FC<GradeTableProps> = ({ open, handleClose, gradeId }) => {
   const { students, info } = useSelector((state: AppState) => state.currentClass);
-  const { data: points } = useRequest<GradeType>({ url: `/pointpart/${gradeId}/points` });
+  const { data: points } = useRequest<IPointPart>({ url: `/pointpart/${gradeId}/points` });
 
   const [grades, setGrade] = useState<GradeType>(() => {
     return students.map((student) => ({ studentId: student.studentId as string, point: 0 }));
@@ -35,8 +36,11 @@ const InputGradeTable: React.FC<GradeTableProps> = ({ open, handleClose, gradeId
 
   useEffect(() => {
     if (points) {
-      const pointsForce = points as GradeType;
-      const pointsObject: Record<string, number> = pointsForce.reduce((result, item) => ({ ...result, [item.studentId]: item.point }), {});
+      const pointsForce = points as IPointPart;
+      const pointsObject: Record<string, number> = (pointsForce?.students as Array<IStudent & { detail: IPoint }>).reduce(
+        (result, item) => ({ ...result, [item.studentId as string]: item.detail.point }),
+        {}
+      );
       const newGrades = grades.map((grade) => ({ ...grade, point: pointsObject[grade.studentId] }));
       setGrade(newGrades);
     }
@@ -66,15 +70,21 @@ const InputGradeTable: React.FC<GradeTableProps> = ({ open, handleClose, gradeId
 
   const handleDropCSV = (data: Array<ParseResult<string>>) => {
     const newGrades: GradeType = [];
-    for (let i = 0; i < data.length; i += 1) {
-      const item = data[i];
-      const grade = {
-        studentId: item.data[0],
-        point: Number(item.data[1])
-      };
-      newGrades.push(grade);
+    const check = data.some((row) => {
+      const point = Number(row.data[1]);
+      if (Number.isNaN(point)) {
+        return true;
+      }
+      newGrades.push({ studentId: row.data[0], point });
+      return false;
+    });
+    if (newGrades.length > grades.length || check) {
+      toast.error('Import thất bại! Vui lòng kiểm tra lại file!');
+    } else {
+      const combinedGrades = [...grades, ...newGrades];
+      const gradesToAdd = [...new Map(combinedGrades.map((item) => [item.studentId as string, item])).values()];
+      setGrade(gradesToAdd);
     }
-    setGrade(newGrades);
   };
 
   return (
@@ -118,12 +128,19 @@ const InputGradeTable: React.FC<GradeTableProps> = ({ open, handleClose, gradeId
                 </tbody>
               </table>
             </Root>
-            <Button variant='contained' color='primary' onClick={HandleSubmit} sx={{ mb: 2 }}>
-              Cập nhập
-            </Button>
             <CSVReader onDrop={handleDropCSV}>
               <span>Kéo thả file điểm</span>
             </CSVReader>
+            <GradeAction>
+              <Button variant='contained' color='primary' onClick={HandleSubmit}>
+                Cập nhập
+              </Button>
+              <CSVDownloader data={points}>
+                <Button variant='contained' color='success'>
+                  Download
+                </Button>
+              </CSVDownloader>
+            </GradeAction>
           </FormAction>
         </Form>
       </Zoom>

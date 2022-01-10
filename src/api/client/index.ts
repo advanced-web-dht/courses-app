@@ -198,7 +198,17 @@ export const UploadGradePoints = async (classId: number, points: Array<unknown>,
 
 export const MarkGradeDone = async (pointpartId: number): Promise<boolean> => {
   try {
-    const url = `/pointpart/done`;
+    const url = '/pointpart/done';
+    await provider.put(url, { id: pointpartId });
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+export const MarkGradePending = async (pointpartId: number): Promise<boolean> => {
+  try {
+    const url = '/pointpart/pending';
     await provider.put(url, { id: pointpartId });
     return true;
   } catch {

@@ -46,7 +46,7 @@ const ClassGrade: React.FC = () => {
           <Droppable droppableId='list'>
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                {grades.map((item, index) => (
+                {grades?.map((item, index) => (
                   <Grade grade={item} index={index} key={item.id} classId={item.classId} />
                 ))}
                 {provided.placeholder}

@@ -25,13 +25,11 @@ export const CardLabel = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  svg {
-    text-align: right;
-    float: right;
-    fill: green;
-  }
 `;
 
 export const CardFooter = styled.div`
-  padding: 5px 10px;
+  margin-bottom: -15px;
+  svg {
+    float: right;
+  }
 `;

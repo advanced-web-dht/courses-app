@@ -7,12 +7,13 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import { faSave } from '@fortawesome/free-solid-svg-icons/faSave';
 import { toast } from 'react-toastify';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 import useInput from '../../hooks/useInput';
 import { IPointPart } from '../../type';
-import { UpdatePointPart, MarkGradeDone } from '../../api/client';
+import { UpdatePointPart, MarkGradeDone, MarkGradePending } from '../../api/client';
 import FontAwesomeSvgIcon from '../UI/fontAweosomeIcon';
-import { GradeContainer, GradeForm, GradeActions, ActionButton } from './style';
+import { GradeContainer, GradeForm, GradeActions, ActionButton, Status } from './style';
 import { updateGrade } from './action';
 import InputGradeTable from '../grade/inputGrade';
 import useToggle from '../../hooks/useToggle';
@@ -52,10 +53,20 @@ const Grade: React.FC<GradeProps> = ({ grade, index, classId }) => {
   };
 
   const handleMarkGradeDone = async () => {
-    const result = await MarkGradeDone(grade.id);
+    const action = {
+      func: MarkGradeDone,
+      value: true
+    };
+    if (grade.isDone) {
+      action.func = MarkGradePending;
+      action.value = false;
+    }
+
+    const result = await action.func(grade.id);
+
     if (result) {
       const newGrade = { ...grade };
-      newGrade.isDone = 1;
+      newGrade.isDone = action.value;
       dispatch(updateGrade(newGrade));
     } else {
       toast.error('Thao tac khônng thành công!!');
@@ -81,13 +92,7 @@ const Grade: React.FC<GradeProps> = ({ grade, index, classId }) => {
                 placeholder='Lớn hơn 0 và không quá 100'
               />
               <div style={{ textAlign: 'center' }}>
-                <Button
-                  style={{ width: 150, margin: 5 }}
-                  onClick={handleOpen}
-                  variant='contained'
-                  color='primary'
-                  disabled={!!grade.isDone}
-                >
+                <Button style={{ width: 150, margin: 5 }} onClick={handleOpen} variant='contained' color='primary'>
                   Nhập điểm
                 </Button>
                 <Button
@@ -96,8 +101,13 @@ const Grade: React.FC<GradeProps> = ({ grade, index, classId }) => {
                   variant='contained'
                   color={grade.isDone ? 'success' : 'primary'}
                 >
-                  Hoàn thành
+                  Đổi trạng thái
                 </Button>
+                <Status>
+                  <Typography component='span'>
+                    Trạng thái: <strong>{grade.isDone ? 'Hoàn thành' : 'Chưa hoàn thành'}</strong>
+                  </Typography>
+                </Status>
               </div>
             </GradeForm>
             <GradeActions>

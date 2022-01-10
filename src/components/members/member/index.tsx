@@ -3,14 +3,14 @@ import Image from 'next/image';
 import Typography from '@mui/material/Typography';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons/faCheckCircle';
 
-import { StyledCard, CardContent, CardLabel } from './style';
-import { IClassMember, IStudent } from '../../../type';
+import { StyledCard, CardContent, CardLabel, CardFooter } from './style';
+import { IAccount, IStudent } from '../../../type';
 import FontAwesomeSvgIcon from '../../UI/fontAweosomeIcon';
 import Avatar from '../../../../public/avatar.svg';
 
 interface ClassProps {
-  member: IClassMember | IStudent;
-  type?: 'student' | 'teacher';
+  member: IAccount | IStudent;
+  type?: string;
 }
 
 const Member: React.FC<ClassProps> = ({ member, type }) => {
@@ -21,8 +21,10 @@ const Member: React.FC<ClassProps> = ({ member, type }) => {
       </CardContent>
       <CardLabel>
         <Typography>{member.name}</Typography>
-        {type === 'student' && (member as IStudent).account && <FontAwesomeSvgIcon icon={faCheckCircle} />}
       </CardLabel>
+      <CardFooter>
+        {type === 'student' && <FontAwesomeSvgIcon icon={faCheckCircle} fill={(member as IStudent).account ? 'green' : 'grey'} />}
+      </CardFooter>
     </StyledCard>
   );
 };

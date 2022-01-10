@@ -5,17 +5,18 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 type FontAwesomeSvgIconProps = {
   icon: IconDefinition;
   size?: 'large' | 'medium' | 'small';
+  fill?: string;
 };
 
 const FontAwesomeSvgIcon = React.forwardRef<SVGSVGElement, FontAwesomeSvgIconProps>((props, ref) => {
-  const { icon, size } = props;
+  const { icon, size, fill } = props;
 
   const {
     icon: [width, height, , , svgPathData]
   } = icon;
 
   return (
-    <SvgIcon ref={ref} viewBox={`0 0 ${width} ${height}`} fontSize={size}>
+    <SvgIcon ref={ref} viewBox={`0 0 ${width} ${height}`} fontSize={size} sx={{ fill }}>
       {typeof svgPathData === 'string' ? (
         <path d={svgPathData} />
       ) : (
@@ -33,7 +34,8 @@ const FontAwesomeSvgIcon = React.forwardRef<SVGSVGElement, FontAwesomeSvgIconPro
 });
 
 FontAwesomeSvgIcon.defaultProps = {
-  size: 'medium'
+  size: 'medium',
+  fill: ''
 };
 
 export default FontAwesomeSvgIcon;

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { getSession } from 'next-auth/client';
 import ClassIcon from '@mui/icons-material/Class';
+import { resetServerContext } from 'react-beautiful-dnd';
 
 import { wrapper } from '../../../src/reducers';
 import { Page } from '../../../src/type/page';
@@ -16,6 +17,7 @@ interface ClassPageProps {
 }
 
 const GradePage: Page<ClassPageProps> = ({ classData }: ClassPageProps) => {
+  useEffect(() => resetServerContext(), []);
   return (
     <React.Fragment>
       <Head>

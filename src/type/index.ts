@@ -1,24 +1,27 @@
-export interface IClassMember {
+export interface IAccount {
   id?: number;
   name: string;
   studentId: string;
+  email?: string;
 }
 
 export interface IStudent {
   studentId?: string;
   name: string;
-  account: IClassMember;
+  account: IAccount;
+  final?: number;
+  grades?: Array<IPointPart & { detail: IPoint }>;
 }
 
 export interface IClass {
   id: number;
   code: string;
   name: string;
-  teachers: IClassMember[];
+  teachers: IAccount[];
   students: IStudent[];
   role: string;
   grades?: IPointPart[];
-  owner: IClassMember;
+  owner: IAccount;
 }
 
 export interface ICreateClassDTO {
@@ -44,11 +47,19 @@ export interface IPointPart {
   name: string;
   ratio: number;
   order: number;
-  isDone: number;
+  isDone: boolean;
+  students?: Array<IStudent & { detail: IPoint }>;
 }
 
 export interface IAssignment {
   id: number;
   name: string;
   dateEnded: string;
+}
+
+export interface IPoint {
+  studentId: string;
+  pointPartId: number;
+  classId: number;
+  point: number;
 }
