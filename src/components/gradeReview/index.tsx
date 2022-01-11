@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Zoom from '@mui/material/Zoom';
 import IconButton from '@mui/material/IconButton';
 import XIcon from '@mui/icons-material/Close';
@@ -9,9 +9,11 @@ import Divider from '@mui/material/Divider';
 
 import useRequest from '../../hooks/useRequest';
 import FullSizeModal from '../UI/FullSizeModal';
+import ReviewContent from './reviewContent';
+import AddReview from './addReview';
 import { Form, FormAction, FormHeader } from '../addClassModal/style';
 import { Point } from './style';
-import { IPoint, IPointPart } from '../../type';
+import { IPoint, IPointPart, IReview } from '../../type';
 
 interface GradeReviewProps {
   open: boolean;
@@ -21,22 +23,27 @@ interface GradeReviewProps {
 }
 
 const GradeReview: React.FC<GradeReviewProps> = ({ open, handleClose, classId, grades }) => {
-  const [selectedGrade, setSelectedGrade] = useState('');
-  const [point, setPoint] = useState(0);
+  const [selectedGradeIndex, setSelectedGradeIndex] = useState('');
+  const [selectedGrade, setSelectedGrade] = useState<IPointPart | null>(null);
 
   const { data: doneGrades } = useRequest<IPointPart[]>({ url: `pointpart/class/${classId}/done` });
+  const { data: review, mutate } = useRequest<IReview>({
+    url: `/review/${selectedGrade?.reviews[0].id as number}`
+  });
 
   useEffect(() => {
-    if (grades) {
-      setPoint(() => {
-        const target = grades.find((grade) => (grade.id = (doneGrades as IPointPart[])[Number(selectedGrade)].id));
-        return target?.detail.point as number;
+    if (doneGrades) {
+      setSelectedGrade(() => {
+        const result = doneGrades.find((grade) => grade.id === doneGrades[Number(selectedGradeIndex)]?.id);
+        return result ?? null;
       });
     }
-  }, [selectedGrade]);
+  }, [selectedGradeIndex]);
+
+  const point = useMemo(() => grades?.find((grade) => grade.id === selectedGrade?.id)?.detail.point, [grades, selectedGrade]);
 
   const handleChangeGrade = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedGrade(target.value);
+    setSelectedGradeIndex(target.value);
   };
 
   return (
@@ -44,13 +51,15 @@ const GradeReview: React.FC<GradeReviewProps> = ({ open, handleClose, classId, g
       <Zoom in={open}>
         <Form width={800}>
           <FormHeader>
-            <div>Yêu cầu phúc khảo</div>
+            <Typography variant='h4' color='#1967D2' fontWeight='bold'>
+              Yêu cầu phúc khảo
+            </Typography>
             <IconButton onClick={handleClose}>
               <XIcon />
             </IconButton>
           </FormHeader>
           <FormAction>
-            <TextField id='demo-simple-select' value={selectedGrade} label='Cột điểm' onChange={handleChangeGrade} select>
+            <TextField id='demo-simple-select' value={selectedGradeIndex} label='Cột điểm' onChange={handleChangeGrade} select>
               {doneGrades?.map((grade, index) => (
                 <MenuItem value={index} key={grade.id}>
                   {grade.name}
@@ -59,10 +68,12 @@ const GradeReview: React.FC<GradeReviewProps> = ({ open, handleClose, classId, g
             </TextField>
             <Point>
               <Typography>
-                Số điểm đạt được: <strong>{`${point ? `${point} điểm` : ' - '}`}</strong>
+                Số điểm đạt được: <strong>{`${point !== undefined ? `${point} điểm` : ' - '}`}</strong>
               </Typography>
             </Point>
             <Divider />
+            {selectedGrade &&
+              (review ? <ReviewContent review={review as IReview} /> : <AddReview mutate={mutate} gradeId={selectedGrade?.id as number} />)}
           </FormAction>
         </Form>
       </Zoom>

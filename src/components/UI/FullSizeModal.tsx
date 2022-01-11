@@ -7,17 +7,25 @@ const Container = styled(Box)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
-  width: 100vw;
+  width: 100%;
+  height: 100%;
   background-color: white;
   padding-top: 20px;
 `;
 
+const StyledModal = styled(Modal)`
+  overflow-y: auto;
+
+  .MuiBackdrop-root {
+    background-color: #fff;
+  }
+`;
+
 const FullSizeModal: React.FC<ModalProps> = ({ children, open, onClose }) => {
   return (
-    <Modal open={open} onClose={onClose}>
+    <StyledModal open={open} onClose={onClose}>
       <Container>{children}</Container>
-    </Modal>
+    </StyledModal>
   );
 };
 

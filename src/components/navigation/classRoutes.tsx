@@ -3,7 +3,7 @@ import Link from 'next/link';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import { faTasks } from '@fortawesome/free-solid-svg-icons/faTasks';
+import { faTasks, faListAlt } from '@fortawesome/free-solid-svg-icons';
 import { faWindowRestore } from '@fortawesome/free-solid-svg-icons/faWindowRestore';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
@@ -33,6 +33,16 @@ const ClassRoutes: React.FC<ClassRoutesProps> = ({ classCode }) => {
                   <FontAwesomeSvgIcon icon={faWindowRestore} />
                 </ListItemIcon>
                 <ListItemText primary='Cấu trúc điểm' />
+              </SubListItemButton>
+            </a>
+          </Link>
+          <Link href={`/class/${classCode}/review`}>
+            <a>
+              <SubListItemButton>
+                <ListItemIcon>
+                  <FontAwesomeSvgIcon icon={faListAlt} />
+                </ListItemIcon>
+                <ListItemText primary='Phúc khảo' />
               </SubListItemButton>
             </a>
           </Link>

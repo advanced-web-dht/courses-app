@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { toast } from 'react-toastify';
+import Typography from '@mui/material/Typography';
 
 import { AppState } from '../../reducers';
 import { ClassesHeader } from '../classes/style';
@@ -45,7 +46,9 @@ const ClassGrade: React.FC = () => {
   return (
     <Container>
       <ClassesHeader>
-        <div>Cấu trúc điểm</div>
+        <Typography variant='h4' fontWeight='bold'>
+          Cấu trúc điểm
+        </Typography>
       </ClassesHeader>
       <ListGrade>
         {isReady && (

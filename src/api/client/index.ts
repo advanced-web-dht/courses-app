@@ -215,3 +215,23 @@ export const MarkGradePending = async (pointpartId: number): Promise<boolean> =>
     return false;
   }
 };
+
+export const PostNewReview = async (pointPartId: number, content: string): Promise<boolean> => {
+  try {
+    const url = '/review';
+    await provider.post(url, { pointPartId, content });
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+export const PostNewComment = async (reviewId: number, message: string): Promise<boolean> => {
+  try {
+    const url = `/review/${reviewId}/comments`;
+    await provider.post(url, { message });
+    return true;
+  } catch {
+    return false;
+  }
+};

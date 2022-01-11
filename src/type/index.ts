@@ -50,6 +50,7 @@ export interface IPointPart {
   order: number;
   isDone: boolean;
   students?: Array<IStudent & { detail: IPoint }>;
+  reviews: IReview[];
 }
 
 export interface IAssignment {
@@ -63,4 +64,25 @@ export interface IPoint {
   pointPartId: number;
   classId: number;
   point: number;
+}
+
+export interface IReview {
+  id: number;
+  accountId: number;
+  pointPartId: number;
+  content: string;
+  comments: IComment[];
+  grade: IPointPart;
+  requester: IAccount;
+  createdAt: string;
+}
+
+export interface IComment {
+  id: number;
+  reviewId: number;
+  accountId: number;
+  message: string;
+  sender: IAccount;
+  review: IReview;
+  createdAt: string;
 }
