@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { getSession } from 'next-auth/client';
 
-import { IAssignment, IClass, ICreateClassDTO, IPointPart } from '../../type';
+import { IAssignment, IClass, ICreateClassDTO, IPointPart, IStudent } from '../../type';
 
 export const provider = axios.create({ baseURL: process.env.NEXT_PUBLIC_SERVER_URL });
 
@@ -216,10 +216,10 @@ export const MarkGradePending = async (pointpartId: number): Promise<boolean> =>
   }
 };
 
-export const PostNewReview = async (pointPartId: number, content: string): Promise<boolean> => {
+export const PostNewReview = async (pointPartId: number, content: string, prePoint: number, expectedPoint: number): Promise<boolean> => {
   try {
     const url = '/review';
-    await provider.post(url, { pointPartId, content });
+    await provider.post(url, { pointPartId, content, prePoint, expectedPoint });
     return true;
   } catch {
     return false;
@@ -233,5 +233,25 @@ export const PostNewComment = async (reviewId: number, message: string): Promise
     return true;
   } catch {
     return false;
+  }
+};
+
+export const GetStudentOfClass = async (classId: number, studentId: string): Promise<IStudent | null> => {
+  try {
+    const url = `/classes/${classId}/student/${studentId}`;
+    const result = await provider.get(url);
+    return result.data;
+  } catch {
+    return null;
+  }
+};
+
+export const MakeReviewDone = async (reviewId: number, csId: number, pointPartId: number, finalPoint: number): Promise<IStudent | null> => {
+  try {
+    const url = `/review/${reviewId}/done`;
+    const result = await provider.put(url, { csId, pointPartId, finalPoint });
+    return result.data;
+  } catch {
+    return null;
   }
 };

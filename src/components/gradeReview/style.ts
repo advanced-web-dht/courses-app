@@ -3,10 +3,13 @@ import Button from '@mui/material/Button';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 
 export const Point = styled.div`
+  width: 100%;
   align-self: flex-end;
   display: flex;
-  justify-content: right;
-  margin: 10px 10px;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  margin: 10px 0;
+  padding: 0 10px;
 `;
 
 export const ReviewContainer = styled.div`

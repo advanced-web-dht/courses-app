@@ -13,9 +13,10 @@ interface ReviewCommentProps {
   comments: IComment[];
   accountId: number;
   reviewId: number;
+  pending: boolean;
 }
 
-const ReviewComment: React.FC<ReviewCommentProps> = ({ comments, accountId, reviewId }) => {
+const ReviewComment: React.FC<ReviewCommentProps> = ({ comments, accountId, reviewId, pending }) => {
   return (
     <CommentsContainer>
       <CommentListHeader>
@@ -37,8 +38,12 @@ const ReviewComment: React.FC<ReviewCommentProps> = ({ comments, accountId, revi
           <Comment comment={comment} key={comment.id} teacher={comment.accountId !== accountId} />
         ))}
       </CommentList>
-      <Divider />
-      <AddComment reviewId={reviewId} />
+      {pending && (
+        <React.Fragment>
+          <Divider />
+          <AddComment reviewId={reviewId} />
+        </React.Fragment>
+      )}
     </CommentsContainer>
   );
 };

@@ -8,7 +8,7 @@ interface IError {
 type ReturnProps = [
   string,
   IError,
-  (e: React.ChangeEvent<HTMLInputElement>) => void,
+  (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
   (err: string) => void,
   () => void,
   React.Dispatch<React.SetStateAction<string>>
@@ -29,7 +29,7 @@ const useInput = (initialValue = ''): ReturnProps => {
     }
   }, [value]);
 
-  const handleChange = useCallback(({ target }: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = useCallback(({ target }: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setValue(target.value);
   }, []);
 

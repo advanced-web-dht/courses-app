@@ -26,9 +26,9 @@ const GradeReview: React.FC<GradeReviewProps> = ({ open, handleClose, classId, g
   const [selectedGradeIndex, setSelectedGradeIndex] = useState('');
   const [selectedGrade, setSelectedGrade] = useState<IPointPart | null>(null);
 
-  const { data: doneGrades } = useRequest<IPointPart[]>({ url: `pointpart/class/${classId}/done` });
-  const { data: review, mutate } = useRequest<IReview>({
-    url: `/review/${selectedGrade?.reviews[0].id as number}`
+  const { data: doneGrades, mutate } = useRequest<IPointPart[]>({ url: `pointpart/class/${classId}/done` });
+  const { data: review } = useRequest<IReview>({
+    url: selectedGrade?.reviews.length !== 0 ? `/review/${selectedGrade?.reviews[0].id as number}` : ''
   });
 
   useEffect(() => {
@@ -38,9 +38,14 @@ const GradeReview: React.FC<GradeReviewProps> = ({ open, handleClose, classId, g
         return result ?? null;
       });
     }
-  }, [selectedGradeIndex]);
+  }, [selectedGradeIndex, doneGrades]);
 
-  const point = useMemo(() => grades?.find((grade) => grade.id === selectedGrade?.id)?.detail.point, [grades, selectedGrade]);
+  const point = useMemo(() => {
+    if (review && review.pointPartId === selectedGrade?.id) {
+      return review.prePoint;
+    }
+    return grades?.find((grade) => grade.id === selectedGrade?.id)?.detail.point;
+  }, [grades, selectedGrade]);
 
   const handleChangeGrade = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedGradeIndex(target.value);
@@ -67,13 +72,21 @@ const GradeReview: React.FC<GradeReviewProps> = ({ open, handleClose, classId, g
               ))}
             </TextField>
             <Point>
+              {review?.id && (
+                <Typography>
+                  Số điểm mong muốn: <strong>{`${review.expectedPoint} điểm`}</strong>
+                </Typography>
+              )}
               <Typography>
                 Số điểm đạt được: <strong>{`${point !== undefined ? `${point} điểm` : ' - '}`}</strong>
               </Typography>
             </Point>
             <Divider />
-            {selectedGrade &&
-              (review ? <ReviewContent review={review as IReview} /> : <AddReview mutate={mutate} gradeId={selectedGrade?.id as number} />)}
+            {review?.id ? (
+              <ReviewContent review={review as IReview} />
+            ) : (
+              selectedGrade && <AddReview mutate={mutate} gradeId={selectedGrade?.id as number} currentPoint={point as number} />
+            )}
           </FormAction>
         </Form>
       </Zoom>

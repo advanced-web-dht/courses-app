@@ -75,6 +75,10 @@ export interface IReview {
   grade: IPointPart;
   requester: IAccount;
   createdAt: string;
+  prePoint: number;
+  expectedPoint: number;
+  finalPoint: number;
+  isDone: boolean;
 }
 
 export interface IComment {

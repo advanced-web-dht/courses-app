@@ -13,7 +13,7 @@ import { ManagementList } from './style';
 import { IReview } from '../../type';
 import FullSizeModal from '../UI/FullSizeModal';
 import { Form, FormAction, FormHeader } from '../addClassModal/style';
-import ReviewContent from './reviewContent';
+import ReviewDetail from './reviewDetail';
 
 const ReviewList: React.FC = () => {
   const { info } = useSelector((state: AppState) => state.currentClass);
@@ -60,7 +60,7 @@ const ReviewList: React.FC = () => {
                 <XIcon />
               </IconButton>
             </FormHeader>
-            <FormAction>{review?.id && <ReviewContent review={review as IReview} />}</FormAction>
+            <FormAction>{review?.id && <ReviewDetail review={review as IReview} />}</FormAction>
           </Form>
         </Zoom>
       </FullSizeModal>
