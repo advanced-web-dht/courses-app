@@ -66,7 +66,7 @@ const EnrollClass: React.FC<EnrollClassProps> = ({ isAuth, classData }) => {
     if (result.isSuccess) {
       toast.success('Bạn đã tham gia thành công', { onClose: () => redirect.doRedirect(redirectUrl) });
     } else {
-      toast.warning(result.message, { onClose: () => redirect.doRedirect(redirectUrl) });
+      toast.warning(result.message, { onClose: () => redirect.doRedirect('/class') });
     }
   };
 

@@ -5,10 +5,16 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Tooltip from '@mui/material/Tooltip';
 import Button from '@mui/material/Button';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons/faCheckCircle';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableContainer from '@mui/material/TableContainer';
 
 import { AppState } from '../../reducers';
 import useRequest from '../../hooks/useRequest';
-import { Root, StyledTableRow } from './style';
+import { Root } from './style';
 import FontAwesomeSvgIcon from '../UI/fontAweosomeIcon';
 import { IClass } from '../../type';
 
@@ -34,39 +40,41 @@ const GradeTable: React.FC = () => {
     <Root>
       {data ? (
         <React.Fragment>
-          <table aria-label='grade-board'>
-            <thead>
-              <tr>
-                <th>Sinh viên</th>
-                {data.grades?.map((grade) => (
-                  <th key={grade.id}>
-                    {grade.name} - {grade.ratio}
-                  </th>
-                ))}
-                <th>Tổng kết</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.students.map((student) => (
-                <StyledTableRow key={student.studentId}>
-                  <td style={{ minWidth: 250 }}>
-                    <Tooltip title={student.account ? (student.account.email as string) : 'Sinh viên chưa tham gia lớp học'}>
-                      <span>
-                        {student.name}
-                        <FontAwesomeSvgIcon icon={faCheckCircle} fill={student.account ? 'green' : 'grey'} />
-                      </span>
-                    </Tooltip>
-                  </td>
-                  {student.grades?.map((grade) => (
-                    <td style={{ minWidth: 150 }} key={grade.id}>
-                      {grade.detail.point ?? 0}
-                    </td>
+          <TableContainer>
+            <Table aria-label='grade-board' stickyHeader>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Sinh viên</TableCell>
+                  {data.grades?.map((grade) => (
+                    <TableCell key={grade.id} align='right'>
+                      {grade.name} - {grade.ratio}
+                    </TableCell>
                   ))}
-                  <td style={{ minWidth: 150 }}>{student.final}</td>
-                </StyledTableRow>
-              ))}
-            </tbody>
-          </table>
+                  <TableCell align='right'>Tổng kết</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {data.students.map((student) => (
+                  <TableRow key={student.studentId}>
+                    <TableCell>
+                      <Tooltip title={student.account ? (student.account.email as string) : 'Sinh viên chưa tham gia lớp học'}>
+                        <span>
+                          {student.name}
+                          <FontAwesomeSvgIcon icon={faCheckCircle} fill={student.account ? 'green' : 'grey'} />
+                        </span>
+                      </Tooltip>
+                    </TableCell>
+                    {student.grades?.map((grade) => (
+                      <TableCell key={grade.id} align='right'>
+                        {grade.detail.point ?? 0}
+                      </TableCell>
+                    ))}
+                    <TableCell align='right'>{student.final?.toFixed(2)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
           <div>
             <CSVDownloader data={board}>
               <Button variant='contained'>Download</Button>

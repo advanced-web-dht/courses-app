@@ -32,9 +32,10 @@ const GradeReview: React.FC<GradeReviewProps> = ({ open, handleClose, classId, g
   });
 
   useEffect(() => {
-    if (doneGrades) {
+    const selected = Number(selectedGradeIndex);
+    if (doneGrades && selected >= 0 && selectedGradeIndex) {
       setSelectedGrade(() => {
-        const result = doneGrades.find((grade) => grade.id === doneGrades[Number(selectedGradeIndex)]?.id);
+        const result = doneGrades.find((grade) => grade.id === selected);
         return result ?? null;
       });
     }
@@ -65,8 +66,8 @@ const GradeReview: React.FC<GradeReviewProps> = ({ open, handleClose, classId, g
           </FormHeader>
           <FormAction>
             <TextField id='demo-simple-select' value={selectedGradeIndex} label='Cột điểm' onChange={handleChangeGrade} select>
-              {doneGrades?.map((grade, index) => (
-                <MenuItem value={index} key={grade.id}>
+              {doneGrades?.map((grade) => (
+                <MenuItem value={grade.id} key={grade.id}>
                   {grade.name}
                 </MenuItem>
               ))}

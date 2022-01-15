@@ -186,10 +186,10 @@ export const UploadStudents = async (classId: number, students: Array<unknown>):
   }
 };
 
-export const UploadGradePoints = async (classId: number, points: Array<unknown>, pointpartId: number): Promise<boolean> => {
+export const UploadGradePoints = async (classId: number, points: Array<unknown>, pointPartId: number): Promise<boolean> => {
   try {
     const url = `/points/list`;
-    await provider.post(url, { classId, points, pointpartId });
+    await provider.post(url, { classId, points, pointPartId });
     return true;
   } catch {
     return false;
@@ -253,5 +253,15 @@ export const MakeReviewDone = async (reviewId: number, csId: number, pointPartId
     return result.data;
   } catch {
     return null;
+  }
+};
+
+export const UpdateNotificationStatus = async (notificationId: number): Promise<boolean> => {
+  try {
+    const url = `/notifications/${notificationId}`;
+    await provider.patch(url);
+    return true;
+  } catch {
+    return false;
   }
 };

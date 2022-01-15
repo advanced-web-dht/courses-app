@@ -13,6 +13,7 @@ import NavTabs from '../navTab';
 import Header from '../header';
 import { Section } from '../header/style';
 import UserOptions from '../userOptions';
+import Notification from '../Notification';
 import AddClassModal from '../addClassModal';
 import useToggle from '../../hooks/useToggle';
 import InviteStudentPopup from '../inviteStudentPopup';
@@ -73,6 +74,7 @@ const ClassLayout: React.FC<ClassLayoutProps> = ({ children, router, icon, title
             ) : (
               <InviteStudentPopup classCode={currentClass.code} inviteTeacher={currentClass.role === ROLES.owner} />
             )}
+            <Notification />
             <Tooltip title='Tài khoản của bạn'>
               <IconButton size='large' aria-label='user-actions' onClick={() => handleOpenUser()} ref={userRef}>
                 <Avatar />

@@ -90,3 +90,13 @@ export interface IComment {
   review: IReview;
   createdAt: string;
 }
+
+export interface INotification {
+  id: number;
+  accountId: number;
+  message: string;
+  isRead: boolean;
+  createdAt: string;
+  topic: string;
+  class: IClass;
+}

@@ -58,7 +58,7 @@ const ReviewDetail: React.FC<ReviewDetailProps> = ({ review }) => {
           {review.content}
         </Typography>
       </ReviewContainer>
-      <ReviewAction reviewId={review?.id} pointPartId={review.pointPartId} csId={student?.id as number} />
+      {!review?.isDone && <ReviewAction reviewId={review?.id} pointPartId={review.pointPartId} csId={student?.id as number} />}
       <Divider />
       <ReviewComment comments={review.comments} accountId={review.accountId} reviewId={review.id} pending={!review.isDone} />
       {review.isDone && (

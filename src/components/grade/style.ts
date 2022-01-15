@@ -10,49 +10,51 @@ export const StyledTableRow = muiStyled(TableRow)(({ theme }) => ({
 
 export const Root = styled.div`
   margin-bottom: 10px;
-  padding: 10px;
+  padding: 10px 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-  table {
-    font-family: arial, sans-serif;
-    table-layout: auto;
-    width: 100%;
+  .MuiTableContainer-root {
+    max-height: 700px;
+    overflow-y: auto;
+    ::-webkit-scrollbar-thumb {
+      background-color: #818b99;
+      border: 3px solid transparent;
+      border-radius: 9px;
+      background-clip: content-box;
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
   }
 
-  td {
-    border: 1px solid #ddd;
-    height: 50px;
-    padding-left: 10px;
+  .MuiTable-root {
+    align-self: center;
   }
 
-  td span {
-    display: flex;
-    align-items: center;
-  }
-
-  td span svg {
-    margin-left: 5px;
-  }
-
-  td .MuiInput-root {
-    width: 100%;
-    padding: 0 20px;
-  }
-
-  td.student-id {
-    text-align: center;
-  }
-
-  th {
-    border: 1px solid #ddd;
-    background-color: #ddd;
-    height: 60px;
-    text-align: center;
-  }
-
-  div {
-    display: flex;
-    justify-content: center;
+  > div {
     margin-top: 10px;
+  }
+
+  .MuiTableCell-root {
+    font-weight: bold;
+    font-size: 13pt;
+    span {
+      display: flex;
+      align-items: center;
+
+      svg {
+        margin-left: 5px;
+      }
+    }
+  }
+
+  .MuiTableHead-root .MuiTableCell-root {
+    background-color: #202020;
+    color: #f4f6f6;
+    font-weight: bold;
+    font-size: 13pt;
   }
 `;
 
