@@ -11,10 +11,10 @@ import Typography from '@mui/material/Typography';
 
 import useInput from '../../hooks/useInput';
 import { IPointPart } from '../../type';
-import { UpdatePointPart, MarkGradeDone, MarkGradePending } from '../../api/client';
+import { UpdatePointPart, MarkGradeDone, MarkGradePending, DeleteGrade } from '../../api/client';
 import FontAwesomeSvgIcon from '../UI/fontAweosomeIcon';
 import { GradeContainer, GradeForm, GradeActions, ActionButton, Status } from './style';
-import { updateGrade } from './action';
+import { updateGrade, deleteGrade } from './action';
 import InputGradeTable from '../grade/inputGrade';
 import useToggle from '../../hooks/useToggle';
 
@@ -73,6 +73,15 @@ const Grade: React.FC<GradeProps> = ({ grade, index, classId }) => {
     }
   };
 
+  const HandleDeleteGrade = async () => {
+    const result = await DeleteGrade(grade.id);
+    if (result) {
+      dispatch(deleteGrade(grade.id));
+    } else {
+      toast.error('Có lỗi xảy ra!!');
+    }
+  };
+
   return (
     <React.Fragment>
       <Draggable draggableId={`${grade.id}`} index={index}>
@@ -121,7 +130,7 @@ const Grade: React.FC<GradeProps> = ({ grade, index, classId }) => {
                 <FontAwesomeSvgIcon icon={faPencilAlt} size='small' />
               </ActionButton>
               {isDisabled ? (
-                <ActionButton variant='contained' color='error' todo='delete' aria-label='edit grade'>
+                <ActionButton variant='contained' color='error' todo='delete' aria-label='edit grade' onClick={HandleDeleteGrade}>
                   <FontAwesomeSvgIcon icon={faTrash} size='small' />
                 </ActionButton>
               ) : (

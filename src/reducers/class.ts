@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 
-import { IClass, IAccount, IPointPart, IStudent } from '../type';
+import { IAccount, IClass, IPointPart, IStudent } from '../type';
 
 interface StateType {
   info: IClass;
@@ -40,7 +40,7 @@ const ClassSlice = createSlice({
       state.grades[index] = action.payload;
     },
     deleteGrade(state, action) {
-      state.grades.filter((grade) => grade.id !== action.payload);
+      state.grades = state.grades.filter((grade) => grade.id !== action.payload);
     },
     changeTab(state, action) {
       state.currentTab = action.payload;

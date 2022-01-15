@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../reducers';
 import Members from '../members';
 import Banner from '../banner';
-import Assignments from '../assignment';
 import GradeTable from '../grade';
 import StudentGrade from '../grade/studentGrade';
 
@@ -25,12 +24,10 @@ const ClassContent: React.FC = () => {
         />
       );
     case 1:
-      return <Assignments />;
-    case 2:
       return <Members members={students} roleType='student' />;
-    case 3:
+    case 2:
       return <Members members={allTeachers} roleType='teacher' />;
-    case 4:
+    case 3:
       return info.role === 'student' ? <StudentGrade /> : <GradeTable />;
     default:
       return null;

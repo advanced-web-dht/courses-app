@@ -265,3 +265,13 @@ export const UpdateNotificationStatus = async (notificationId: number): Promise<
     return false;
   }
 };
+
+export const DeleteGrade = async (id: number): Promise<boolean> => {
+  try {
+    const url = `/pointpart/${id}`;
+    await provider.delete(url);
+    return true;
+  } catch {
+    return false;
+  }
+};
