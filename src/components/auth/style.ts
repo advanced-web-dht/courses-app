@@ -55,15 +55,14 @@ export const GoogleButton = styled(RoundedButton)`
 
 export const FormFooter = styled.div`
   display: flex;
+  flex-direction: row-reverse;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-top: 10px;
   a {
     text-transform: capitalize;
   }
-  @media (max-width: 600px) {
-    justify-content: center;
-  }
+
   .MuiButton-text {
     font-weight: bold;
     font-size: 15px;

@@ -3,7 +3,9 @@ import Link from 'next/link';
 import { signIn } from 'next-auth/client';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import { toast } from 'react-toastify';
 
+import ForgotPassword from './forgotPassword';
 import { FormActions, FormContent, FormFooter, FormHeader, FormWrapper, GoogleButton, StyledContainer } from './style';
 import RoundedButton from '../UI/RoundedButton';
 import GoogleSignIn from './google';
@@ -14,14 +16,16 @@ const SignInForm = () => {
   const [username, setUsername] = useState('');
   const [popup, setPopup] = useState(false);
   const [password, error, setPassword, setError] = useInput();
-  const { url } = useRedirect();
+  const { url, doRedirect } = useRedirect();
   const redirectUrl = url ? `?redirect=${url}` : '';
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const response = await signIn('credentials', { redirect: false, password, username });
-    if (response?.error) {
+    if (response?.error?.includes('401')) {
       setError('Tên đăng nhập hoặc mật khẩu không chính xác');
+    } else if (response?.error?.includes('403')) {
+      toast.warning('Tài khoản của bạn chưa được kích hoạt', { onClose: () => doRedirect('/activate') });
     }
   };
 
@@ -73,12 +77,15 @@ const SignInForm = () => {
           </FormActions>
         </FormContent>
         <FormFooter>
-          <span>Chưa có tài khoản? </span>
-          <Link href={`/signup${redirectUrl}`} passHref>
-            <Button variant='text' color='error'>
-              Đăng Ký
-            </Button>
-          </Link>
+          <div>
+            <span>Chưa có tài khoản? </span>
+            <Link href={`/signup${redirectUrl}`} passHref>
+              <Button variant='text' color='error'>
+                Đăng Ký
+              </Button>
+            </Link>
+          </div>
+          <ForgotPassword />
         </FormFooter>
       </FormWrapper>
       {popup && <GoogleSignIn onSuccess={() => setPopup(false)} />}
