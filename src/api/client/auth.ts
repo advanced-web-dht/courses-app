@@ -47,3 +47,51 @@ export const updateProfie = async (name: string, studentId: string): Promise<Rec
     };
   }
 };
+
+export const VerifyAccount = async (token: string): Promise<boolean> => {
+  try {
+    const response = await provider.post('/auth/verify', { token });
+    if (response.data) {
+      return true;
+    }
+    return false;
+  } catch (e) {
+    return false;
+  }
+};
+
+export const RequestActivate = async (email: string): Promise<boolean> => {
+  try {
+    const response = await provider.post('/auth/request-activate', { email });
+    if (response.data.isSuccess) {
+      return true;
+    }
+    return false;
+  } catch (e) {
+    return false;
+  }
+};
+
+export const RequestResetPassword = async (email: string): Promise<boolean> => {
+  try {
+    const response = await provider.post('/auth/forgot-password', { email });
+    if (response.data.isSuccess) {
+      return true;
+    }
+    return false;
+  } catch (e) {
+    return false;
+  }
+};
+
+export const PostNewPassword = async (password: string, token: string): Promise<boolean> => {
+  try {
+    const response = await provider.post('/auth/reset-password', { password, token });
+    if (response.data.isSuccess) {
+      return true;
+    }
+    return false;
+  } catch (e) {
+    return false;
+  }
+};

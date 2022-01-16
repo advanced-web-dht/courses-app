@@ -1,19 +1,28 @@
-export interface IClassMember {
+export interface IAccount {
   id?: number;
   name: string;
-  studentId: number;
-  detail?: {
-    role: string;
-  };
+  studentId: string;
+  email?: string;
+}
+
+export interface IStudent {
+  id: number;
+  studentId: string;
+  name: string;
+  account: IAccount;
+  final?: number;
+  grades?: Array<IPointPart & { detail: IPoint }>;
 }
 
 export interface IClass {
   id: number;
   code: string;
   name: string;
-  members: IClassMember[];
+  teachers: IAccount[];
+  students: IStudent[];
   role: string;
   grades?: IPointPart[];
+  owner: IAccount;
 }
 
 export interface ICreateClassDTO {
@@ -39,11 +48,55 @@ export interface IPointPart {
   name: string;
   ratio: number;
   order: number;
-  isDone: number;
+  isDone: boolean;
+  students?: Array<IStudent & { detail: IPoint }>;
+  reviews: IReview[];
 }
 
 export interface IAssignment {
   id: number;
   name: string;
   dateEnded: string;
+}
+
+export interface IPoint {
+  studentId: string;
+  pointPartId: number;
+  classId: number;
+  point: number;
+}
+
+export interface IReview {
+  id: number;
+  accountId: number;
+  pointPartId: number;
+  content: string;
+  comments: IComment[];
+  grade: IPointPart;
+  requester: IAccount;
+  createdAt: string;
+  prePoint: number;
+  expectedPoint: number;
+  finalPoint: number;
+  isDone: boolean;
+}
+
+export interface IComment {
+  id: number;
+  reviewId: number;
+  accountId: number;
+  message: string;
+  sender: IAccount;
+  review: IReview;
+  createdAt: string;
+}
+
+export interface INotification {
+  id: number;
+  accountId: number;
+  message: string;
+  isRead: boolean;
+  createdAt: string;
+  topic: string;
+  class: IClass;
 }

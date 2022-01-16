@@ -34,7 +34,7 @@ const expandedStyles = css`
   }
 `;
 
-export const StyledDrawer = styled(Drawer)<ExtendedDrawerProps>`
+export const StyledDrawer = styled(Drawer, { shouldForwardProp: (prop: string) => !prop.startsWith('$') })<ExtendedDrawerProps>`
   width: 71px;
   flex-shrink: 0;
   white-space: nowrap;

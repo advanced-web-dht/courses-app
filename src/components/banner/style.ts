@@ -31,3 +31,16 @@ export const TitleBanner = styled.div`
     line-height: 2.75rem;
   }
 `;
+
+export const ClassInfo = styled.div`
+  display: flex;
+  margin-top: 15px;
+`;
+
+export const Information = styled.div`
+  width: 49%;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
+  padding: 10px;
+`;

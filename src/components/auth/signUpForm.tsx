@@ -201,12 +201,14 @@ const SignUpForm = () => {
           </FormActions>
         </FormContent>
         <FormFooter>
-          <span>Đã có tài khoản? </span>
-          <Link href={`/signin${redirectUrl}`} passHref>
-            <Button variant='text' color='error'>
-              Đăng nhập
-            </Button>
-          </Link>
+          <div>
+            <span>Đã có tài khoản? </span>
+            <Link href={`/signin${redirectUrl}`} passHref>
+              <Button variant='text' color='error'>
+                Đăng nhập
+              </Button>
+            </Link>
+          </div>
         </FormFooter>
       </FormWrapper>
       {popup && <GoogleSignIn onSuccess={() => setPopup(false)} />}

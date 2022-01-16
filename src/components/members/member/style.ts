@@ -26,3 +26,10 @@ export const CardLabel = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const CardFooter = styled.div`
+  margin-bottom: -15px;
+  svg {
+    float: right;
+  }
+`;

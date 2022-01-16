@@ -35,7 +35,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
     const classData = await GetClass(code, session?.accessToken as string);
     store.dispatch(ClassActions.enterClass(classData));
 
-    if (classData) {
+    if (classData && classData.role !== 'student') {
       return {
         props: {
           classData
