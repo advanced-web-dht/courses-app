@@ -19,9 +19,10 @@ interface ReviewActionProps {
   reviewId: number;
   pointPartId: number;
   csId: number;
+  classId: number;
 }
 
-const ReviewAction: React.FC<ReviewActionProps> = ({ reviewId, csId, pointPartId }) => {
+const ReviewAction: React.FC<ReviewActionProps> = ({ reviewId, csId, pointPartId, classId }) => {
   const { isOpen, handleOpen, handleClose } = useToggle();
   const [point, error, onChangePoint, onPointError, reset] = useInput();
 
@@ -42,7 +43,7 @@ const ReviewAction: React.FC<ReviewActionProps> = ({ reviewId, csId, pointPartId
 
   const HandleSubmit = async () => {
     const numberPoint = Number(point);
-    const result = await MakeReviewDone(reviewId, csId, pointPartId, numberPoint);
+    const result = await MakeReviewDone(reviewId, csId, pointPartId, numberPoint, classId);
     if (result) {
       toast.success('Cập nhật thành công');
       reset();

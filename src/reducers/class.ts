@@ -44,6 +44,9 @@ const ClassSlice = createSlice({
     },
     changeTab(state, action) {
       state.currentTab = action.payload;
+    },
+    addStudents(state, action) {
+      state.students = action.payload;
     }
   },
   extraReducers: {
