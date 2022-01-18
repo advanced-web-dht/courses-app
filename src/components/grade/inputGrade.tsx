@@ -28,7 +28,7 @@ interface GradeTableProps {
 
 const InputGradeTable: React.FC<GradeTableProps> = ({ open, handleClose, gradeId, gradeName }) => {
   const { students, info } = useSelector((state: AppState) => state.currentClass);
-  const { data } = useRequest<Array<IStudent & { detail: IPoint }>>({ url: `/pointpart/${gradeId}/points` });
+  const { data } = useRequest<Array<IStudent & { detail: IPoint }>>({ url: `/pointpart/${gradeId}/points` }, { revalidateOnFocus: false });
 
   const [grades, setGrade] = useState<GradeType>(() => {
     return students.map((student) => ({ csId: student.id, studentId: student.studentId, point: 0 }));
