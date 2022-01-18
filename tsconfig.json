@@ -21,12 +21,15 @@
     "strictNullChecks": true,
     "jsx": "preserve",
     "jsxImportSource": "react",
-    "incremental": true
+    "incremental": true,
+    "downlevelIteration": true
   },
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
+    "pages/**/*.ts",
+    "pages/**/*.tsx",
+    "src/**/*.tsx",
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules"

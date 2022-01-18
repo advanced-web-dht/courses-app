@@ -1,44 +1,37 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 
-import { NavContext } from '../../store/detailNav';
+import { AppState } from '../../reducers';
 import Members from '../members';
 import Banner from '../banner';
-import { IClass, IClassMember } from '../../type';
+import GradeTable from '../grade';
+import StudentGrade from '../grade/studentGrade';
 
-interface ClassContentProps {
-	classData: IClass;
-}
+const ClassContent: React.FC = () => {
+  const { info, students, teachers, currentTab, grades } = useSelector((state: AppState) => state.currentClass);
 
-const ClassContent: React.FC<ClassContentProps> = ({ classData }) => {
-	const { currentTab } = useContext(NavContext);
-	const [displayMember, setDisplayMember] = useState<IClassMember[]>([]);
+  const allTeachers = useMemo(() => [info.owner, ...teachers], [teachers.length]);
 
-	useEffect(() => {
-		let members;
-		switch (currentTab) {
-			case 1:
-				members = classData.members.filter((member: IClassMember) => member.details?.role === 'student');
-				setDisplayMember(members);
-				break;
-			case 2:
-				members = classData.members.filter(
-					(member: IClassMember) => member.details?.role === 'teacher' || member.details?.role === 'owner'
-				);
-				setDisplayMember(members);
-				break;
-			default:
-				break;
-		}
-	}, [currentTab]);
-
-	const Content =
-		currentTab === 0 ? (
-			<Banner title={classData.name} code={classData.code} />
-		) : (
-			<Members members={displayMember} role={currentTab === 1 ? 'student' : 'teacher'} />
-		);
-
-	return Content;
+  switch (currentTab) {
+    case 0:
+      return (
+        <Banner
+          title={info?.name as string}
+          owner={info.owner.name}
+          grades={grades}
+          students={students.length}
+          teachers={teachers.length}
+        />
+      );
+    case 1:
+      return <Members members={students} roleType='student' />;
+    case 2:
+      return <Members members={allTeachers} roleType='teacher' />;
+    case 3:
+      return info.role === 'student' ? <StudentGrade /> : <GradeTable />;
+    default:
+      return null;
+  }
 };
 
 export default ClassContent;
