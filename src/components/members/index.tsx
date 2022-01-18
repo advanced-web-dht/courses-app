@@ -14,6 +14,11 @@ interface MemberProps {
   roleType: string;
 }
 
+const displayRole: Record<string, string> = {
+  teacher: 'giảng viên',
+  student: 'học viên'
+};
+
 const Members: React.FC<MemberProps> = ({ members, roleType }) => {
   const studentDownload = useMemo(() => members.map((member) => ({ studentId: member.studentId, name: member.name })), []);
   return (
@@ -21,7 +26,7 @@ const Members: React.FC<MemberProps> = ({ members, roleType }) => {
       {members.length > 0 ? (
         <React.Fragment>
           <ClassesHeader>
-            <div>Danh sách {roleType}</div>
+            <div>Danh sách {displayRole[roleType]}</div>
             {roleType === 'student' && <StudentListPreview />}
           </ClassesHeader>
           <ClassesListContainer>

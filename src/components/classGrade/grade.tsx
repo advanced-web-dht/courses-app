@@ -62,19 +62,19 @@ const Grade: React.FC<GradeProps> = ({ grade, index, classId }) => {
       action.value = false;
     }
 
-    const result = await action.func(grade.id);
+    const result = await action.func(grade.id, classId);
 
     if (result) {
       const newGrade = { ...grade };
       newGrade.isDone = action.value;
       dispatch(updateGrade(newGrade));
     } else {
-      toast.error('Thao tac khônng thành công!!');
+      toast.error('Thao tác khônng thành công!!');
     }
   };
 
   const HandleDeleteGrade = async () => {
-    const result = await DeleteGrade(grade.id);
+    const result = await DeleteGrade(grade.id, classId);
     if (result) {
       dispatch(deleteGrade(grade.id));
     } else {

@@ -110,8 +110,8 @@ export const AddPointPart = async (classId: number, order: number, ratio: number
 
 export const UpdatePointPart = async (classId: number, ratio: number, name: string, id: number): Promise<boolean> => {
   try {
-    const url = `/pointpart`;
-    const response = await provider.put(url, { classId, ratio, name, id });
+    const url = `/pointpart/${id}`;
+    const response = await provider.put(url, { classId, ratio, name });
     return response.data.isSuccess as boolean;
   } catch {
     return false;
@@ -196,20 +196,20 @@ export const UploadGradePoints = async (classId: number, points: Array<unknown>,
   }
 };
 
-export const MarkGradeDone = async (pointpartId: number): Promise<boolean> => {
+export const MarkGradeDone = async (pointpartId: number, classId: number): Promise<boolean> => {
   try {
-    const url = '/pointpart/done';
-    await provider.put(url, { id: pointpartId });
+    const url = `/pointpart/${pointpartId}/done`;
+    await provider.patch(url, { classId });
     return true;
   } catch {
     return false;
   }
 };
 
-export const MarkGradePending = async (pointpartId: number): Promise<boolean> => {
+export const MarkGradePending = async (pointpartId: number, classId: number): Promise<boolean> => {
   try {
-    const url = '/pointpart/pending';
-    await provider.put(url, { id: pointpartId });
+    const url = `/pointpart/${pointpartId}/pending`;
+    await provider.patch(url, { classId });
     return true;
   } catch {
     return false;
@@ -246,10 +246,16 @@ export const GetStudentOfClass = async (classId: number, studentId: string): Pro
   }
 };
 
-export const MakeReviewDone = async (reviewId: number, csId: number, pointPartId: number, finalPoint: number): Promise<IStudent | null> => {
+export const MakeReviewDone = async (
+  reviewId: number,
+  csId: number,
+  pointPartId: number,
+  finalPoint: number,
+  classId: number
+): Promise<IStudent | null> => {
   try {
     const url = `/review/${reviewId}/done`;
-    const result = await provider.put(url, { csId, pointPartId, finalPoint });
+    const result = await provider.put(url, { csId, pointPartId, finalPoint, classId });
     return result.data;
   } catch {
     return null;
@@ -266,9 +272,9 @@ export const UpdateNotificationStatus = async (notificationId: number): Promise<
   }
 };
 
-export const DeleteGrade = async (id: number): Promise<boolean> => {
+export const DeleteGrade = async (id: number, classId: number): Promise<boolean> => {
   try {
-    const url = `/pointpart/${id}`;
+    const url = `/pointpart/${id}/class/${classId}`;
     await provider.delete(url);
     return true;
   } catch {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { CSVReader } from 'react-papaparse';
 import { ParseResult } from 'papaparse';
 import Zoom from '@mui/material/Zoom';
@@ -10,6 +10,7 @@ import Button from '@mui/material/Button';
 import { toast } from 'react-toastify';
 
 import { AppState } from '../../reducers';
+import { AddStudents } from './action';
 import useToggle from '../../hooks/useToggle';
 import { UploadStudents } from '../../api/client';
 import { StyledModal, Form, FormHeader, FormAction } from '../addClassModal/style';
@@ -17,8 +18,9 @@ import { StyledModal, Form, FormHeader, FormAction } from '../addClassModal/styl
 const ref: React.LegacyRef<CSVReader<string>> = React.createRef();
 
 const StudentListPreview: React.FC = () => {
+  const dispatch = useDispatch();
   const { isOpen, handleClose, handleOpen } = useToggle();
-  const [students, setStudents] = useState<{ studentId: number; name: string }[]>([]);
+  const [students, setStudents] = useState<{ studentId: string; name: string }[]>([]);
   const { info } = useSelector((state: AppState) => state.currentClass);
 
   const handleErrorParseCSV = () => {
@@ -26,20 +28,15 @@ const StudentListPreview: React.FC = () => {
   };
 
   const handleDrop = (data: Array<ParseResult<string>>) => {
-    const newStudents: { studentId: number; name: string }[] = [];
+    const newStudents: { studentId: string; name: string }[] = [];
     for (let i = 0; i < data.length; i += 1) {
       const item = data[i];
-      const studentId = Number(item.data[0]);
-      if (!Number.isNaN(studentId)) {
-        const student = {
-          studentId,
-          name: item.data[1]
-        };
-        newStudents.push(student);
-      } else {
-        handleErrorParseCSV();
-        return;
-      }
+
+      const student = {
+        studentId: item.data[0],
+        name: item.data[1]
+      };
+      newStudents.push(student);
     }
     handleOpen();
     setStudents(newStudents);
@@ -49,6 +46,7 @@ const StudentListPreview: React.FC = () => {
     const check = await UploadStudents(info.id, students);
     if (check) {
       toast.success('Danh sách sinh viên được thêm thành công!');
+      dispatch(AddStudents(students));
     } else {
       toast.error('Thêm không thành công');
     }
