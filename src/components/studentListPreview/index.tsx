@@ -43,10 +43,10 @@ const StudentListPreview: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    const check = await UploadStudents(info.id, students);
-    if (check) {
+    const allStudents = await UploadStudents(info.id, students);
+    if (allStudents) {
       toast.success('Danh sách sinh viên được thêm thành công!');
-      dispatch(AddStudents(students));
+      dispatch(AddStudents(allStudents));
     } else {
       toast.error('Thêm không thành công');
     }
@@ -57,7 +57,7 @@ const StudentListPreview: React.FC = () => {
   return (
     <React.Fragment>
       <CSVReader onDrop={handleDrop} onError={handleErrorParseCSV} ref={ref}>
-        <Button>Upload danh sách sinh viên</Button>
+        <Button sx={{ textTransform: 'none' }}>Upload danh sách sinh viên</Button>
       </CSVReader>
       <StyledModal open={isOpen}>
         <Zoom in={isOpen}>

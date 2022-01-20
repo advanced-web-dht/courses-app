@@ -21,7 +21,7 @@ const StudentGrade: React.FC = () => {
   const { data } = useRequest<IStudent>({ url: `/pointpart/student/class/${info.id}` });
   const { isOpen, handleOpen, handleClose } = useToggle();
 
-  return (
+  return data?.final ? (
     <React.Fragment>
       <Root>
         <TableContainer>
@@ -63,6 +63,12 @@ const StudentGrade: React.FC = () => {
         grades={data?.grades as Array<IPointPart & { detail: IPoint }>}
       />
     </React.Fragment>
+  ) : (
+    <Root>
+      <Typography variant='h5' fontWeight='bold'>
+        Chưa có cột điểm nào hoàn thành
+      </Typography>
+    </Root>
   );
 };
 

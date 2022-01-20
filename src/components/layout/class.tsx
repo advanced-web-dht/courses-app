@@ -55,7 +55,7 @@ const ClassLayout: React.FC<ClassLayoutProps> = ({ children, router, icon, title
     <Box sx={{ display: 'flex' }}>
       <Navigation detail={router.pathname.includes('/class/[code]')} />
       <Box width='100%'>
-        <Header icon={icon} title={title} link={`/class/${currentClass.code}`}>
+        <Header icon={icon} title={title} link={isHome ? '/class' : `/class/${currentClass.code}`}>
           {showTab && (
             <Section>
               <NavTabs />

@@ -59,7 +59,7 @@ const GradeTable: React.FC = () => {
                     <TableCell>
                       <Tooltip title={student.account ? (student.account.email as string) : 'Sinh viên chưa tham gia lớp học'}>
                         <span>
-                          {student.name}
+                          {student.studentId} - {student.name}
                           <FontAwesomeSvgIcon icon={faCheckCircle} fill={student.account ? 'green' : 'grey'} />
                         </span>
                       </Tooltip>
@@ -76,7 +76,7 @@ const GradeTable: React.FC = () => {
             </Table>
           </TableContainer>
           <div>
-            <CSVDownloader data={board}>
+            <CSVDownloader data={board} filename={`${info.name} - Bảng điểm`}>
               <Button variant='contained'>Download</Button>
             </CSVDownloader>
           </div>

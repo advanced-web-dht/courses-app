@@ -28,7 +28,10 @@ interface GradeTableProps {
 
 const InputGradeTable: React.FC<GradeTableProps> = ({ open, handleClose, gradeId, gradeName }) => {
   const { students, info } = useSelector((state: AppState) => state.currentClass);
-  const { data } = useRequest<Array<IStudent & { detail: IPoint }>>({ url: `/pointpart/${gradeId}/points` }, { revalidateOnFocus: false });
+  const { data, mutate } = useRequest<Array<IStudent & { detail: IPoint }>>(
+    { url: `/pointpart/${gradeId}/points` },
+    { revalidateOnFocus: false }
+  );
 
   const [grades, setGrade] = useState<GradeType>(() => {
     return students.map((student) => ({ csId: student.id, studentId: student.studentId, point: 0 }));
@@ -37,7 +40,13 @@ const InputGradeTable: React.FC<GradeTableProps> = ({ open, handleClose, gradeId
   useEffect(() => {
     if (data && data.length > 0) {
       const studentsList = data as Array<IStudent & { detail: IPoint }>;
-      const newGrades = studentsList.map((student) => ({ csId: student.id, studentId: student.studentId, point: student.detail.point }));
+      const newGrades = [...grades];
+      studentsList.forEach((student) => {
+        const target = newGrades.findIndex((item) => item.csId === student.id);
+        if (target !== -1) {
+          newGrades[target].point = student.detail.point;
+        }
+      });
       setGrade(newGrades);
     }
   }, [data]);
@@ -49,6 +58,7 @@ const InputGradeTable: React.FC<GradeTableProps> = ({ open, handleClose, gradeId
     const check = await UploadGradePoints(info.id, gradesToSubmit, gradeId);
     if (check) {
       toast.success('Upload điểm thành công');
+      await mutate();
     } else {
       toast.error('Upload điểm không thành công');
     }
