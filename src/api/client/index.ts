@@ -176,13 +176,13 @@ export const UpdateAssignment = async (classId: number, name: string, dateEnded:
   }
 };
 
-export const UploadStudents = async (classId: number, students: Array<unknown>): Promise<boolean> => {
+export const UploadStudents = async (classId: number, students: Array<unknown>): Promise<IStudent[]> => {
   try {
     const url = `/classes/${classId}/list`;
-    await provider.post(url, students);
-    return true;
+    const { data } = await provider.post(url, students);
+    return data;
   } catch {
-    return false;
+    return [];
   }
 };
 

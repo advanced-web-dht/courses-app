@@ -1,4 +1,6 @@
 import React from 'react';
+import { KeyedMutator } from 'swr';
+import { AxiosResponse } from 'axios';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -14,15 +16,17 @@ import useToggle from '../../hooks/useToggle';
 import useInput from '../../hooks/useInput';
 import { MakeReviewDone } from '../../api/client';
 import { StyledModal, Form, FormHeader, FormAction } from '../addClassModal/style';
+import { IReview } from '../../type';
 
 interface ReviewActionProps {
   reviewId: number;
   pointPartId: number;
   csId: number;
   classId: number;
+  mutate: KeyedMutator<AxiosResponse<IReview, unknown>>;
 }
 
-const ReviewAction: React.FC<ReviewActionProps> = ({ reviewId, csId, pointPartId, classId }) => {
+const ReviewAction: React.FC<ReviewActionProps> = ({ reviewId, csId, pointPartId, classId, mutate }) => {
   const { isOpen, handleOpen, handleClose } = useToggle();
   const [point, error, onChangePoint, onPointError, reset] = useInput();
 
@@ -46,6 +50,7 @@ const ReviewAction: React.FC<ReviewActionProps> = ({ reviewId, csId, pointPartId
     const result = await MakeReviewDone(reviewId, csId, pointPartId, numberPoint, classId);
     if (result) {
       toast.success('Cập nhật thành công');
+      mutate();
       reset();
       handleClose();
     } else {

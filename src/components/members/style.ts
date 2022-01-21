@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 
 export const ClassesHeader = styled.div`
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 18pt;
+  font-weight: 700;
   display: flex;
   justify-content: space-between;
   align-items: center;

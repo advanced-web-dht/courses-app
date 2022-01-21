@@ -17,39 +17,32 @@ import ReviewDetail from './reviewDetail';
 
 const ReviewList: React.FC = () => {
   const { info } = useSelector((state: AppState) => state.currentClass);
-  const [isReady, setIsReady] = useState(false);
   const [selectedReview, setSelectedReview] = useState(-1);
 
-  const { data: reviews } = useRequest<IReview[]>({ url: `/review/class/${info.id}` });
-  const { data: review } = useRequest<IReview>({ url: isReady ? `/review/${selectedReview}` : undefined });
+  const { data: reviews, mutate } = useRequest<IReview[]>({ url: `/review/class/${info.id}` });
 
   const { isOpen, handleClose, handleOpen } = useToggle();
 
   useEffect(() => {
     if (selectedReview !== -1) {
-      setIsReady(true);
       handleOpen();
     }
   }, [selectedReview]);
 
-  const handleSelectReview = (reviewId: number): void => {
-    setSelectedReview(reviewId);
-  };
-
   const handleCloseModal = () => {
-    setIsReady(false);
     setSelectedReview(-1);
+    mutate();
     handleClose();
   };
 
-  return (
+  return reviews ? (
     <React.Fragment>
       <ManagementList>
-        {reviews?.map((item) => (
-          <Review review={item} key={item.id} onClick={handleSelectReview} />
+        {reviews.map((item, index) => (
+          <Review review={item} key={item.id} onClick={() => setSelectedReview(index)} />
         ))}
       </ManagementList>
-      <FullSizeModal open={isOpen}>
+      <FullSizeModal open={isOpen} keepMounted={false}>
         <Zoom in={isOpen}>
           <Form width={800}>
             <FormHeader>
@@ -60,12 +53,16 @@ const ReviewList: React.FC = () => {
                 <XIcon />
               </IconButton>
             </FormHeader>
-            <FormAction>{review?.id && <ReviewDetail review={review as IReview} />}</FormAction>
+            <FormAction>
+              {selectedReview !== -1 && (
+                <ReviewDetail reviewId={reviews[selectedReview].id} studentId={reviews[selectedReview].requester.studentId} />
+              )}
+            </FormAction>
           </Form>
         </Zoom>
       </FullSizeModal>
     </React.Fragment>
-  );
+  ) : null;
 };
 
 export default ReviewList;

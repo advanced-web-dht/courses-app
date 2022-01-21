@@ -28,7 +28,7 @@ const GradeReview: React.FC<GradeReviewProps> = ({ open, handleClose, classId, g
 
   const { data: doneGrades, mutate } = useRequest<IPointPart[]>({ url: `pointpart/class/${classId}/done` });
   const { data: review } = useRequest<IReview>({
-    url: selectedGrade?.reviews.length !== 0 ? `/review/${selectedGrade?.reviews[0].id as number}` : ''
+    url: selectedGradeIndex !== '' ? `/review/${selectedGrade?.reviews[0]?.id as number}` : undefined
   });
 
   useEffect(() => {

@@ -2,16 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
+import { LinearProgress } from '@mui/material';
 
 import { AppState } from '../../reducers';
 import ReviewComment from '../reviewComment';
 import ReviewAction from './reviewAction';
 import { ReviewContainer, Point } from './style';
-import { GetStudentOfClass } from '../../api/client';
 import { IReview, IStudent } from '../../type';
+import useRequest from '../../hooks/useRequest';
+import { GetStudentOfClass } from '../../api/client';
 
 interface ReviewDetailProps {
-  review: IReview;
+  reviewId: number;
+  studentId: string;
 }
 
 /**
@@ -21,18 +24,19 @@ interface ReviewDetailProps {
  * @note teacher view
  */
 
-const ReviewDetail: React.FC<ReviewDetailProps> = ({ review }) => {
+const ReviewDetail: React.FC<ReviewDetailProps> = ({ reviewId, studentId }) => {
   const { info } = useSelector((state: AppState) => state.currentClass);
   const [student, setStudent] = useState<IStudent | null>(null);
+  const { data: review, mutate } = useRequest<IReview>({ url: `/review/${reviewId}` });
 
   useEffect(() => {
     (async () => {
-      const result = await GetStudentOfClass(info.id, review.requester.studentId);
+      const result = await GetStudentOfClass(info.id, studentId);
       setStudent(result);
     })();
-  }, []);
+  }, [studentId, reviewId]);
 
-  return (
+  return review ? (
     <React.Fragment>
       <ReviewContainer>
         <div>
@@ -40,7 +44,7 @@ const ReviewDetail: React.FC<ReviewDetailProps> = ({ review }) => {
             {student?.studentId} - {student?.name}
           </Typography>
           <Typography variant='subtitle1' component='div'>
-            Ngày đăng: {new Date(review.createdAt).toLocaleDateString()}
+            Ngày đăng: {new Date(review.createdAt).toLocaleDateString('vi-VN')}
           </Typography>
         </div>
         <Point>
@@ -58,8 +62,14 @@ const ReviewDetail: React.FC<ReviewDetailProps> = ({ review }) => {
           {review.content}
         </Typography>
       </ReviewContainer>
-      {!review?.isDone && (
-        <ReviewAction reviewId={review?.id} pointPartId={review.pointPartId} csId={student?.id as number} classId={info.id} />
+      {!review.isDone && (
+        <ReviewAction
+          reviewId={review?.id}
+          pointPartId={review.pointPartId}
+          csId={student?.id as number}
+          classId={info.id}
+          mutate={mutate}
+        />
       )}
       <Divider />
       <ReviewComment comments={review.comments} accountId={review.accountId} reviewId={review.id} pending={!review.isDone} />
@@ -73,6 +83,8 @@ const ReviewDetail: React.FC<ReviewDetailProps> = ({ review }) => {
         </React.Fragment>
       )}
     </React.Fragment>
+  ) : (
+    <LinearProgress color='secondary' />
   );
 };
 
